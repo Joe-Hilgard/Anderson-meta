@@ -45,7 +45,7 @@ verbosePET=function(dataset, plotName=NULL) {
               , sep=""))
   mtext(paste("Naive meta estimate, r ="
               , round(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
-                    , measure="COR")$b[1], 2)
+                    , measure="COR")$b[1], 2))
         , side=1)
 }
 # PEESE
@@ -61,24 +61,14 @@ verbosePEESE=function(dataset) {
   abline(peeseOut)
 }
 
-# so for best-practices AggBeh?
-filtBestAggBeh = dat$Long.Dup == "Exp" & dat$Outcome == "AggBeh"
-petBestAggBeh = PET(dat[filtBestAggBeh,])
-verbosePET(dat[filtBestAggBeh,])
-verbosePEESE(dat[filtBestAggBeh,])
-
-# and not-best-practices AggBeh?
-filtNBAggBeh = dat$Long.Dup == "NB" & dat$Outcome == "AggBeh"
-petNBAggBeh = PET(dat[filtNBAggBeh,])
-verbosePET(dat[filtNBAggBeh,])
-verbosePEESE(dat[filtNBAggBeh,])
-
 # let's just loop through this stuff.
 # Would be nicer if I knew all these sub-categories...
 # Where is there actually data?
 table(dat$Setting, dat$Outcome, dat$Best.)
 ## WARNING! I'm gonna coerce those weird Setting entries
   # to conform with the less-weird ones:
+# You know, I'm gonna guess these weird Setting entries refer to
+  # partial effect sizes. 'P' for Partial? So what's 's'?
 dat$Setting[dat$Setting %in% c("NonexpS")] = "Nonexp" 
 dat$Setting[dat$Setting %in% c("LongPs", "LongP")] = "Long"
 table(dat$Setting, dat$Outcome, dat$Best.)
