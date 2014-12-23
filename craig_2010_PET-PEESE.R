@@ -2,6 +2,9 @@
 # Now I intend to add package 'metafor' and use rma()
   # to reproduce Craig's estimates alongside the PET-PEESE
 
+# My greatest concern right now is how to deal with multiple entries for a study, 
+#   e.g. study appears as raw and as partial, or for men and for women
+
 # According to Carter & McCullough's citation of Stanley & Doucouliagos (2007)
   # Use PET to see if the estimated effect size != 0
   # If estimated effect size == 0 then use PET estimate
@@ -16,11 +19,32 @@
 #   but what are "NonexpS", "LongP", and "LongPs"?
 # Would be nice to make x-axis always bottom out at 0
 
+# I think "S" stands for whether sex was applied as a covariate
+  # and/or the sexes were analyzed separately
+# I think "P" stands for "partial"
+# Similarly "Long.Dup" varies:
+  # L for Longitudinal
+  # LS for Longitudinal separated by sex
+  # LT1s for ???
+  # LT1 for ???
+
+require(metafor)
+
 # Read in the data
 setwd("G:/Craig_meta")
 dat=read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
 dat = dat[dat$Best.!="",] # delete the blank row
 # Std.Err refers to Std.Err of z-transformed value
+
+# dump the use of sex as a control for now in dataset  # Later to be made separate dat1
+dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
+          # in case this is the only way the correlational study was reported:
+          | (dat$Setting %in% "NonexpS" & dat$SEX %in% c("M", "F"))  
+          # or for longitudinal studies
+          |
+          ,]
+dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
+#dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
 
 ## Create functions
 # PET
@@ -39,20 +63,20 @@ verbosePET=function(dataset, plotName=NULL) {
        )
   abline(petOut)
   abline(h=petOut$coefficients[1], col='blue'); abline(v=0); abline(h=0)
-  mtext(paste("r = ", round(petOut$coefficients[1], 2)
+  mtext(paste("r = ", round(atanh(petOut$coefficients[1]), 2)
               , ", p-effect = ", round(summary(petOut)$coefficients[1,4], 3)
               , ", p-bias = ", round(summary(petOut)$coefficients[2,4], 3)
               , sep=""))
   mtext(paste("Naive meta estimate, r ="
-              , round(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
-                    , measure="COR")$b[1], 2))
+              , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
+                    , measure="COR", method="FE")$b[1]), 2))
         , side=1)
 }
 # PEESE
 PEESE=function(dataset) {
   peeseOut = lm(Fisher.s.Z ~ Std.Err^2, weights=1/(Std.Err^2), data=dataset)
-  return(peeseOut)
   print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
+  return(peeseOut)
 }
 verbosePEESE=function(dataset) {
   peeseOut = lm(Fisher.s.Z ~ Std.Err^2, weights=1/(Std.Err^2), data=dataset)
@@ -67,16 +91,15 @@ verbosePEESE=function(dataset) {
 table(dat$Setting, dat$Outcome, dat$Best.)
 ## WARNING! I'm gonna coerce those weird Setting entries
   # to conform with the less-weird ones:
-# You know, I'm gonna guess these weird Setting entries refer to
-  # partial effect sizes. 'P' for Partial? So what's 's'?
-dat$Setting[dat$Setting %in% c("NonexpS")] = "Nonexp" 
-dat$Setting[dat$Setting %in% c("LongPs", "LongP")] = "Long"
+# dat$Setting[dat$Setting %in% c("NonexpS")] = "Nonexp" 
+# dat$Setting[dat$Setting %in% c("LongPs", "LongP")] = "Long"
 table(dat$Setting, dat$Outcome, dat$Best.)
 # Let's do this:
 for (i in unique(dat$Outcome)) {
   for (j in unique(dat$Setting)) {
-    for (k in unique(dat$Best.)) {
-      filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
+    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      best = list("y", c("n", "y"))
+      filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 3) next # must have at least two studies
       name = paste("Outcome: ", i,
                    ", Setting: ", j,
@@ -92,7 +115,7 @@ for (i in unique(dat$Outcome)) {
   }
 }
 
-i = "AggAff"; j = "Exp"; k = "y"
-filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
-res =  rma(Correlation, Std.Err^2, data=dat[filter,], measure="COR")
-funnel(dat$Correlation[filter], dat$Std.Err[filter], xlim=c(0,1), contour=c(.9,.95,.975))
+# i = "AggAff"; j = "Exp"; k = "y"
+# filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
+# res =  rma(Correlation, Std.Err^2, data=dat[filter,], measure="COR")
+# funnel(dat$Correlation[filter], dat$Std.Err[filter], xlim=c(0,1), contour=c(.9,.95,.975))
