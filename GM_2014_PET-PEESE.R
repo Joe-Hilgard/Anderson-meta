@@ -25,6 +25,8 @@ require(metafor)
 setwd("G:/Craig_meta")
 dat=read.delim("GM2014_full_raw_data.txt", stringsAsFactors=F)
 table(dat$outcome.type, dat$Outcome.Group)
+# Get apparent N given reported std.err of z
+dat$N = (1/dat$Std.Err.1)^2+3
 
 # for (i in c(2:6,11:14)) {
 #   print (names(dat)[i])
