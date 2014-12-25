@@ -1,0 +1,11 @@
+Krahe & Moller, 2011
+-Aggressive behavior male & female have been reversed.
+Was male r = .17, female r = .09,
+Should be male r = .09, female r = .17.
+-Each simple slope is entered as having N=1688, 
+rather than 837 for females and 851 for males.
+I think it is a problem because CMA will impute a
+"Combined" sample with too much precision (CMA manual, p 52).
+--However, note that it's impossible to reproduce which 
+  checkboxes were ticked (CMA manual, p. 54)
+-Should prosocial behavior be entered as negative?
