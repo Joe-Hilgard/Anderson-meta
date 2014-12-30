@@ -1,11 +1,37 @@
+General CMA notes:
+- Multiple subgroups can be imputed across to create a "combined" estimate
+  I believe this sums the Ns and makes a weighted average effect size.
+- For multiple outcomes, CMA allows the following options:
+  - Use the mean of all outcomes
+  - Use each outcome, assuming independence
+  - Use the first outcome available based on some sequence
+- I wonder which settings Craig used? Which settings G&M used?
+
 Krahe & Moller, 2011
 -Aggressive behavior male & female have been reversed.
 Was male r = .17, female r = .09,
 Should be male r = .09, female r = .17.
 -Each simple slope is entered as having N=1688, 
 rather than 837 for females and 851 for males.
-I think it is a problem because CMA will impute a
+It may be a problem because CMA will impute a
 "Combined" sample with too much precision (CMA manual, p 52).
+It may not be a problem because CMA will average, not sum, for outcomes.
 --However, note that it's impossible to reproduce which 
   checkboxes were ticked (CMA manual, p. 54)
 -Should prosocial behavior be entered as negative?
+
+Krahe, Busching, Moller, 2012
+I'm having trouble finding the "teacher-rated aggression" outcome at timepoint T1 r = -.09
+
+Anderson & Carnagey, 2011
+"High intensity aggression" is coming up with SE =.343, N=11.5, which surely isn't right
+
+Krcmar & Lachlan, 2009
+Apparent Ns vary across outcomes within a condition by as much as 10-20 n
+Ns seem a little too high (e.g. 61 instead of 58 for 30min, 82 instead of 57 for 10min)
+Entering each pairwise effect size w/r/t control group with precision of 60+, 80+ seems to maybe over-count control group? Because subgroup-within-study is summed across. so a study of N=173 will end up entered as N=250+
+
+
+Sometimes Subgroup.within.study needs combining samples (e.g. Valadez & Ferguson, 2012) and sometimes it doesn't (e.g. Anderson & Carnagey?).
+Ewoldsen?
+

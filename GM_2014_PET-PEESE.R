@@ -20,27 +20,54 @@
   # prosocial-media stuff. Could always ask...
 
 require(metafor)
+require(reshape2)
 
 # Read in the data
-setwd("G:/Craig_meta")
+setwd("C:/Users/Joe/Documents/Craig_meta")
 dat=read.delim("GM2014_full_raw_data.txt", stringsAsFactors=F)
+dat=dat[, names(dat)!=("X")]
 table(dat$outcome.type, dat$Outcome.Group)
+# delete the empty rows
+dat = dat[!(dat$outcome.type == "" & dat$Outcome.Group == ""),]
+# make very short names
+dat$StudyShort = paste(substr(dat$Study, 1, 8), 
+                       substr(dat$Study, nchar(dat$Study)-9, nchar(dat$Study)),
+                       sep="_")
+
 # Get apparent N given reported std.err of z
 dat$N = (1/dat$Std.Err.1)^2+3
 
-# for (i in c(2:6,11:14)) {
-#   print (names(dat)[i])
-#   print (unique(dat[,i]))
-# }
-
 # Need to determine how G&M sliced up these studies as reported in Tables 1 and 2...
-# It's such a damn chore that several lines are reported for a single study like
-#   the stupid 15min 10min 45min 30min stuff, I don't trust that.
+# It's such a damn chore that several lines are reported for a single study
 # I could maybe start by just filtering by Study Design
 #   And then maybe aggregate (weighted mean) within studies with same name & outcome 
-#     but different other bullass.
+# I'd like to double-check all the Krcmar stuff with the millions of simple slopes
 
+# I need to reproduce CMA's imputation/aggregation/filtering
+  # For subgroups within studies, sum N and weighted average effect size
+  # For outcomes within studies, weighted average N and effect size 
+
+# average across outcomes and comparisons within studies (is this ok?)
+ids = names(dat)[!(names(dat) %in% c("Correlation", "Std.Err", "Fisher.s.Z", "Std.Err.1","N"))]
+dat_m = melt(dat, id.vars=ids)
+dat1 = dcast(dat_m, 
+             Study + Subgroup.within.study + Outcome.Group +
+               outcome.type + media.type + study.design + StudyShort~ variable,
+             fun.aggregate = mean # would weighted.mean be possible?
+             )
+table(dat1$StudyShort)
+# Then how do we handle subgroups?
 # Std.Err.1 refers to Std.Err of z-transformed value
+
+##View(dat1[dat1$study.design == "experimental" & dat1$Outcome.Group=="behavior",])  
+# judging from this it looks like "Subgroup within study" should be aggregated across  
+# Need to ask Dirk re: average, sum, or filter on that column.
+# Anderson & Carnagey S3 sample N all screwed up b/c of this
+ids1 = names(dat1)[!(names(dat1) %in% c("Correlation", "Std.Err", "Fisher.s.Z", "Std.Err.1","N"))]
+dat1_m = melt(dat1, id.vars=ids1)
+dat2 = dcast(dat1_m,
+             Study + StudyShort + Outcome.Group + outcome.type +
+               media.type + study.design ~ variable, fun.aggregate=mean)
 
 ## Create functions # NOTE THAT THIS TIME WE USE Std.Err.1
 # PET
@@ -81,6 +108,10 @@ verbosePEESE=function(dataset) {
   abline(peeseOut)
 }
 
+# Look for studies featuring a particular author
+View(dat[grep("Anderson", dat$Study),])
+
+
 # Let's do this shit
 for (i in unique(dat$Outcome.Group)) {
   for (j in unique(dat$study.design)) {
@@ -103,7 +134,3 @@ for (i in unique(dat$Outcome.Group)) {
   }
 }
 
-i = "AggAff"; j = "Exp"; k = "y"
-filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
-res =  rma(Correlation, Std.Err.1^2, data=dat[filter,], measure="COR")
-funnel(dat$Correlation[filter], dat$Std.Err.1[filter], xlim=c(0,1), contour=c(.9,.95,.975))

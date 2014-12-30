@@ -41,7 +41,7 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
           # in case this is the only way the correlational study was reported:
           | (dat$Setting %in% "NonexpS" & dat$SEX %in% c("M", "F"))  
           # or for longitudinal studies
-          |
+          | (dat$Setting %in% "LongPs")7
           ,]
 dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
 #dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
