@@ -31,7 +31,7 @@
 require(metafor)
 
 # Read in the data
-setwd("G:/Craig_meta")
+setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")
 dat=read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
 dat = dat[dat$Best.!="",] # delete the blank row
 # Std.Err refers to Std.Err of z-transformed value
@@ -41,7 +41,7 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
           # in case this is the only way the correlational study was reported:
           | (dat$Setting %in% "NonexpS" & dat$SEX %in% c("M", "F"))  
           # or for longitudinal studies
-          | (dat$Setting %in% "LongPs")7
+          #| (dat$Setting %in% "LongPs") 
           ,]
 dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
 #dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
@@ -71,6 +71,12 @@ verbosePET=function(dataset, plotName=NULL) {
               , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
                     , measure="COR", method="FE")$b[1]), 2))
         , side=1)
+}
+leveragePET = function(dataset, plotName=NULL) {
+  petOut = lm(Fisher.s.Z ~ Std.Err, weights=1/(Std.Err^2), data=dataset)
+  print(paste("Estimated effect size: r =", atanh(petOut$coefficients[1])))
+  plot(petOut#, labels.id=dataset$Study.name
+       )
 }
 # PEESE
 PEESE=function(dataset) {
@@ -114,6 +120,36 @@ for (i in unique(dat$Outcome)) {
     }
   }
 }
+
+# Can I get all the leverages together?
+for (i in unique(dat$Outcome)) {
+  for (j in unique(dat$Setting)) {
+    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      best = list("y", c("n", "y"))
+      filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
+      if (sum(filter) < 3) next # must have at least two studies
+      name = paste("Outcome: ", i,
+                   ", Setting: ", j,
+                   ", Best?: ", k
+                   , sep="")
+      windows()
+      saveName = paste("./petpeese_plotdump/diagnostics/", paste(i,j,k, sep="_"),".png", sep="")
+      print(name)
+      par(mfrow=c(2,2))
+      leveragePET(dat[filter,], plotName = name)
+      savePlot(filename=saveName, type="png")
+      graphics.off()
+    }
+  }
+}
+
+# To check an influential observation:
+dat[row.names(dat)== 235, ]
+# or use grep()
+dat[grep("U06PB", dat$Study.name),]
+
+## Influence Plot 
+#influencePlot(fit,  id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
 
 # i = "AggAff"; j = "Exp"; k = "y"
 # filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
