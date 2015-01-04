@@ -63,6 +63,8 @@ table(dat1$StudyShort)
 # judging from this it looks like "Subgroup within study" should be aggregated across  
 # Need to ask Dirk re: average, sum, or filter on that column.
 # Anderson & Carnagey S3 sample N all screwed up b/c of this
+
+# Still waiting on Dirk to advise re: summing vs averaging
 ids1 = names(dat1)[!(names(dat1) %in% c("Correlation", "Std.Err", "Fisher.s.Z", "Std.Err.1","N"))]
 dat1_m = melt(dat1, id.vars=ids1)
 dat2 = dcast(dat1_m,
@@ -91,9 +93,15 @@ verbosePET=function(dataset, plotName=NULL) {
               , ", p-bias = ", round(summary(petOut)$coefficients[2,4], 3)
               , sep=""))
   mtext(paste("Naive meta estimate, r ="
-              , round(atanh(rma(Fisher.s.Z, Std.Err.1^2, data=dat[filter,]
+              , round(atanh(rma(Fisher.s.Z, Std.Err.1^2, data=dataset
                                 , measure="COR")$b[1]), 2))
         , side=1)
+}
+leveragePET = function(dataset, plotName=NULL) {
+  petOut = lm(Fisher.s.Z ~ Std.Err.1, weights=1/(Std.Err^2), data=dataset)
+  print(paste("Estimated effect size: r =", atanh(petOut$coefficients[1])))
+  plot(petOut#, labels.id=dataset$Study.name
+  )
 }
 # PEESE
 PEESE=function(dataset) {
@@ -109,16 +117,16 @@ verbosePEESE=function(dataset) {
 }
 
 # Look for studies featuring a particular author
-View(dat[grep("Anderson", dat$Study),])
+# View(dat2[grep("Anderson", dat$Study),])
 
 
 # Let's do this shit
-for (i in unique(dat$Outcome.Group)) {
-  for (j in unique(dat$study.design)) {
-    for (k in unique(dat$outcome.type)) {
+for (i in unique(dat2$Outcome.Group)) {
+  for (j in unique(dat2$study.design)) {
+    for (k in unique(dat2$outcome.type)) {
       #print(paste(i,j,k))
       if (i == "" | j  == "" | k == "") next # skip stupid "" returns
-      filter = dat$Outcome.Group == i & dat$study.design == j & dat$outcome.type == k
+      filter = dat2$Outcome.Group == i & dat2$study.design == j & dat2$outcome.type == k
       if (sum(filter) < 4) next # must have at least four studies
       name = paste("Outcome: ", i,
                    ", Setting: ", j,
@@ -127,10 +135,31 @@ for (i in unique(dat$Outcome.Group)) {
       windows()
       saveName = paste("./GM_petpeese_plotdump/", paste(i,j,substr(k,1,4), sep="_"),".png", sep="")
       print(name)
-      verbosePET(dat[filter,], plotName = name)
+      verbosePET(dat2[filter,], plotName = name)
       savePlot(filename=saveName, type="png")
       graphics.off()
     }
   }
 }
-
+# Let's get influence diagnostics
+for (i in unique(dat2$Outcome.Group)) {
+  for (j in unique(dat2$study.design)) {
+    for (k in unique(dat2$outcome.type)) {
+      #print(paste(i,j,k))
+      if (i == "" | j  == "" | k == "") next # skip stupid "" returns
+      filter = dat2$Outcome.Group == i & dat2$study.design == j & dat2$outcome.type == k
+      if (sum(filter) < 4) next # must have at least four studies
+      name = paste("Outcome: ", i,
+                   ", Setting: ", j,
+                   ", Type: ", k
+                   , sep="")
+      windows()
+      saveName = paste("./GM_petpeese_plotdump/diagnostics/", paste(i,j,substr(k,1,4), sep="_"),".png", sep="")
+      print(name)
+      par(mfrow=c(2,2))
+      leveragePET(dat2[filter,], plotName = name)
+      savePlot(filename=saveName, type="png")
+      graphics.off()
+    }
+  }
+}
