@@ -1,0 +1,20 @@
+
+Publication bias is a problem that contributes to the overestimation of effect sizes and the propagation of Type I error.
+
+Meta-analytic techniques for assessing and correcting for publication bias have been applied to this literature, but these are of questionable utility. Fail-safe N, in theory, provides the number of studies %(subjects?)
+that would need to be hypothetically hiding in file-drawers in order to reduce an effect to non-significance. This technique is flawed in that it assumes an effect size of exactly zero in all censored studies, does not consider the possibility of flexible analysis (e.g. p-hacking), and does not provide an estimate of a bias-adjusted effect size.
+
+Another popular bias-adjustment technique, trim-and-fill \citep[Duvall:Tweedie:19XX} attempts to detect and adjust for bias through inspection of the funnel plot. If the funnel plot is asymmetrical, the procedure "trims" off the most extreme study and imputes a hypothetical censored study reflected around the funnel plot's axis of symmetry. Studies are trimmed and filled until the funnel plot is no longer significantly asymmetrical. This is not an effective adjustment for bias, as the assumptions of trim-and-fill are unlikely to be met. Studies are not likely to be censored on the basis of the effect size, but rather, on the basis of their statistical significance. It is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias. %Could cite data colada post
+
+Meta-regression techniques instead consider the relationship between effect size and precision. In an asymmetrical funnel plot, larger samples yield smaller effects, as would be expected if studies were censored when not attaining statistical significance or when studies are flexibly analyzed in order to attain statistical significance. The PET-PEESE meta-regression \citep{Douglass:Doucouling:20XX} uses the published literature to estimate the relationship between precision and effect size, then extrapolates to estimate what the "true effect" would be if measured with perfect precision. This meta-regression technique has been previously applied by \citet{Carter:McCullough:2014} to inspect the amount of evidence for "ego depletion", the phenomenon of fatigue in self-control. They found that after adjusting for publication bias, PET-PEESE suggested an absence of evidence for the phenomenon, and therefore recommended a large-sample pre-registered replication effort.
+
+
+
+We apply PET-PEESE meta-regression to two recent meta-analyses of violent video game effects, one covering research up until 2009 \citep{Anderson:etal:2010} and the other research between 2009 and 2013 \citep{Greitemeyer:Mugge:2014}. Both meta-analyses argued for statistically and practically significant effects of violent video games on aggressive outcomes. Moreover, both applied trim-and-fill and found little evidence or adjustment for research bias. However, visual inspection of the funnel plot often reveals alarming asymmetry, particularly in the case of those studies which \citet{Anderson:etal:2010} call "best-practices" studies.
+
+% Methods
+We acquired data from \citet{Anderson:etal:2010} and \citet{Greitemeyer:Mugge:2014}. Because the data were analyzed using Comprehensive Meta-Analysis, many studies were entered with separate rows for different outcomes or subsamples within studies. We consulted with the original authors as how best to aggregate rows within studies and reproduce their provided estimates.
+
+We then followed the PET-PEESE procedure, fitting a weighted-least-squares regression model predicting effect size (Pearson's r converted to Fisher's z) as a linear function of the standard error, with weights inversely proportional to the square of the standard error. In the case that the PET regression found a statistically significant effect after accounting for publication bias, PEESE was applied, predicting effect size as a quadratic function of the standard error. 
+
+Because
