@@ -29,6 +29,7 @@
   # LT1 for ???
 
 require(metafor)
+require(meta)
 
 # Read in the data
 setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")
@@ -78,6 +79,21 @@ leveragePET = function(dataset, plotName=NULL, id.n=3) {
   plot(petOut#, labels.id=dataset$Study.name
        , id.n=id.n
        )
+}
+funnelPET = function(dataset, ...) {
+  funnel(dataset$Fisher.s.Z, dataset$Std.Err, ...)
+  petOut = PET(dataset)
+  abline(a = -petOut$coefficients[1]/petOut$coefficients[2]
+         , b = 1/petOut$coefficients[2])
+  mtext(paste("r = ", round(atanh(petOut$coefficients[1]), 2)
+              , ", p-effect = ", round(summary(petOut)$coefficients[1,4], 3)
+              , ", p-bias = ", round(summary(petOut)$coefficients[2,4], 3)
+              , sep=""))
+  mtext(paste("Naive meta estimate, r ="
+              , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
+                                , measure="COR", method="FE")$b[1]), 2))
+        , side=1)
+  points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5)
 }
 # PEESE
 PEESE=function(dataset) {
