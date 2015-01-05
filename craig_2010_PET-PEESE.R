@@ -72,10 +72,11 @@ verbosePET=function(dataset, plotName=NULL) {
                     , measure="COR", method="FE")$b[1]), 2))
         , side=1)
 }
-leveragePET = function(dataset, plotName=NULL) {
+leveragePET = function(dataset, plotName=NULL, id.n=3) {
   petOut = lm(Fisher.s.Z ~ Std.Err, weights=1/(Std.Err^2), data=dataset)
   print(paste("Estimated effect size: r =", atanh(petOut$coefficients[1])))
   plot(petOut#, labels.id=dataset$Study.name
+       , id.n=id.n
        )
 }
 # PEESE
@@ -84,22 +85,43 @@ PEESE=function(dataset) {
   print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
   return(peeseOut)
 }
-verbosePEESE=function(dataset) {
-  peeseOut = lm(Fisher.s.Z ~ Std.Err^2, weights=1/(Std.Err^2), data=dataset)
+verbosePEESE=function(dataset, plotName=NULL) {
+  peeseOut = lm(Fisher.s.Z ~ I(Std.Err^2), weights=1/(Std.Err^2), data=dataset)
   print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
-  with(dataset, plot(x=Std.Err, y=Fisher.s.Z))
+  with(dataset, plot(x=Std.Err^2, y=Fisher.s.Z, main=plotName
+                     , xlim=c(0, max(Std.Err^2))
+                     , ylim=c(min(peeseOut$coefficients[1], Fisher.s.Z, na.rm=T), max(peeseOut$coefficients[1], Fisher.s.Z, na.rm=T))
+  )
+  )
   abline(peeseOut)
+  abline(h=peeseOut$coefficients[1], col='blue'); abline(v=0); abline(h=0)
+  mtext(paste("r = ", round(atanh(peeseOut$coefficients[1]), 2)
+              , ", p-effect = ", round(summary(peeseOut)$coefficients[1,4], 3)
+              , ", p-bias = ", round(summary(peeseOut)$coefficients[2,4], 3)
+              , sep=""))
+  mtext(paste("Naive meta estimate, r ="
+              , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dataset
+                                , measure="COR", method="FE")$b[1]), 2))
+        , side=1)
+}
+leveragePEESE = function(dataset, plotName=NULL, id.n=3) {
+  peeseOut = lm(Fisher.s.Z ~ I(Std.Err^2), weights=1/(Std.Err^2), data=dataset)
+  print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
+  plot(peeseOut#, labels.id=dataset$Study.name
+       , id.n=id.n
+  )
 }
 
 # let's just loop through this stuff.
 # Would be nicer if I knew all these sub-categories...
 # Where is there actually data?
 table(dat$Setting, dat$Outcome, dat$Best.)
-## WARNING! I'm gonna coerce those weird Setting entries
-  # to conform with the less-weird ones:
-# dat$Setting[dat$Setting %in% c("NonexpS")] = "Nonexp" 
-# dat$Setting[dat$Setting %in% c("LongPs", "LongP")] = "Long"
-table(dat$Setting, dat$Outcome, dat$Best.)
+# and collapsing over best/not-best?
+table(dat$Setting, dat$Outcome)
+
+# make directories to hold PETPEESE output and diagnostic output
+dir.create("./petpeese_plotdump"); dir.create("./petpeese_plotdump/diagnostics")
+
 # Let's do this:
 for (i in unique(dat$Outcome)) {
   for (j in unique(dat$Setting)) {
@@ -148,8 +170,91 @@ dat[row.names(dat)== 235, ]
 # or use grep()
 dat[grep("U06PB", dat$Study.name),]
 
+# Removing Ballard & Wiest from AggAff.Exp
+verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y") & rownames(dat)!=235,])
+verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y", "n") & rownames(dat)!=235,])
+# Removing Yukawa & Sakamoto from AggAff.Nonexp.Best
+verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y") & rownames(dat)!=129,])
+# Removing Uozumi and Urashima & Suzuki from AggAff.Nonexp.All
+verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c("179", "180")),])
+# AggBeh.Exp.Best. IDing and removing AG&B 2007 from book
+dat$Full.Reference[rownames(dat) %in% c(251, 253, 254)]
+plot(lm(Fisher.s.Z ~ Std.Err, weights=(1/Std.Err^2), 
+        data=dat[dat$Outcome=="AggBeh"
+                 & dat$Setting=="Exp" & dat$Best. %in% c("y"),]), id.n=15)
+dat$Full.Reference[rownames(dat)==245] # cook's d ~= .5 on AG&B 2007
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y") 
+               & !(rownames(dat)%in%c(245)),])
+# AggBeh.Exp.All, removing Panee & Ballard (2002) b/c it isn't agg behavior
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(402)),])
+# AggBeh.Nonexp.Best, removing Matsuzaki
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y") 
+               & !(rownames(dat)%in%c(131)),])
+# AggBeh.Nonexp.All, using the one Matsuzaki & not other
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187)),])
+# Removing both Matsuzaki as outlier
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187, 131)),])
+# & then Kuntsche too is outlier
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187, 131,219)),])
+# & then there's another outlier
+leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187, 131,219)),]
+           , id.n = 10)
+# it's Rudatsikira, Muula, & Siziya (2008)
+verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187, 131,219,472)),])
+# No outliers for AggCog.Exp.Best
+# Nor for AggCog.Exp.All
+# Removing Matsuzaki from AggCog.Nonexp.Best
+verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y") 
+               & !(rownames(dat)%in%c(144)),])
+# Then AB&G 2007 is outlier too
+verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y") 
+               & !(rownames(dat)%in%c(144, 351)),])
+# Again having to remove Matsuzaki from AggCog.Nonexp.All
+verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(144)),])
+# What's that one out there? It's Santisteban et al 2007
+leveragePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(144)),]
+            , id.n=10)
+verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(144,218)),])
 ## Influence Plot 
 #influencePlot(fit,  id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
+
+## PEESE
+# AggBeh.Exp.Best
+verbosePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+                 & dat$Best. %in% c("y", "n"),])
+leveragePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+                 & dat$Best. %in% c("y", "n"),])
+# and minus outliers from PET
+verbosePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+               & dat$Best. %in% c("y", "n") 
+               & !(rownames(dat)%in%c(187, 131,219,472)),])
 
 # i = "AggAff"; j = "Exp"; k = "y"
 # filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k

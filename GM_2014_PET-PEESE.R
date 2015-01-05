@@ -93,14 +93,15 @@ verbosePET=function(dataset, plotName=NULL) {
               , ", p-bias = ", round(summary(petOut)$coefficients[2,4], 3)
               , sep=""))
   mtext(paste("Naive meta estimate, r ="
-              , round(atanh(rma(Fisher.s.Z, Std.Err.1^2, data=dataset
-                                , measure="COR")$b[1]), 2))
+              , round(atanh(rma(Fisher.s.Z, Std.Err.1^2, data=dat[filter,]
+                                , measure="COR", method="FE")$b[1]), 2))
         , side=1)
 }
-leveragePET = function(dataset, plotName=NULL) {
-  petOut = lm(Fisher.s.Z ~ Std.Err.1, weights=1/(Std.Err^2), data=dataset)
+leveragePET = function(dataset, plotName=NULL, id.n=3) {
+  petOut = lm(Fisher.s.Z ~ Std.Err.1, weights=1/(Std.Err.1^2), data=dataset)
   print(paste("Estimated effect size: r =", atanh(petOut$coefficients[1])))
   plot(petOut#, labels.id=dataset$Study.name
+       , id.n=id.n
   )
 }
 # PEESE
@@ -109,16 +110,38 @@ PEESE=function(dataset) {
   print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
   return(peeseOut)
 }
-verbosePEESE=function(dataset) {
-  peeseOut = lm(Fisher.s.Z ~ Std.Err.1^2, weights=1/(Std.Err.1^2), data=dataset)
+verbosePEESE=function(dataset, plotName=NULL) {
+  peeseOut = lm(Fisher.s.Z ~ I(Std.Err.1^2), weights=1/(Std.Err.1^2), data=dataset)
   print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
-  with(dataset, plot(x=Std.Err.1, y=Fisher.s.Z))
+  with(dataset, plot(x=Std.Err.1^2, y=Fisher.s.Z, main=plotName
+                     , xlim=c(0, max(Std.Err.1^2))
+                     , ylim=c(min(peeseOut$coefficients[1], Fisher.s.Z, na.rm=T), max(peeseOut$coefficients[1], Fisher.s.Z, na.rm=T))
+  )
+  )
   abline(peeseOut)
+  abline(h=peeseOut$coefficients[1], col='blue'); abline(v=0); abline(h=0)
+  mtext(paste("r = ", round(atanh(peeseOut$coefficients[1]), 2)
+              , ", p-effect = ", round(summary(peeseOut)$coefficients[1,4], 3)
+              , ", p-bias = ", round(summary(peeseOut)$coefficients[2,4], 3)
+              , sep=""))
+  mtext(paste("Naive meta estimate, r ="
+              , round(atanh(rma(Fisher.s.Z, Std.Err.1^2, data=dataset
+                                , measure="COR", method="FE")$b[1]), 2))
+        , side=1)
+}
+leveragePEESE = function(dataset, plotName=NULL, id.n=3) {
+  peeseOut = lm(Fisher.s.Z ~ I(Std.Err.1^2), weights=1/(Std.Err.1^2), data=dataset)
+  print(paste("Estimated effect size: r =", atanh(peeseOut$coefficients[1])))
+  plot(peeseOut#, labels.id=dataset$Study.name
+       , id.n=id.n
+  )
 }
 
 # Look for studies featuring a particular author
 # View(dat2[grep("Anderson", dat$Study),])
 
+# Make storage directories for output:
+dir.create("./GM_petpeese_plotdump"); dir.create("./GM_petpeese_plotdump/diagnostics")
 
 # Let's do this shit
 for (i in unique(dat2$Outcome.Group)) {
