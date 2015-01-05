@@ -95,6 +95,21 @@ funnelPET = function(dataset, ...) {
         , side=1)
   points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5)
 }
+funnelPET.RMA = function(dataset, ...) {
+  funnel(rma(Fisher.s.Z, Std.Err^2, data=dataset, measure="COR",...))
+  petOut = PET(dataset)
+  abline(a = -petOut$coefficients[1]/petOut$coefficients[2]
+         , b = 1/petOut$coefficients[2])
+  mtext(paste("r = ", round(atanh(petOut$coefficients[1]), 2)
+              , ", p-effect = ", round(summary(petOut)$coefficients[1,4], 3)
+              , ", p-bias = ", round(summary(petOut)$coefficients[2,4], 3)
+              , sep=""))
+  mtext(paste("Naive meta estimate, r ="
+              , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
+                                , measure="COR", method="FE")$b[1]), 2))
+        , side=1)
+  points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5, pch=7)
+}
 # PEESE
 PEESE=function(dataset) {
   peeseOut = lm(Fisher.s.Z ~ Std.Err^2, weights=1/(Std.Err^2), data=dataset)
