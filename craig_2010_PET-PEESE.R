@@ -30,6 +30,7 @@
 
 require(metafor)
 require(meta)
+require(plyr)
 
 # Read in the data
 setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")
@@ -46,6 +47,20 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
           ,]
 dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
 #dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
+
+# # what effect sizes within a study appear on more than one row?
+# # A lot of damn studies! Ass! 
+# # Some of it might be men & women entered separately (questionable for me)
+# # But others appear to be two DVs from same study (not acceptible, should be one line)
+# datExpNonexp = dat[dat$Setting %in% c("Exp", "Nonexp"),]
+# temp = table(datExpNonexp$Full.Reference, datExpNonexp$Outcome, datExpNonexp$Study)
+# count = adply(temp, c(1,2))
+# rowsums = apply(count[,3:6], 1, sum)
+# count = count[rowsums>1,]
+# testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
+# toomany = apply(count[,3:6], 1, testfunc)
+# sum(toomany)
+# #View(count[toomany,])
 
 ## Create functions
 # PET
@@ -77,7 +92,7 @@ leveragePET = function(dataset, plotName=NULL, id.n=3) {
   petOut = lm(Fisher.s.Z ~ Std.Err, weights=1/(Std.Err^2), data=dataset)
   print(paste("Estimated effect size: r =", atanh(petOut$coefficients[1])))
   plot(petOut#, labels.id=dataset$Study.name
-       , id.n=id.n
+       , id.n=id.n, main=plotName
        )
 }
 funnelPET = function(dataset, ...) {
@@ -95,8 +110,8 @@ funnelPET = function(dataset, ...) {
         , side=1)
   points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5)
 }
-funnelPET.RMA = function(dataset, ...) {
-  funnel(rma(Fisher.s.Z, Std.Err^2, data=dataset, measure="COR",...))
+funnelPET.RMA = function(dataset, plotName=NULL) {
+  funnel(rma(Fisher.s.Z, Std.Err^2, data=dataset, measure="COR"), main=plotName)
   petOut = PET(dataset)
   abline(a = -petOut$coefficients[1]/petOut$coefficients[2]
          , b = 1/petOut$coefficients[2])
@@ -167,7 +182,7 @@ for (i in unique(dat$Outcome)) {
       windows()
       saveName = paste("./petpeese_plotdump/", paste(i,j,k, sep="_"),".png", sep="")
       print(name)
-      verbosePET(dat[filter,], plotName = name)
+      funnelPET.RMA(dat[filter,], plotName = name)
       savePlot(filename=saveName, type="png")
       graphics.off()
     }
