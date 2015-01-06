@@ -38,6 +38,11 @@ dat=read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
 dat = dat[dat$Best.!="",] # delete the blank row
 # Std.Err refers to Std.Err of z-transformed value
 
+# Inspect suspicious Matsuzaki et al study
+# View(dat[grep("Matsuzaki", dat$Full.Reference),])
+# !! I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
+dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
+
 # dump the use of sex as a control for now in dataset  # Later to be made separate dat1
 dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
           # in case this is the only way the correlational study was reported:
