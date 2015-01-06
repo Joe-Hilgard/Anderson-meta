@@ -53,19 +53,22 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
 dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
 #dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
 
-# # what effect sizes within a study appear on more than one row?
-# # A lot of damn studies! Ass! 
-# # Some of it might be men & women entered separately (questionable for me)
-# # But others appear to be two DVs from same study (not acceptible, should be one line)
-# datExpNonexp = dat[dat$Setting %in% c("Exp", "Nonexp"),]
-# temp = table(datExpNonexp$Full.Reference, datExpNonexp$Outcome, datExpNonexp$Study)
-# count = adply(temp, c(1,2))
-# rowsums = apply(count[,3:6], 1, sum)
-# count = count[rowsums>1,]
-# testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
-# toomany = apply(count[,3:6], 1, testfunc)
-# sum(toomany)
-# #View(count[toomany,])
+# what effect sizes within a study appear on more than one row?
+# A lot of damn studies! Ass! 
+# Some of it might be men & women entered separately (questionable for me)
+# But others appear to be two DVs from same study (not acceptible, should be one line)
+# Abstract me into a function, please!
+datExpNonexp = dat[dat$Setting %in% c("Exp", "Nonexp") 
+                   & dat$Outcome == "AggBeh" & dat$Best. == "y"
+                   ,]
+temp = table(datExpNonexp$Full.Reference, datExpNonexp$Outcome, datExpNonexp$Study)
+count = adply(temp, c(1,2))
+rowsums = apply(count[,3:6], 1, sum)
+count = count[rowsums>1,]
+testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
+toomany = apply(count[,3:6], 1, testfunc)
+sum(toomany)
+View(count[toomany,])
 
 ## Create functions
 # PET
@@ -116,7 +119,7 @@ funnelPET = function(dataset, ...) {
   points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5)
 }
 funnelPET.RMA = function(dataset, plotName=NULL) {
-  funnel(rma(Fisher.s.Z, Std.Err^2, data=dataset, measure="COR"), main=plotName)
+  funnel(rma(Fisher.s.Z, Std.Err^2, data=dataset, measure="GEN", method="FE"), main=plotName)
   petOut = PET(dataset)
   abline(a = -petOut$coefficients[1]/petOut$coefficients[2]
          , b = 1/petOut$coefficients[2])
@@ -126,7 +129,7 @@ funnelPET.RMA = function(dataset, plotName=NULL) {
               , sep=""))
   mtext(paste("Naive meta estimate, r ="
               , round(atanh(rma(Fisher.s.Z, Std.Err^2, data=dat[filter,]
-                                , measure="COR", method="FE")$b[1]), 2))
+                                , measure="GEN", method="FE")$b[1]), 2))
         , side=1)
   points(x = atanh(petOut$coefficients[1]), y=0, cex=1.5, pch=7)
 }
