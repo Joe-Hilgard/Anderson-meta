@@ -69,7 +69,11 @@ testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
 toomany = apply(count[,3:6], 1, testfunc)
 sum(toomany)
 View(count[toomany,])
-
+View(dat[dat$Full.Reference %in% count[toomany, "X1"],])
+write.table(dat[dat$Full.Reference %in% count[toomany, "X1"],], file="toomany.txt", row.names=F, sep="\t")
+# Most double-entries are due to splitting between Male/Female, however
+# Carnagey & Anderson (2009) seems to routinely have 3 rows: M, F, and M&F.
+# Need to handle that. Check the article and make sure the total N is just the one row.
 ## Create functions
 # PET
 PET=function(dataset) {
