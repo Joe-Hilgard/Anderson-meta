@@ -1,0 +1,7 @@
+Technically should aggregate across reward and punishment if we're talking violent and non-violent games. But Carmageddon also contains driver-vs-driver violence, not just driver-vs-pedestrian violence. But anyway...
+
+Studies 1 & 2 aggregated for some perverse reason. Games did not differ on arousal (arterial pressure and pulse) but this was not included in meta-analysis of effects on arousal; rather, taken as evidence games were well-matched.
+
+There's no record of aggressive behavior in Experiment 1 or 2, so what's the effect size here?
+
+I'm going to guess the aggressive behavior effect size entered for Experiment 3 represents the 2-vs-1 contrast of violent-reward vs (violent-punish & nonviolent) rather than the 2-vs-1 contrast of violence-vs-nonviolence.

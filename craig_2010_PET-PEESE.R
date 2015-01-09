@@ -42,6 +42,7 @@ dat = dat[dat$Best.!="",] # delete the blank row
 # View(dat[grep("Matsuzaki", dat$Full.Reference),])
 # !! I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
 dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
+# I'm also gonna drop the redundant M,F rows when there's already an MF row. 
 
 # dump the use of sex as a control for now in dataset  # Later to be made separate dat1
 dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
