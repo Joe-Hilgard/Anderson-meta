@@ -34,47 +34,8 @@ require(plyr)
 
 # Read in the data
 setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")
-dat=read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
-dat = dat[dat$Best.!="",] # delete the blank row
-# Std.Err refers to Std.Err of z-transformed value
+dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
 
-# Inspect suspicious Matsuzaki et al study
-# View(dat[grep("Matsuzaki", dat$Full.Reference),])
-# !! I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
-dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
-# I'm also gonna drop the redundant M,F rows when there's already an MF row. 
-
-# dump the use of sex as a control for now in dataset  # Later to be made separate dat1
-dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
-          # in case this is the only way the correlational study was reported:
-          | (dat$Setting %in% "NonexpS" & dat$SEX %in% c("M", "F"))  
-          # or for longitudinal studies
-          #| (dat$Setting %in% "LongPs") 
-          ,]
-dat$Setting[dat$Setting == "NonexpS"] = "Nonexp"
-#dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
-
-# what effect sizes within a study appear on more than one row?
-# A lot of damn studies! Ass! 
-# Some of it might be men & women entered separately (questionable for me)
-# But others appear to be two DVs from same study (not acceptible, should be one line)
-# Abstract me into a function, please!
-datExpNonexp = dat[dat$Setting %in% c("Exp", "Nonexp") 
-                   & dat$Outcome == "AggBeh" & dat$Best. == "y"
-                   ,]
-temp = table(datExpNonexp$Full.Reference, datExpNonexp$Outcome, datExpNonexp$Study)
-count = adply(temp, c(1,2))
-rowsums = apply(count[,3:6], 1, sum)
-count = count[rowsums>1,]
-testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
-toomany = apply(count[,3:6], 1, testfunc)
-sum(toomany)
-View(count[toomany,])
-View(dat[dat$Full.Reference %in% count[toomany, "X1"],])
-write.table(dat[dat$Full.Reference %in% count[toomany, "X1"],], file="toomany.txt", row.names=F, sep="\t")
-# Most double-entries are due to splitting between Male/Female, however
-# Carnagey & Anderson (2009) seems to routinely have 3 rows: M, F, and M&F.
-# Need to handle that. Check the article and make sure the total N is just the one row.
 ## Create functions
 # PET
 PET=function(dataset) {
