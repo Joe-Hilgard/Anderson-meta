@@ -30,7 +30,6 @@
 
 require(metafor)
 require(meta)
-require(plyr)
 
 # Read in the data
 setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")

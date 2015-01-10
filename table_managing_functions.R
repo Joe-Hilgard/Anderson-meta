@@ -5,6 +5,7 @@ stringMerge = function(strings) {
 
 combine.rows=function(dat, filter, do) {
   temp = dat[filter,]
+  if (is.na(temp)) then break
   tempOut = temp[1,]
   # do the math stuff
   if (do=="sum") {

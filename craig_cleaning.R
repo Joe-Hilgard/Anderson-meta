@@ -16,14 +16,13 @@ dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
 # Drop Brady & Matthews (06) as it's the same as Brady (06) but divided into more rows
 dat = dat[-grep("Brady, S.S., & Mathews", dat$Full.Reference),]
 # I'm also gonna drop the redundant M,F rows when there's already an MF row. 
-dat1 = dat
 dat = dat[!(dat$Study.name %in% 
               c("AD00AB1bF", "AD00AB1bM" # Anderson & Dill, 2000, s1
                 ,"AGB07AA2F", "AGB07AA2M", "AGB07AB2F", "AGB07AB2M", "AGB07AC2F", "AGB07AC2M" #AG&B 07 s2
                 ,"AGB07AB3F", "AGB07AB3M", "AGB07AC3F", "AGB07AC3M", "AGB07PB3F", "AGB07PB3M" #AG&B 07 S3
               )),] # The rest of double-entries (for aggbeh at least) are separate M&F with no MF row.
 for (i in unique(dat$Outcome)) {
-  for (j in unique(dat$Setting)) {
+  for (j in "Exp") { #unique(dat$Setting)) {
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
@@ -37,7 +36,12 @@ for (i in unique(dat$Outcome)) {
     }
   }
 }
-
+# Too many AggBeh Exp
+getTooMany(dat[dat$Setting == "Exp" & dat$Outcome == "AggBeh" & dat$Best. == "y",])
+# aggregate young/old in AG&B 07 S2
+dat = combine.rows(dat, dat$Study.name %in% c("AGB07AB1oe", "AGB07AB1ye"), "sum")
+# aggregate men/women in B&A 02
+dat = combine.rows(dat, dat$Study.name %in% c("BA02ABF", "BA02ABM"), "sum")
 # combining data
 
 
