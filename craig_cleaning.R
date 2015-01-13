@@ -1,4 +1,6 @@
 # Cleaning Anderson's dataset
+# Note: May still want to remove Panee & Ballard nonsense
+
 
 require(plyr)
 
