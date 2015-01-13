@@ -5,7 +5,7 @@ stringMerge = function(strings) {
 
 combine.rows=function(dat, filter, do) {
   temp = dat[filter,]
-  if (is.na(temp)) then break
+  if (is.null(temp)) break #return("Error")
   tempOut = temp[1,]
   # do the math stuff
   if (do=="sum") {
@@ -32,10 +32,10 @@ getTooMany = function(dat, filter) {
   frame = dat[filter,]
   temp = table(frame$Full.Reference, frame$Outcome, frame$Study)
   count = adply(temp, c(1,2))
-  rowsums = apply(count[,3:dim(count)[2]], 1, sum)
+  if (dim(count)[2] > 3) rowsums = apply(count[,3:dim(count)[2]], 1, sum) else rowsums = count[,3]
   count = count[rowsums>1,]
   testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
-  toomany = apply(count[,3:dim(count)[2]], 1, testfunc)
+  toomany = apply(count[,3:dim(count)[2], drop=F], 1, testfunc)
   sum(toomany)
   #View(count[toomany,])
   #View(dat[dat$Full.Reference %in% count[toomany, "X1"],])

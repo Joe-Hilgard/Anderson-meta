@@ -5,3 +5,5 @@ Studies 1 & 2 aggregated for some perverse reason. Games did not differ on arous
 There's no record of aggressive behavior in Experiment 1 or 2, so what's the effect size here?
 
 I'm going to guess the aggressive behavior effect size entered for Experiment 3 represents the 2-vs-1 contrast of violent-reward vs (violent-punish & nonviolent) rather than the 2-vs-1 contrast of violence-vs-nonviolence.
+
+Noting also here that AGB07AB3 has combined sample of 356 whereas subsamples are 167+185=352. 4 other? Or data error? Similarly, AGB07AC2 has combined sample of 188 but subsamples of 109+76=185. And AGB07AC3 has combined sample of 351 but subsamples of 166+180=1=346.

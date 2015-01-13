@@ -143,7 +143,7 @@ dir.create("./petpeese_plotdump"); dir.create("./petpeese_plotdump/diagnostics")
 
 # Let's do this:
 for (i in unique(dat$Outcome)) {
-  for (j in unique(dat$Setting)) {
+  for (j in c("Exp", "Nonexp", "Long")) {
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]

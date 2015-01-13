@@ -32,18 +32,49 @@ for (i in unique(dat$Outcome)) {
                    ", Best?: ", k
                    , sep="")
       print(name)
-      print(dim(getTooMany(dat[filter,]))[1])
+      print(dim(getTooMany(dat, filter]))[1])
     }
   }
 }
 # Too many AggBeh Exp
-getTooMany(dat[dat$Setting == "Exp" & dat$Outcome == "AggBeh" & dat$Best. == "y",])
+getTooMany(dat, dat$Setting == "Exp" & dat$Outcome == "AggBeh" & dat$Best. == "y")
 # aggregate young/old in AG&B 07 S2
 dat = combine.rows(dat, dat$Study.name %in% c("AGB07AB1oe", "AGB07AB1ye"), "sum")
 # aggregate men/women in B&A 02
 dat = combine.rows(dat, dat$Study.name %in% c("BA02ABF", "BA02ABM"), "sum")
-# combining data
 
+# get too many AggBeh not-best
+getTooMany(dat, dat$Setting == "Exp" & dat$Outcome == "AggBeh" & dat$Best. == "n")
+# Looks like older and younger, maybe a median split? Let's sum.
+dat = combine.rows(dat, dat$Study.name %in% c("M03ABo", "M03ABy"), "sum")
+
+# get too many AggCog not-best
+getTooMany(dat, dat$Setting == "Exp" & dat$Outcome == "AggCog" & dat$Best. == "n")
+# looks again like older/younger, male/female splits, so let's sum.
+dat = combine.rows(dat, dat$Study.name %in% c("FBJ03ACFo", "FBJ03ACFy", "FBJ03ACMo", "FBJ03ACMy"), "sum")
+dat = combine.rows(dat, dat$Study.name %in% c("M03ACo", "M03ACy"), "sum")
+dat = combine.rows(dat, dat$Study.name %in% c("S95ACF", "S95ACM"), "sum")
+
+for (i in unique(dat$Outcome)) {
+  for (j in "Exp") { #unique(dat$Setting)) {
+    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      best = list("y", c("n", "y"))
+      filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
+      if (sum(filter) < 3) next # must have at least two studies
+      name = paste("Outcome: ", i,
+                   ", Setting: ", j,
+                   ", Best?: ", k
+                   , sep="")
+      print(name)
+      print(dim(getTooMany(dat, filter))[1])
+    }
+  }
+}
+
+# Could deal with PhysArous and Empathy and Desen and non-exp 
+#   some other time, maybe
+
+write.table(dat, file="cleaned_craig.txt", sep="\t", row.names=F)
 
 # # Potential alternative model: Censoring of individual subsamples
 # # Alternatively, drop the MF rows when M and F exist
