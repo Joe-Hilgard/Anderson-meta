@@ -1,0 +1,5 @@
+-scrutinize Carnagey and Anderson (2005) and re-enter effect sizes as necessary.
+Maybe three analyses: once as presented by Craig, one as presented by me (fixing, e.g., excluded 90 subjects from Anderson et al (2004)), and one with outliers excluded.
+-Contact Craig et al about Matsuzaki et al paper with insane effect sizes?
+-Begin aggregating rows within Greitemeyer & Mugge 2014. Inconsistency of whether column factors should be summed or averaged across does not fill me with confidence. Some will likely have to be entered by hand, e.g. Krcmar & Lachlan, as summing would triple-count the baseline group.
+-Set up .gitignore file to drop redundant latex files...

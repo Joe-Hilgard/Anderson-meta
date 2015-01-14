@@ -1,3 +1,5 @@
+require(plyr)
+
 stringMerge = function(strings) {
   if (length(unique(strings)) == 1) return(strings[1]) 
   else return(paste(unique(strings), collapse="/"))
@@ -42,6 +44,20 @@ getTooMany = function(dat, filter) {
   return(frame[frame$Full.Reference %in% count[toomany, "X1"],])
 }
 
+# Apply filter before calling getTooMany2,
+# Supply list for index e.g. list(dat$Outcome, dat$Study)
+# Now just returns a vector to be used as you will
+getTooMany2 = function(dataset, INDEX) {
+  temp = table(INDEX)
+  count = adply(temp, c(1,2))
+  if (dim(count)[2] > 3) rowsums = apply(count[,3:dim(count)[2]], 1, sum) else rowsums = count[,3]
+  #count = count[rowsums>1,]
+  testfunc = function(x) if(sum(x>1)>0) return(TRUE) else return(FALSE)
+  toomany = apply(count[,3:dim(count)[2], drop=F], 1, testfunc)
+  sum(toomany)
+  # oh my god this is ugly
+  return(INDEX[[1]][INDEX[[1]] %in% count[toomany, "INDEX.1"]])
+}
 # # take it for a spin
 # brady = dat[grep("Mathews", dat$Full.Reference),]
 # brady = brady[brady$Outcome=="AggBeh",]

@@ -22,20 +22,6 @@
 require(metafor)
 require(reshape2)
 
-# Read in the data
-setwd("C:/Users/Joe/Documents/Craig_meta")
-dat=read.delim("GM2014_full_raw_data.txt", stringsAsFactors=F)
-dat=dat[, names(dat)!=("X")]
-table(dat$outcome.type, dat$Outcome.Group)
-# delete the empty rows
-dat = dat[!(dat$outcome.type == "" & dat$Outcome.Group == ""),]
-# make very short names
-dat$StudyShort = paste(substr(dat$Study, 1, 8), 
-                       substr(dat$Study, nchar(dat$Study)-9, nchar(dat$Study)),
-                       sep="_")
-
-# Get apparent N given reported std.err of z
-dat$N = (1/dat$Std.Err.1)^2+3
 
 # Need to determine how G&M sliced up these studies as reported in Tables 1 and 2...
 # It's such a damn chore that several lines are reported for a single study
