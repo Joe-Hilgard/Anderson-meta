@@ -23,7 +23,8 @@ combine.rows=function(dat, filter, do) {
   # do the string stuff
   stringCols = names(dat)[!names(dat) %in% c("Sample.size", "Correlation", "Cor.Joe",
                                              "Fisher.s.Z", "Z.Joe", "Std.Err", "Std.Err.Joe",
-                                             "t", "df", "p", "p.value")]
+                                             "t", "df", "p", "p.value", "Std.Err.r", "Study", 
+                                             "Full.Reference", "Citation")]
   for (i in stringCols) tempOut[,i] = stringMerge(temp[,i])
   # Export all the rows, minus the ones that were aggregated, plus their aggregation.
   fullOut = rbind(dat[!(filter),], tempOut)
