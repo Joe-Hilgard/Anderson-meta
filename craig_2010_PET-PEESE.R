@@ -153,11 +153,11 @@ dir.create("./petpeese_plotdump"); dir.create("./petpeese_plotdump/diagnostics")
 
 # Let's do this:
 for (i in unique(dat$Outcome)) {
-  for (j in c("Exp", "Nonexp", "Long")) {
+  for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
-      if (sum(filter) < 3) next # must have at least two studies
+      if (sum(filter) < 10) next # must have at least ten studies
       name = paste("Outcome: ", i,
                    ", Setting: ", j,
                    ", Best?: ", k
@@ -174,11 +174,11 @@ for (i in unique(dat$Outcome)) {
 
 # Can I get all the leverages together?
 for (i in unique(dat$Outcome)) {
-  for (j in unique(dat$Setting)) {
+  for (j in c("Exp", "Nonexp")) {
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
-      if (sum(filter) < 3) next # must have at least two studies
+      if (sum(filter) < 10) next # must have at least ten studies
       name = paste("Outcome: ", i,
                    ", Setting: ", j,
                    ", Best?: ", k
@@ -195,15 +195,23 @@ for (i in unique(dat$Outcome)) {
 }
 
 # To check an influential observation:
-dat[row.names(dat)== 235, ]
+dat[row.names(dat)== 172, ]
 # or use grep()
 dat[grep("U06PB", dat$Study.name),]
 
 # Removing Ballard & Wiest from AggAff.Exp
-verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y") & rownames(dat)!=235,])
-verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y", "n") & rownames(dat)!=235,])
+funnelPET.RMA(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y") & 
+                 dat$Study.name != "BW96AA",])
+leveragePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+                & dat$Best. %in% c("y") & 
+                  dat$Study.name != "BW96AA",])
+funnelPET.RMA(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y", "n") & 
+                 dat$Study.name != "BW96AA",])
+leveragePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
+               & dat$Best. %in% c("y", "n") & 
+                 dat$Study.name != "BW96AA",])
 # Removing Yukawa & Sakamoto from AggAff.Nonexp.Best
 verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
                & dat$Best. %in% c("y") & rownames(dat)!=129,])
@@ -211,15 +219,13 @@ verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp"
 verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
                & dat$Best. %in% c("y", "n") 
                & !(rownames(dat)%in%c("179", "180")),])
-# AggBeh.Exp.Best. IDing and removing AG&B 2007 from book
-dat$Full.Reference[rownames(dat) %in% c(251, 253, 254)]
-plot(lm(Fisher.s.Z ~ Std.Err, weights=(1/Std.Err^2), 
-        data=dat[dat$Outcome=="AggBeh"
-                 & dat$Setting=="Exp" & dat$Best. %in% c("y"),]), id.n=15)
-dat$Full.Reference[rownames(dat)==245] # cook's d ~= .5 on AG&B 2007
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+# AggBeh.Exp.Best
+leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
+                & dat$Best. %in% c("y"),], id.n=8)
+# It's AG&B 07, study 1
+funnelPET.RMA(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
                & dat$Best. %in% c("y") 
-               & !(rownames(dat)%in%c(245)),])
+               & dat$Study.name != "AGB07AB1oe/AGB07AB1ye",])
 # AggBeh.Exp.All, removing Panee & Ballard (2002) b/c it isn't agg behavior
 verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
                & dat$Best. %in% c("y", "n") 
