@@ -3,7 +3,8 @@
 
 # TO DO:
 # Can the code be refactored to remove the 5x loop?
-# What to do with multiple pairwise?
+# What to do with multiple pairwise? e.g. Krcmar; Valadez & Ferg
+# Might just enter those by hand based on complex contrast.
 # With odd n=11-looking sample from Anderson?
 
 # Read in the data

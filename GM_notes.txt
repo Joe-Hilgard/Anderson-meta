@@ -1,3 +1,26 @@
+1/20/2015
+
+AggAff:
+-Fischer et al. 2012 S2 is outlier among AggAff experiments. Is the sign wrong?
+-Shafer (2012) and Saleem&Anderson have largest sample sizes: accurate?
+
+Arousal:
+-Krcmar et al is all wrong, huge r and huge n due to clumsy combination of pairwise comparisons
+-lots of heterogeneity, need to check it out
+-when I combine Arriaga by hand I get .346 not .379. May be something wrong happening in combine.rows()?
+
+AggBeh:
+- naive meta estimate is r=.25 which is much too large
+- Hasan, Begue, & Bushman entered with "hostile expectation bias" (2012) as a form of aggressive behavior (bad!)
+- Another enormous effect, Greitemeyer & McLatchie (2011) S2 "other player's aggressive behavior". Seems that they're trying to say "aggressive behavior towards other participant". ns for S1 seem a little off: not n=40, not n=60. S2 std.err is too small, reflects n=53 or n=57 instead of n=40. standard error is 10% smaller than it should be. "Other player's secondary emotion" cherry-picked for agg cog, human uniqueness / human nature stuff discarded.
+
+
+
+
+
+==========
+12/28/14 notes
+
 General CMA notes:
 - Multiple subgroups can be imputed across to create a "combined" estimate
   I believe this sums the Ns and makes a weighted average effect size.

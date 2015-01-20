@@ -14,7 +14,9 @@
 ## Create functions 
 source("PETPEESE_functions.R")
 dat = read.delim("GM_2014_averaged_summed.txt", stringsAsFactors=F)
-
+list(unique(dat$Outcome.Group), unique(dat$outcome.type), unique(dat$study.design)
+     , unique(dat$media.type))
+table(dat$Outcome.Group, dat$outcome.type, dat$study.design)
 # Look for studies featuring a particular author
 # View(dat2[grep("Anderson", dat$Study),])
 
