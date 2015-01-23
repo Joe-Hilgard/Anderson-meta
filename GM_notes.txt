@@ -1,7 +1,29 @@
 1/20/2015
 
+I have spent too long trying to reproduce the way that CMA calculates the standard error of Fisher's z. This has been a point of contention between me and Mugge. I understand StdErr(z) as 1/sqrt(n-3). CMA calculates it through the following process:
+
+# d->r
+r = d / sqrt(d ^ 2 + a) = 0,832 # where a is (n1+n2)^2 / (n1*n2), a is 4 if n1=n2 
+StdErr.r = sqrt(a^2 * StdErr.d ^ 2 / ((d ^ 2 + a) ^ 3)) # don't understand this
+# I think this step shrinks StdErr.r a lot when d is large
+# r->z
+FisherZ = 0.5 * log((1 + r) / (1 - r))
+StdErr.z = StdErr.r / (1 - r ^ 2)
+# I think this last step inflates StdErr.z a little as r increases
+# Net effect is that larger effect sizes yield smaller StdErr.z relative to smaller effect sizes
+
+Reading Borenstein et al textbook, it seems like var(d) should increase with d. Larger d means more uncertainty in estimate of s (but in in x1-x2). Some argument as to whether denominator of var(d) is 2(n1+n2) or 2(n1+n2-2).
+I have carefully read the relevant chapters of Borenstein et al. and there is no mention of this equation for getting StdErr.r from d and StdErr.d. If anything, it looks like larger effects should have greater variance, not greater precision. Borenstein et al. seem insistent that var(z) is simply 1/(n-3).
+
+This is potentially hazardous if big effects are given greater undeserved precision.
+Mugge argues that CMA is doing fine and that I'm off. Often by as much as 8% or more in SE, sometimes almost half again the samle size.
+
+I'd take their word for it, but I'm not having this issue in Craig's meta-analysis, where the standard error is reliably 1/sqrt(n-3) 
+
+1/20/2015
+
 AggAff:
--Fischer et al. 2012 S2 is outlier among AggAff experiments. Is the sign wrong?
+-Fischer et al. 2012 S2 is outlier among AggAff experiments. Sign is correct, but I wonder if hypothetical "would you feel bad for egoistic behavior" is aggressive affect.
 -Shafer (2012) and Saleem&Anderson have largest sample sizes: accurate?
 
 Arousal:
