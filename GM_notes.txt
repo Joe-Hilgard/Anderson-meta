@@ -1,3 +1,14 @@
+1/27/2015
+
+I'm finally going to do Krcmar & Lachlan now
+I obtain z = .36, .34, .71 for physAgg, verbAgg, arousal. SE(z) is .0766965
+Aggregating directly from how G&M entered it I get smaller effects and smaller SEs
+z = .261 for Agg, z = .62 for arousal. SE(z) is 0.062 or 0.059. That seems like a small difference but is 80-120 subjects!
+
+Sestir & Bartholow (2006) has only the one subgroup's effect size entered but has precision commensurate with entire sample.
+
+Wonder where the other 105 subjects are from Saleem, Anderson & Gentile (2012)? Are they on the "prosocial media" spreadsheet that was kept from me?
+
 1/20/2015
 
 I have spent too long trying to reproduce the way that CMA calculates the standard error of Fisher's z. This has been a point of contention between me and Mugge. I understand StdErr(z) as 1/sqrt(n-3). CMA calculates it through the following process:
@@ -19,6 +30,13 @@ This is potentially hazardous if big effects are given greater undeserved precis
 Mugge argues that CMA is doing fine and that I'm off. Often by as much as 8% or more in SE, sometimes almost half again the samle size.
 
 I'd take their word for it, but I'm not having this issue in Craig's meta-analysis, where the standard error is reliably 1/sqrt(n-3) 
+
+Update: Other sources for 1/sqrt(N-3):
+this U of I lecture: http://courses.education.illinois.edu/EdPsy580/lectures/correlation-ha.pdf
+webpage: http://davidmlane.com/hyperstat/A50760.html
+Hayes textbook
+Borenstein textbook
+
 
 1/20/2015
 
