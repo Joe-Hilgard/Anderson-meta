@@ -14,7 +14,7 @@
 ## Create functions 
 source("PETPEESE_functions.R")
 ## read data
-dat = read.delim("GM_2014_averaged_summed.txt", stringsAsFactors=F)
+dat = read.delim("GM_2014_averaged_summed_fixWIP.txt", stringsAsFactors=F)
 list(unique(dat$Outcome.Group), unique(dat$outcome.type), unique(dat$study.design)
      , unique(dat$media.type))
 table(dat$Outcome.Group, dat$outcome.type, dat$study.design)
