@@ -14,7 +14,9 @@
 ## Create functions 
 source("PETPEESE_functions.R")
 ## read data
-dat = read.delim("GM_2014_averaged_summed_fixWIP.txt", stringsAsFactors=F)
+dat = read.delim("GM_2014_averaged_summed_fixed.txt", stringsAsFactors=F)
+# remove bonkers Greitemeyer & McLatchie d = 2.15 study?
+# dat = dat[dat$ID != 138,]
 list(unique(dat$Outcome.Group), unique(dat$outcome.type), unique(dat$study.design)
      , unique(dat$media.type))
 table(dat$Outcome.Group, dat$outcome.type, dat$study.design)
