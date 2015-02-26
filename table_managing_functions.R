@@ -1,9 +1,16 @@
-require(plyr)
+# NOTE: using atanh to get back to Correlation will introduce
+  # some bias. I can't recall inverse of z-transform right now.
+  # And we're working with the z-scores anyway.
+
+require(plyr) #should I move to dplyr? need to learn it first
 
 stringMerge = function(strings) {
   if (length(unique(strings)) == 1) return(strings[1]) 
   else return(paste(unique(strings), collapse="/"))
 }
+
+r2ztrans = function(r) .5*log((1+r)/(1-r))
+#z2rtrans = function(z) 2*exp(1+z) / exp(1-z)
 
 combine.rows=function(dat, filter, do) {
   temp = dat[filter,]
@@ -12,13 +19,19 @@ combine.rows=function(dat, filter, do) {
   # do the math stuff
   if (do=="sum") {
     tempOut$Sample.size = sum(temp$Sample.size)
-    tempOut$Std.Err = sqrt(1/tempOut$Sample.size)
+    # Set std.err to 1/sqrt(N-3).
+    # I realize the se.r / (1-r^2) equation may be more appropriate but idk how to
+    tempOut$Std.Err = sqrt(1/(tempOut$Sample.size-3)) 
     tempOut$Fisher.s.Z = weighted.mean(temp$Fisher.s.Z, w=temp$Sample.size)
     tempOut$Correlation = atanh(tempOut$Fisher.s.Z)
   }
   if (do=="average") {
     tempOut$Fisher.s.Z = weighted.mean(temp$Fisher.s.Z, w=temp$Sample.size)
     tempOut$Correlation = atanh(tempOut$Fisher.s.Z)
+    # Std.Err should not change if Ns are equal and se=1/sqrt(N-3)
+    # Still, let's average SEs together, for lack of a better aggregation, & just in case.
+    # This may bias the SE a little high? 
+    tempOut$Std.Err = mean(temp$Std.Err)
   }
   # do the string stuff
   stringCols = names(dat)[!names(dat) %in% c("Sample.size", "Correlation", "Cor.Joe",

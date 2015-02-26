@@ -1,9 +1,7 @@
 # PET-PEESE of the meta-analysis
-# Now I intend to add package 'metafor' and use rma()
-  # to reproduce Craig's estimates alongside the PET-PEESE
 
 # My greatest concern right now is how to deal with multiple entries for a study, 
-#   e.g. study appears as raw and as partial, or for men and for women
+#   e.g. study appears as raw and as partial
 
 # According to Carter & McCullough's citation of Stanley & Doucouliagos (2007)
   # Use PET to see if the estimated effect size != 0
@@ -32,7 +30,6 @@ require(metafor)
 require(meta)
 
 # Read in the data
-setwd("C:/Users/bartholowlab/Documents/GitHub/Craig_meta")
 dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
 
 ## Read in PET-PEESE functions
