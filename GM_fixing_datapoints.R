@@ -60,6 +60,12 @@ dat$Fisher.s.Z[dat$ID %in% "82/85/88/91"] = arousal.z$StdErr.z
 
   # ID: 11/12/13/14/15/16, Valadez, J. J., & Ferguson, C. J. (2012).
 
+# "Humanization" of ingroup and outgroup used as independent subgroups
+  # Authors had reported (within-subjects) difference score as relevant effect.
+  # Unique contrasts are entered for violent vs neutral (antisocial game),
+    # violent vs prosocial (left blank), and prosocial vs neutral (prosocial game)
+  # ID: 140/141, Greitemeyer & McLatchie (2011)
+
 # Sestir and Bartholow (2010) subsample given precision of full group
   # ID: 24, Sestir, M. A., & Bartholow, B. D. (2010).
 dat$Std.Err[dat$ID == 24] = 1/sqrt((347/3)-3) #THIS IS AN APPROXIMATION

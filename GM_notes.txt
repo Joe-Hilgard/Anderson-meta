@@ -1,3 +1,8 @@
+3/8/2015
+Got the full data. 
+Noticed another error in the old data: For study 1 of Greitemeyer:McLatchie:2011, in-group and out-group are just intermediate things used to make a difference score which is supposed to be the "real" effect. These were instead entered as unique subgroups of independent subjects.
+Noticed that Saleem Anderson Gentile 2012 entered specific contrasts as having precision of full N (e.g violent-vs-neutral, prosocial-vs-neutral)
+
 1/27/2015
 
 I'm finally going to do Krcmar & Lachlan now
