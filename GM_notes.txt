@@ -13,7 +13,7 @@ AggBeh:
 - naive meta estimate is r=.25 which is much too large
 - Hasan, Begue, & Bushman entered with "hostile expectation bias" (2012) as a form of aggressive behavior (bad!)
 - Another enormous effect, Greitemeyer & McLatchie (2011) S2 "other player's aggressive behavior". Seems that they're trying to say "aggressive behavior towards other participant". ns for S1 seem a little off: not n=40, not n=60. S2 std.err is too small, reflects n=53 or n=57 instead of n=40. standard error is 10% smaller than it should be. "Other player's secondary emotion" cherry-picked for agg cog, human uniqueness / human nature stuff discarded.
-
+- Sestir and Bartholow (2010) has been entered incorrectly: effect size r=.20 seems to be drawn from a complex violent-vs-(nonviolent or neutral) contrast, but sample size exceeds that of the whole study. Most charitably, I might argue r = .2, n =  ~174 (0-minute delay group only). Less charitably, I might argue that the 15-minute delay group would need to be included as well, in which the effect seems to be very nearly zero. Study 3 effects on aggressive cognitions do not seem to have been entered.
 
 
 
