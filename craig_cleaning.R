@@ -2,7 +2,6 @@
 
 require(plyr)
 
-setwd("~/GitHub/craig_meta")
 source("table_managing_functions.R")
 dat = read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
 dat = dat[dat$Best.!="",] # delete the blank row

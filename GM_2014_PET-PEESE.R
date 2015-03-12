@@ -13,7 +13,10 @@
 
 ## Create functions 
 source("PETPEESE_functions.R")
-dat = read.delim("GM_2014_averaged_summed.txt", stringsAsFactors=F)
+## read data
+dat = read.delim("GM_2014_averaged_summed_fixed.txt", stringsAsFactors=F)
+# remove bonkers Greitemeyer & McLatchie d = 2.15 study?
+# dat = dat[dat$ID != 138,]
 list(unique(dat$Outcome.Group), unique(dat$outcome.type), unique(dat$study.design)
      , unique(dat$media.type))
 table(dat$Outcome.Group, dat$outcome.type, dat$study.design)
@@ -62,5 +65,49 @@ for (i in unique(dat$Outcome.Group)) {
       savePlot(filename=saveName, type="png")
       graphics.off()
     }
+  }
+}
+
+# do it their way, slopping together longitudinal, correlational, and experimental
+# I think this is a terrible idea but maybe I can reproduce their stats
+
+# Make storage directories for output:
+dir.create("./GM_munge1"); dir.create("./GM_munge2")
+
+# Let's do this shit
+for (i in unique(dat$Outcome.Group)) {
+  # slop together long, cor, exp
+  for (k in unique(dat$outcome.type)) {
+    #print(paste(i,j,k))
+    filter = dat$Outcome.Group == i & dat$outcome.type == k
+    #if (sum(filter) < 6) next # I want RMA output even if PETPEESE no good
+    name = paste("Outcome: ", i,
+                 ", Type: ", k
+                 , sep="")
+    windows()
+    saveName = paste("./GM_munge1/", paste(i,substr(k,1,4), sep="_"),".png", sep="")
+    print(name)
+    funnelPET.RMA(dat[filter,], plotName = name)
+    savePlot(filename=saveName, type="png")
+    graphics.off()
+  }
+}
+
+# now collapse over outcome.type
+#slop together aff,cog,beh,etc. #for (i in unique(dat$Outcome.Group)) {
+for (j in unique(dat$study.design)) {
+  for (k in unique(dat$outcome.type)) {
+    #print(paste(i,j,k))
+    filter = dat$study.design == j & dat$outcome.type==k
+    if (sum(filter) < 3) next # I want RMA output even if PETPEESE no good
+    name = paste("Design: ", j,
+                 ", Type: ", k
+                 , sep="")
+    windows()
+    saveName = paste("./GM_munge2/", paste(j,substr(k,1,4), sep="_"),".png", sep="")
+    print(name)
+    funnelPET.RMA(dat[filter,], plotName = name)
+    savePlot(filename=saveName, type="png")
+    graphics.off()
   }
 }

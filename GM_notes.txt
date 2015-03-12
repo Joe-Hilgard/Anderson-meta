@@ -1,7 +1,52 @@
+3/8/2015
+Got the full data. 
+Noticed another error in the old data: For study 1 of Greitemeyer:McLatchie:2011, in-group and out-group are just intermediate things used to make a difference score which is supposed to be the "real" effect. These were instead entered as unique subgroups of independent subjects.
+Noticed that Saleem Anderson Gentile 2012 entered specific contrasts as having precision of full N (e.g violent-vs-neutral, prosocial-vs-neutral)
+
+1/27/2015
+
+I'm finally going to do Krcmar & Lachlan now
+I obtain z = .36, .34, .71 for physAgg, verbAgg, arousal. SE(z) is .0766965
+Aggregating directly from how G&M entered it I get smaller effects and smaller SEs
+z = .261 for Agg, z = .62 for arousal. SE(z) is 0.062 or 0.059. That seems like a small difference but is 80-120 subjects!
+
+Sestir & Bartholow (2006) has only the one subgroup's effect size entered but has precision commensurate with entire sample.
+
+Wonder where the other 105 subjects are from Saleem, Anderson & Gentile (2012)? Are they on the "prosocial media" spreadsheet that was kept from me?
+
+1/20/2015
+
+I have spent too long trying to reproduce the way that CMA calculates the standard error of Fisher's z. This has been a point of contention between me and Mugge. I understand StdErr(z) as 1/sqrt(n-3). CMA calculates it through the following process:
+
+# d->r
+r = d / sqrt(d ^ 2 + a) = 0,832 # where a is (n1+n2)^2 / (n1*n2), a is 4 if n1=n2 
+StdErr.r = sqrt(a^2 * StdErr.d ^ 2 / ((d ^ 2 + a) ^ 3)) # don't understand this
+# I think this step shrinks StdErr.r a lot when d is large
+# r->z
+FisherZ = 0.5 * log((1 + r) / (1 - r))
+StdErr.z = StdErr.r / (1 - r ^ 2)
+# I think this last step inflates StdErr.z a little as r increases
+# Net effect is that larger effect sizes yield smaller StdErr.z relative to smaller effect sizes
+
+Reading Borenstein et al textbook, it seems like var(d) should increase with d. Larger d means more uncertainty in estimate of s (but in in x1-x2). Some argument as to whether denominator of var(d) is 2(n1+n2) or 2(n1+n2-2).
+I have carefully read the relevant chapters of Borenstein et al. and there is no mention of this equation for getting StdErr.r from d and StdErr.d. If anything, it looks like larger effects should have greater variance, not greater precision. Borenstein et al. seem insistent that var(z) is simply 1/(n-3).
+
+This is potentially hazardous if big effects are given greater undeserved precision.
+Mugge argues that CMA is doing fine and that I'm off. Often by as much as 8% or more in SE, sometimes almost half again the samle size.
+
+I'd take their word for it, but I'm not having this issue in Craig's meta-analysis, where the standard error is reliably 1/sqrt(n-3) 
+
+Update: Other sources for 1/sqrt(N-3):
+this U of I lecture: http://courses.education.illinois.edu/EdPsy580/lectures/correlation-ha.pdf
+webpage: http://davidmlane.com/hyperstat/A50760.html
+Hayes textbook
+Borenstein textbook
+
+
 1/20/2015
 
 AggAff:
--Fischer et al. 2012 S2 is outlier among AggAff experiments. Is the sign wrong?
+-Fischer et al. 2012 S2 is outlier among AggAff experiments. Sign is correct, but I wonder if hypothetical "would you feel bad for egoistic behavior" is aggressive affect.
 -Shafer (2012) and Saleem&Anderson have largest sample sizes: accurate?
 
 Arousal:
