@@ -26,9 +26,6 @@
   # LT1s for ???
   # LT1 for ???
 
-require(metafor)
-require(meta)
-
 # Read in the data
 dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
 
@@ -43,7 +40,9 @@ table(dat$Setting, dat$Outcome, dat$Best.)
 table(dat$Setting, dat$Outcome)
 
 # make directories to hold PETPEESE output and diagnostic output
-dir.create("./petpeese_plotdump"); dir.create("./petpeese_plotdump/diagnostics")
+dir.create("./petpeese_plotdump") 
+dir.create("./petpeese_plotdump/petInfluence")
+dir.create("./petpeese_plotdump/peeseInfluence")
 
 # Let's do this:
 for (i in unique(dat$Outcome)) {
@@ -59,34 +58,68 @@ for (i in unique(dat$Outcome)) {
       windows()
       saveName = paste("./petpeese_plotdump/", paste(i,j,k, sep="_"),".png", sep="")
       print(name)
-      funnelPET.RMA(dat[filter,], plotName = name)
+      
+      # Conduct and plot PET-PEESE
+      dat %>%
+        subset(filter) %>%
+        funnelPETPEESE(naiveModel = naive(.), 
+                       petModel = PET(.), 
+                       peeseModel = PEESE(.), 
+                       plotName = name)
+      
+      # Export plot
       savePlot(filename=saveName, type="png")
       graphics.off()
-    }
-  }
-}
 
-# Can I get all the leverages together?
-for (i in unique(dat$Outcome)) {
-  for (j in c("Exp", "Nonexp")) {
-    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
-      best = list("y", c("n", "y"))
-      filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
-      if (sum(filter) < 10) next # must have at least ten studies
-      name = paste("Outcome: ", i,
-                   ", Setting: ", j,
-                   ", Best?: ", k
-                   , sep="")
-      windows()
-      saveName = paste("./petpeese_plotdump/diagnostics/", paste(i,j,k, sep="_"),".png", sep="")
-      print(name)
-      par(mfrow=c(2,2))
-      leveragePET(dat[filter,], plotName = name)
-      savePlot(filename=saveName, type="png")
-      graphics.off()
+    # Fetch influence diagnostics and export
+      # PET influence
+    windows()
+    dat %>%
+      subset(filter) %>%
+      PET %>%
+      influence %>%
+      plot
+    saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
+                              paste(i,j,k, sep="_"),".png", sep="")
+    savePlot(filename = saveNamePetInf, type="png")
+    graphics.off()
+    
+      # PEESE influence
+    windows()
+    dat %>%
+      subset(filter) %>%
+      PEESE %>%
+      influence %>%
+      plot
+    saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
+                           paste(i,j,k, sep="_"),".png", sep="")
+    savePlot(filename = saveNamePeeseInf, type="png")
+    graphics.off()
     }
   }
 }
+# 
+# # Can I get all the leverages together?
+# for (i in unique(dat$Outcome)) {
+#   for (j in c("Exp", "Nonexp")) {
+#     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+#       best = list("y", c("n", "y"))
+#       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
+#       if (sum(filter) < 10) next # must have at least ten studies
+#       name = paste("Outcome: ", i,
+#                    ", Setting: ", j,
+#                    ", Best?: ", k
+#                    , sep="")
+#       windows()
+#       saveName = paste("./petpeese_plotdump/diagnostics/", paste(i,j,k, sep="_"),".png", sep="")
+#       print(name)
+#       par(mfrow=c(2,2))
+#       leveragePET(dat[filter,], plotName = name)
+#       savePlot(filename=saveName, type="png")
+#       graphics.off()
+#     }
+#   }
+# }
 
 # To check an influential observation:
 dat[row.names(dat)== 172, ]

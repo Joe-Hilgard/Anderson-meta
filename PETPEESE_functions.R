@@ -50,6 +50,11 @@ funnelPETPEESE = function(naiveModel, petModel, peeseModel,
               , sep=""))
   points(x = petModel$b[1], y=0, cex=1.5)
   # add line and text from PEESE
+# Debug stuff: Getting weird length for alwaysPEESE == T,
+  # harmless bug, but annoying.
+#   print(length(petModel$pval[1]))
+#   print(length(alwaysPEESE))
+#   print(length(petModel$pval[1] < .05 | alwaysPEESE == T))
   if(petModel$pval[1] < .05 | alwaysPEESE == T) {
     grid = 
       naiveModel$vi %>%
