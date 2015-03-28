@@ -28,8 +28,11 @@ PEESE=function(dataset) {
 }
 
 # make a funnel plot with PET line and conditional PEESE line
-funnelPETPEESE = function(naiveModel, petModel, peeseModel, 
+funnelPETPEESE = function(dataset, 
                           alwaysPEESE=F, plotName=NULL, ...) {
+  naiveModel = naive(dataset)
+  petModel = PET(dataset)
+  peeseModel = PEESE(dataset)
   # make funnel plot
   funnel(naiveModel)
   title(plotName, line=3)

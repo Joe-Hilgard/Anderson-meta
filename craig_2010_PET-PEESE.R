@@ -62,10 +62,7 @@ for (i in unique(dat$Outcome)) {
       # Conduct and plot PET-PEESE
       dat %>%
         subset(filter) %>%
-        funnelPETPEESE(naiveModel = naive(.), 
-                       petModel = PET(.), 
-                       peeseModel = PEESE(.), 
-                       plotName = name)
+        funnelPETPEESE(plotName = name)
       
       # Export plot
       savePlot(filename=saveName, type="png")
@@ -98,99 +95,86 @@ for (i in unique(dat$Outcome)) {
     }
   }
 }
-# 
-# # Can I get all the leverages together?
-# for (i in unique(dat$Outcome)) {
-#   for (j in c("Exp", "Nonexp")) {
-#     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
-#       best = list("y", c("n", "y"))
-#       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
-#       if (sum(filter) < 10) next # must have at least ten studies
-#       name = paste("Outcome: ", i,
-#                    ", Setting: ", j,
-#                    ", Best?: ", k
-#                    , sep="")
-#       windows()
-#       saveName = paste("./petpeese_plotdump/diagnostics/", paste(i,j,k, sep="_"),".png", sep="")
-#       print(name)
-#       par(mfrow=c(2,2))
-#       leveragePET(dat[filter,], plotName = name)
-#       savePlot(filename=saveName, type="png")
-#       graphics.off()
-#     }
-#   }
-# }
 
 # To check an influential observation:
-dat[row.names(dat)== 172, ]
+dat %>% subset(row.names(.)== 172)
 # or use grep()
 dat[grep("U06PB", dat$Study.name),]
 
 # Removing Ballard & Wiest from AggAff.Exp
-funnelPET.RMA(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y") & 
-                 dat$Study.name != "BW96AA",])
-leveragePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-                & dat$Best. %in% c("y") & 
-                  dat$Study.name != "BW96AA",])
-funnelPET.RMA(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y", "n") & 
-                 dat$Study.name != "BW96AA",])
-leveragePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y", "n") & 
-                 dat$Study.name != "BW96AA",])
+  # best-practices estimates
+temp = 
+  dat %>% 
+  subset(Outcome == "AggAff" & 
+           Setting == "Exp" & 
+           Best. %in% "y") %>%
+  subset(Study.name != "BW96AA")
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot
+
+  # all-studies estimates
+temp = 
+  dat %>% 
+  subset(Outcome == "AggAff" & 
+           Setting == "Exp" & 
+           Best. %in% c("y", "n")) %>%
+  subset(Study.name != "BW96AA")
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot
+
 # Removing Yukawa & Sakamoto from AggAff.Nonexp.Best
-verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y") & rownames(dat)!=129,])
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") & 
+           Study.name != "YS01AAb")
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot  
+
 # Removing Uozumi and Urashima & Suzuki from AggAff.Nonexp.All
-verbosePET(dat[dat$Outcome=="AggAff" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c("179", "180")),])
-# AggBeh.Exp.Best
-leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-                & dat$Best. %in% c("y"),], id.n=8)
-# It's AG&B 07, study 1
-funnelPET.RMA(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y") 
-               & dat$Study.name != "AGB07AB1oe/AGB07AB1ye",])
-leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-                  & dat$Best. %in% c("y") 
-                  & dat$Study.name != "AGB07AB1oe/AGB07AB1ye",])
-# AggBeh.Exp.All, removing Panee & Ballard (2002) b/c it isn't agg behavior
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(402)),])
-# AggBeh.Nonexp.Best, removing Matsuzaki
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y") 
-               & !(rownames(dat)%in%c(131)),])
-# AggBeh.Nonexp.All, using the one Matsuzaki & not other
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187)),])
-# Removing both Matsuzaki as outlier
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187, 131)),])
-# & then Kuntsche too is outlier
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187, 131,219)),])
-# & then there's another outlier
-leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187, 131,219)),]
-           , id.n = 10)
-# it's Rudatsikira, Muula, & Siziya (2008)
-verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187, 131,219,472)),])
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("U06AA","US03AA"))
+  )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot  
+
+# Removing Anderson Gentile Buckley (2007) study 1 for influence?
+  # Best-practices?
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Exp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye"))
+  )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot  
+
+  # and all-studies analysis?
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Exp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye"))
+  )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot  
+
 # No outliers for AggCog.Exp.Best
 # Nor for AggCog.Exp.All
-# Removing Matsuzaki from AggCog.Nonexp.Best
-verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y") 
-               & !(rownames(dat)%in%c(144)),])
+# Removing from AggCog.Nonexp.Best?
 # Then AB&G 2007 is outlier too
 verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
                & dat$Best. %in% c("y") 
@@ -207,21 +191,22 @@ leveragePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp"
 verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
                & dat$Best. %in% c("y", "n") 
                & !(rownames(dat)%in%c(144,218)),])
-## Influence Plot 
-#influencePlot(fit,  id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
 
-## PEESE
-# AggBeh.Exp.Best
-verbosePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-                 & dat$Best. %in% c("y", "n"),])
-leveragePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Exp" 
-                 & dat$Best. %in% c("y", "n"),])
-# and minus outliers from PET
-verbosePEESE(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
-               & dat$Best. %in% c("y", "n") 
-               & !(rownames(dat)%in%c(187, 131,219,472)),])
-
-# i = "AggAff"; j = "Exp"; k = "y"
-# filter = dat$Outcome == i & dat$Setting == j & dat$Best. == k
-# res =  rma(Correlation, Std.Err^2, data=dat[filter,], measure="COR")
-# funnel(dat$Correlation[filter], dat$Std.Err[filter], xlim=c(0,1), contour=c(.9,.95,.975))
+# ### Things got messy here as I played outlier whack-a-mole
+# # Removing both Matsuzaki as outlier
+# verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+#                & dat$Best. %in% c("y", "n") 
+#                & !(rownames(dat)%in%c(187, 131)),])
+# # & then Kuntsche too is outlier
+# verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+#                & dat$Best. %in% c("y", "n") 
+#                & !(rownames(dat)%in%c(187, 131,219)),])
+# # & then there's another outlier
+# leveragePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+#                & dat$Best. %in% c("y", "n") 
+#                & !(rownames(dat)%in%c(187, 131,219)),]
+#            , id.n = 10)
+# # it's Rudatsikira, Muula, & Siziya (2008)
+# verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
+#                & dat$Best. %in% c("y", "n") 
+#                & !(rownames(dat)%in%c(187, 131,219,472)),])
