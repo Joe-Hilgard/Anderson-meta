@@ -40,7 +40,7 @@ for (i in unique(dat$Outcome.Group)) {
       windows()
       saveName = paste("./GM_petpeese_plotdump/", paste(i,j,substr(k,1,4), sep="_"),".png", sep="")
       print(name)
-      funnelPET.RMA(dat[filter,], plotName = name)
+      funnelPETPEESE(dat[filter,], plotName = name)
       savePlot(filename=saveName, type="png")
       graphics.off()
     }
