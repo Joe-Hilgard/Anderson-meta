@@ -54,7 +54,7 @@ Some suggest that the obtained effects are due to confounds \citep{Adachi:Willou
 %2. Sources of controversy include failures to replicate and speculation about biased analysis, reporting, and meta-analysis of research.
 However, the debate is not limited to theoretical and methodological concerns.  
 Skeptics have suggested that the literature is contaminated by publication bias, leading to overestimated effects \citep{Ferguson:2007a}. 
-Others suggest that obtained study data are flexibly analyzed until the desired research conclusion is reached \citep{Elson:etal:2014;Ferguson:CITATION:NEEDED}. If this is the case, then the extant data may not permit an appropriate hypothesis test, however overwhelming the evidence may otherwise seem to be.
+Others suggest that obtained study data are flexibly analyzed until the desired research conclusion is reached \citep{Elson:etal:2014;Ferguson:CITATION:NEEDED}. If either of these are the case, then the extant data may not permit an appropriate hypothesis test, however overwhelming the evidence may otherwise seem to be. In the presence of bias in publication or analysis, the effect of violent games will be overestimated.
 
 Another point of contention has been the application of ``best-practices criteria'' to studies gathered for meta-analysis. In their meta-analysis, \citet{Anderson:etal:2010} collected all available studies, then applied a set of ``best-practices criteria'' to separate these into what were and were not appropriate tests of the research hypothesis. The authors reported that studies which had been performed well found larger effects of violent games than did studies which were performed less well. It has been argued, however, that these criteria were vague in definition and inconsistent in application \citep{Elson:Ferguson:2014,Ferguson:Kilburn:2010}. The implication is that the meta-analysts may have selected that reported effects consistent with their hypotheses as being best-practices studies, while studies which found smaller or non-significant effects were discarded as not best practices.
 
@@ -94,20 +94,20 @@ It is well known that publication bias is a persistent and tenacious problem in 
 Publication bias is the phenomenon that studies with statistically significant ($p<.05$) findings are more likely to be submitted and accepted for publication. Publication bias is a problem that contributes to the overestimation of effect sizes and the propagation of Type I error. It is an especially pernicious problem for meta-analysis, as the selective reporting of studies that ``work'' (i.e. attain significance) leads to an overestimated effect size and may lead to conclusions of statistically significant effects when there are none. For this reason, the inspection of, and attempts to correct for, publication bias is a common and useful part of meta-analysis.
 
 % Fail-safe N stinks
-\paragraph{Fail-safe N}
+\subsubsection{Fail-safe N}
 Meta-analytic techniques for assessing and correcting for publication bias have been applied to this literature, particularly in the decisive \citet{Anderson:etal:2010} meta-analysis, but these techniques are of questionable utility. Previously-applied techniques include Fail-safe N and trim-and-fill.
 
 Fail-safe N, in theory, provides the number of studies %(subjects?)
 that would need to be hypothetically hiding in file-drawers in order to reduce an effect to non-significance. This technique is flawed in that it assumes an effect size of exactly zero in all censored studies, does not consider the possibility of flexible analysis (e.g. p-hacking), and does not provide an estimate of a bias-adjusted effect size. Application of fail-safe N often reports an unrealistic number of failed studies even in the presence of small effects and clear research bias. %citation needed
 
 % Trim-and-fill and how it's bad
-\paragraph{Trim and fill}
+\subsubsection{Trim and fill}
 Another popular bias-adjustment technique, trim-and-fill \citep{Duval:Tweedie:2000}, attempts to detect and adjust for bias through inspection of the funnel plot. If the funnel plot is asymmetrical, the procedure ``trims'' off the most extreme study and imputes a hypothetical censored study reflected around the funnel plot's axis of symmetry. Studies are trimmed and filled in this manner until the funnel plot is no longer significantly asymmetrical. This is not an effective adjustment for bias, as the assumptions of trim-and-fill are unlikely to be met. Studies are not likely to be censored on the basis of the effect size, but rather, on the basis of their statistical significance. It is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias. %Could cite data colada post
 Applying trim-and-fill in their meta-analysis, \citet{Anderson:etal:2014} found only minimal adjustments to the effect size due to apparent bias. Because trim-and-fill suggested minimal adjustment, the authors concluded that the research was largely unbiased. %Although we are confused by their decision to divide by culture and not to perform trim-and-fill on the total sample -- the smaller the sample, the poorer the power to detect asymmetry, perhaps?
 Some have characterized this as an ``extensive'' test for publication bias \citep{some-chucklehead}, but we are not satisfied. In examining the funnel plots behind the study's main findings, we found naked, obvious asymmetry. %Who's the chucklehead? Bushman et al reply to Elson & Ferguson?
 
 % Add reference to Egger test, of which PET-PEESE is an extension/generalization
-\paragraph{PET-PEESE meta-regression}
+\subsubsection{PET-PEESE meta-regression}
 A promising new tool in the detection of and adjustment for bias is meta-regression. Meta-regression techniques for publication bias consider the relationship between effect size and precision. In an asymmetrical funnel plot, larger samples yield smaller effects. Because sample size does not typically cause effect size (although it can in some cases, which we will discuss later), this relationship between sample size and effect size suggests that studies were censored when not attaining statistical significance or studies flexibly analyzed in order to attain statistical significance. 
 
 The PET-PEESE meta-regression \citep{Stanley:Doucouliagos:2013} %See carter & McCullough for better citations
@@ -120,7 +120,7 @@ However, visual inspection of the funnel plot often reveals alarming asymmetry, 
 
 We acquired data from \citet{Anderson:etal:2010}. Because the data were analyzed using Comprehensive Meta-Analysis, many studies were entered with separate rows for different outcomes or subsamples within studies. However, the assumption of the current PET-PEESE model is that entire studies are censored or re-analysed, and thus each study should constitute a single observation. We consulted with the original authors as how best to aggregate rows within studies and reproduce their provided estimates.
 
-We then followed the PET-PEESE procedure, fitting a weighted-least-squares regression model predicting effect size as a linear function of the standard error, with weights inversely proportional to the square of the standard error. In the case that the PET regression found a statistically significant effect after accounting for publication bias, PEESE was applied, predicting effect size as a quadratic function of the standard error. PET or PEESE estimates are provided regardless of whether statistically significant bias was observed according to recommendations by \citet[p. 20-21]{Stanley:Doucouliagos:20XX}: ``To be conservative, one should always use [the PET or PEESE estimate] even if there is insufficient evidence of publication selection because the Egger test [of publication bias] is known to have low power.'' Within the analyses, all effect sizes were converted to Fischer's z so that they were normally distributed so as to fulfill the assumptions of the regression model. Effect sizes are converted back to Pearson $r$ for discussion.
+We then followed the PET-PEESE procedure, fitting a weighted-least-squares regression model predicting effect size as a linear function of the standard error, with weights inversely proportional to the square of the standard error. In the case that the PET regression found a statistically significant effect after accounting for publication bias, PEESE was applied, predicting effect size as a quadratic function of the standard error. PET or PEESE estimates are provided regardless of whether statistically significant bias was observed according to recommendations by \citet[p. 20-21]{Stanley:Doucouliagos:20XX}: ``To be conservative, one should always use [the PET or PEESE estimate] even if there is insufficient evidence of publication selection because the Egger test [of publication bias] is known to have low power.'' Within the analyses, all effect sizes were converted to Fischer's z so that they were normally distributed so as to fulfill the assumptions of the regression model. Effect sizes are converted back to Pearson $r$ for discussion. All meta-regressions were performed using the `metafor' package for {\bf R} \citep{Viechtbauer:2014}.
 
 Because PET-PEESE is a regression method, it is likely to perform poorly when there are few datapoints. Therefore, our analysis is restricted to effects and experimental paradigms with at least ten independent effect sizes. %citation needed from Carter & McCullough, 2014
 Data and code have been made available online in the case that the reader nevertheless wants to generate PET-PEESE estimates for more sparse datasets or explore the impact of our inclusion and exclusion decisions.
@@ -132,45 +132,46 @@ Two studies were removed from the meta-analysis. \citet[study 1]{Matsuzaki:etal:
 % Anderson et al.
 We reproduce estimates from \citet{Anderson:etal:2010} and apply PET-PEESE. Sufficient datapoints were available to re-analyze experimental studies of aggressive affect, aggressive behavior, aggressive cognition, and physiological arousal, as well as cross-sectional studies of aggressive affect, aggressive behavior, and aggressive cognition. Studies are further divided into ``best-practices'' and ``not best-practices'' studies per \citet{Anderson:etal:2010} as sample sizes permit. 
 
-%
+% This is no longer accurate, at least until I hear from these two.
 We also attempt to reproduce estimates from \citet{Greitemeyer:Mugge:2014}. Effect sizes are inspected separately for aggressive affect, aggressive behavior, and aggressive cognition in experimental and cross-sectional research designs.
 
-In the event that multiple effect sizes were available for a particular study (e.g. effects on mean intensity and count of high intensity trials in the CRTT; separate simple effects for men and women), we aggregated these to form a single effect size for the study.
+In the event that multiple effect sizes were available for a particular study (e.g., effects on mean intensity and count of high intensity trials in the CRTT; separate simple effects for men and women), we aggregated these to form a single effect size for the study (e.g., sum of sample sizes, weighted average of effect size).
 
 \section{Results}
+% The whole results section really needs all the p-values and junk!
 \subsection{Aggressive affect}
-\paragraph{Experiments}
+\subsubsection{Experiments}
 Among studies selected as best-practices, PET found no significant effect of violent games on aggressive affect. An effect of bias was clear. The estimated effect size was $r = -.12$.
 
 When including both best- and not-best-practices studies, PET still found no significant effect of violent games on aggressive affect. An effect of bias was again clear. The estimated effect size was $r = -.11$.
 
 We proceeded to explore the analysis by excluding observations with excessive influence (e.g. Cook's distance $>$ .5). After removing one study \citep{Ballard:Weist:1996}, PET estimates were still not significant whether for best-practices or all studies. After this exclusion, the estimated effect size was almost exactly zero. No other data points had excessive influence. 
 
-\paragraph{Cross-sectional Research}
+\subsubsection{Cross-sectional Research}
 
 \subsection{Aggressive behavior}
-\paragraph{Experiments}
-Among studies selected as best-practices, PET found both a significant effect of violent games on aggressive behavior and a significant effect of bias. Because the intercept was significant, PEESE was then applied. PEESE estimated the effect as $r = .16$, substantially smaller than that of the naive or trim-and-fill estimates.
+\subsubsection{Experiments}
+Among studies selected as best-practices by \citet{Anderson:etal:2010}, significant bias was detected ($p$ = .007), but a significant effect was not ($p$ = .126). PET estimated the effect as $r = .081$, substantially smaller than that of the naive or trim-and-fill estimates.
 
-Among all studies, PET found a significant effect of violent games on aggressive behavior and no significant effect of bias. PEESE estimated the effect as $r = .16$, again smaller than that of the naive or trim-and-fill estimates. The closely matched effect sizes suggest that effects are not larger in best-practices research, just more biased.
+Among all studies, PET found a significant effect of violent games on aggressive behavior and no significant effect of bias. PEESE estimated the effect as $r = .157$, again smaller than that of the naive or trim-and-fill estimates. 
 
 We proceeded to explore the analysis by assessing the influence of individual studies. The largest study in the best-practices sample, \citet[Study 1]{Anderson:etal:2007}, had a Cook's distance just above .5. Excluding this influential observation increased the PEESE estimate ($r=.19$) and naive estimate ($r = .24$). The decision to include or exclude this study will surely be a point of some contention given its influence over the PEESE estimate. On the other hand, it is the largest study by far in the sample, more than twice as large as the next-largest study. 
 
-\paragraph{Cross-sectional research}
+\subsubsection{Cross-sectional research}
 
 \subsection{Aggressive cognition}
-\paragraph{Experiments}
+\subsubsection{Experiments}
 Among studies selected as best-practices, PET found neither a significant effect of violent games or a significant effect of bias. The effect size estimate was $r = .11$, much smaller than the naive estimate of $r = .22$.
 
 Among all studies, PET found a significant effect of violent games on aggressive cognitions ($p = .049, r = .14$). PEESE estimated the effect as $r = .18$, again smaller than the naive or trim-and-fill estimates. 
 
 No observations had excessive distance. 
 
-\paragraph{Cross-sectional research}
+\subsubsection{Cross-sectional research}
 
 
 \subsection{Physiological Arousal}
-\paragraph{Experiments}
+\subsubsection{Experiments}
 
 \section{Discussion}
 % Gone from predicting 4.4\% of variance to 0.6\%
