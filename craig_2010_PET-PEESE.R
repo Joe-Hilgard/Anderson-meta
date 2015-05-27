@@ -31,6 +31,8 @@ dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
 
 ## Read in PET-PEESE functions
 source("PETPEESE_functions.R")
+# get dplyr package for distinct()
+library(dplyr)
 
 # let's just loop through this stuff.
 # Would be nicer if I knew all these sub-categories...
@@ -38,6 +40,15 @@ source("PETPEESE_functions.R")
 table(dat$Setting, dat$Outcome, dat$Best.)
 # and collapsing over best/not-best?
 table(dat$Setting, dat$Outcome)
+# and publication style?
+pubTable = 
+  dat %>%
+  distinct(Full.Reference, Study) %>%
+  select(Full.Reference, Study, Pub) %>%
+  arrange(Full.Reference, Study)
+View(pubTable)
+table(pubTable$Pub)
+# Could go back later and look at effect of stat. significance on pub/unpub.
 
 # make directories to hold PETPEESE output and diagnostic output
 dir.create("./petpeese_plotdump") 
@@ -210,3 +221,20 @@ verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp"
 # verbosePET(dat[dat$Outcome=="AggBeh" & dat$Setting=="Nonexp" 
 #                & dat$Best. %in% c("y", "n") 
 #                & !(rownames(dat)%in%c(187, 131,219,472)),])
+
+# Looking at unpublished dissertations:
+table(dat$Pub, dat$Setting, dat$Outcome)
+library(dplyr)
+library(ggplot2)
+dat = 
+  dat %>%
+  mutate("Diss" = ifelse(dat$Pub == "Dissertation (unpub)", "Diss", "Not Diss"))
+# Brady (2006) is already included as a peer-reviewed journal article
+dat$Diss[grep("Brady, S. (2006).", dat$Full.Reference, fixed=T)] = "Not Diss"
+
+dat %>%
+  filter(Setting == "Exp") %>%
+  ggplot(aes(x=Fisher.s.Z, y=Std.Err, pch=Diss)) +
+  geom_point(cex=3) +
+  scale_shape_manual(values=c(1, 16)) +
+  scale_y_reverse()
