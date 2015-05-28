@@ -26,7 +26,62 @@ table(dat$Outcome.Group, dat$outcome.type, dat$study.design)
 # Make storage directories for output:
 dir.create("./GM_petpeese_plotdump"); dir.create("./GM_petpeese_plotdump/diagnostics")
 
-# Let's do this shit
+# Let's make the model objects, then extract the parameter stats
+outputFrame = data.frame(
+  # ID data
+  "Outcome.Group" = NULL,
+  "Design" = NULL,
+  "Outcome.Type" = NULL,
+  # PET stats
+  "PET.b0" = NULL,
+  "PET.b0.se" = NULL,
+  "PET.b0.p" = NULL,
+  "PET.b1" = NULL,
+  "PET.b1.se" = NULL,
+  "PET.b1.p" = NULL,
+  # PEESE stats
+  "PEESE.b0" = NULL,
+  "PEESE.b0.se" = NULL,
+  "PEESE.b0.p" = NULL,
+  "PEESE.b1" = NULL,
+  "PEESE.b1.se" = NULL,
+  "PEESE.b1.p" = NULL
+  )
+for (i in unique(dat$Outcome.Group)) {
+  for (j in unique(dat$study.design)) {
+    for (k in unique(dat$outcome.type)) {
+      filter = dat$Outcome.Group == i & dat$study.design == j & dat$outcome.type == k
+      if (sum(filter) < 6) next # must have at least six studies
+      modelPET = PET(dat[filter,])
+      modelPEESE = PEESE(dat[filter,])
+      output = data.frame(
+        # ID data
+        "Outcome.Group" = i,
+        "Design" = j,
+        "Outcome.Type" = k,
+        # PET stats
+        "PET.b0" = modelPET$b[1],
+        "PET.b0.se" = modelPET$se[1],
+        "PET.b0.p" = modelPET$pval[1],
+        "PET.b1" = modelPET$b[2],
+        "PET.b1.se" = modelPET$se[2],
+        "PET.b1.p" = modelPET$pval[2],
+        # PEESE stats
+        "PEESE.b0" = modelPEESE$b[1],
+        "PEESE.b0.se" = modelPEESE$se[1],
+        "PEESE.b0.p" = modelPEESE$pval[1],
+        "PEESE.b1" = modelPEESE$b[2],
+        "PEESE.b1.se" = modelPEESE$se[2],
+        "PEESE.b1.p" = modelPEESE$pval[2]
+        )
+      outputFrame = rbind(outputFrame, output)
+    }
+  }
+}
+      
+      
+      
+# Let's make the funnel plots
 for (i in unique(dat$Outcome.Group)) {
   for (j in unique(dat$study.design)) {
     for (k in unique(dat$outcome.type)) {

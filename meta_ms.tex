@@ -17,7 +17,8 @@
 
 \author{Joseph Hilgard, Christopher R. Engelhardt, Bruce D. Bartholow, and Jeffrey N. Rouder}
 % Broad Consensus? Open the coffin? Much ado about something out of nothing?
-\title{There Should Not Be Broad Consensus: Bias in Violent Games Research}
+%\title{There Should Not Be Broad Consensus: Bias in Violent Games Research}
+\title{Bias in Violent Games Research: A PET-PEESE Meta-Regression of Anderson et al. (2010)}
 
 \affiliation{University of Missouri}
 
@@ -28,8 +29,12 @@ Please direct correspondence regarding this article to Joseph Hilgard. E-mail: j
 
 \abstract{
 Violent video games are thought to be a significant cause of aggressive thoughts, feelings, and behaviors. A meta-analysis by Anderson and colleagues (2010) is thought to condense the available evidence into robust and incontrovertible evidence that violent video games affect these outcomes in experimental, cross-sectional, and longitudinal research.
-In the present manuscript, we examine previous meta-analytic evidence and apply PET-PEESE meta-regression, a statistical meta-analytic technique that tests and adjusts for small-study effects including (but not limited to) publication bias and flexible analysis. We find that the evidence for effects of violent games on aggressive outcomes in best-practices experiments have been overestimated through publication, selection, or analytic bias.
-We conclude that the extant evidence is contaminated by bias and is not sufficient for decisive conclusions. We encourage an open, transparent, and pre-registered research process to test the existence of the basic phenomenon.
+In the present manuscript, we examine previous meta-analytic evidence and apply PET-PEESE meta-regression, a statistical meta-analytic technique that tests and adjusts for small-study effects including (but not limited to) publication bias and flexible analysis. 
+We find evidence that effects have been overestimated for some outcomes in experimental research, particularly those studies selected by Anderson and colleagues as best-practices research. On the other hand, effects as measured in the full selection of studies (that is, both those studies that were selected as best- and not-best-practices) reveal less bias and some evidence for an effect, albeit a smaller one than reported by Anderson et al.
+We find that the evidence for effects of violent games on aggressive outcomes in best-practices experiments have been overestimated through publication, selection, or analytic bias.
+We outline possible sources of research, selection, and analytic bias and suggest directions for stronger future research.
+%We conclude that the extant evidence is contaminated by bias and is not sufficient for decisive conclusions. 
+We encourage an open, transparent, and pre-registered research process to test the existence of the basic phenomenon.
 }
 
 \begin{document}
@@ -176,39 +181,61 @@ We also attempt to reproduce estimates from \citet{Greitemeyer:Mugge:2014}. Effe
 
 \section{Results}
 % The whole results section really needs all the p-values and junk!
+% Some useful stuff is in PETPEESE_results.xlsx but much of it is outdated (lm() instead of rma()).
+Results for all performed meta-regressions are summarized in Table \ref{table:PETPEESE}. Below, we discuss these statistics and describe sensitivity analyses
 \subsection{Aggressive affect}
 \subsubsection{Experiments}
-Among studies selected as best-practices, PET found no significant effect of violent games on aggressive affect. An effect of bias was clear. The estimated effect size was $r = -.12$.
+Among studies selected as best-practices, PET found no significant effect of violent games on aggressive affect. An effect of bias was clear ($p <.001$). The estimated effect size was $r = -.12, p = .198$.
 
-When including both best- and not-best-practices studies, PET still found no significant effect of violent games on aggressive affect. An effect of bias was again clear. The estimated effect size was $r = -.11$.
+When including both best- and not-best-practices studies, PET still found no significant effect of violent games on aggressive affect. An effect of bias was again clear ($p < .001$). The estimated effect size was $r = -.11, p = .055$.
 
-We proceeded to explore the analysis by excluding observations with excessive influence. After removing one study \citep{Ballard:Weist:1996}, PET estimates were still not significant whether for best-practices or all studies. After this exclusion, the estimated effect size was almost exactly zero. No other data points had excessive influence. 
+We proceeded to explore the analysis by excluding observations with excessive influence. One study had substantial influence over the meta-regression line \citep{Ballard:Weist:1996}. After removing this study, PET estimates were still not significant whether for best-practices or all studies. After this exclusion, the estimated effect size was almost exactly zero, $r = -.01, p = .888$, and small-study effects were still apparent, $p = .002$. No other data points had excessive influence. 
 
 \subsubsection{Cross-sectional Research}
+Insufficient studies were selected to conduct separate best-practices and full-sample meta-regressions, so PET-PEESE was applied only to the full sample. Effects were significant ($p < .001$), biased ($p = .049$), and slightly adjusted from the naive estimate ($r = .14$).
+
+Several studies were highly influential on the meta-regression.
+% I still have to come back to this and flesh it out.
 
 \subsection{Aggressive behavior}
 \subsubsection{Experiments}
 Among studies selected as best-practices by \citet{Anderson:etal:2010}, significant bias was detected ($p$ = .007), but a significant effect was not ($p$ = .126). PET estimated the effect as $r = .081$, substantially smaller than that of the naive or trim-and-fill estimates.
 
-Among all studies, PET found a significant effect of violent games on aggressive behavior and no significant effect of bias. PEESE estimated the effect as $r = .157$, again smaller than that of the naive or trim-and-fill estimates. 
+Among all studies, PET found a significant effect of violent games on aggressive behavior ($p = .001$) and no significant effect small-study effects ($p = .322$). PEESE estimated the effect as $r = .157$, again smaller than that of the naive or trim-and-fill estimates. 
 
-We proceeded to explore the analysis by assessing the influence of individual studies. The largest study in the best-practices sample, \citet[Study 1]{Anderson:etal:2007}, had a Cook's distance just above .5. Excluding this influential observation increased the PEESE estimate ($r=.19$) and naive estimate ($r = .24$). The decision to include or exclude this study will surely be a point of some contention given its influence over the PEESE estimate. On the other hand, it is the largest study by far in the sample, more than twice as large as the next-largest study. 
+We proceeded to explore the analysis by assessing the influence of individual studies. The largest study in the best-practices sample, \citet[Study 1]{Anderson:etal:2007}, had a Cook's distance just above .5. 
+% Recheck the numbers below -- probably old holdovers from lm() version.
+Excluding this influential observation increased the PEESE estimate ($r=.19$) and naive estimate ($r = .24$). The decision to include or exclude this study may be a point of some contention given its influence over the PEESE estimate. On the other hand, it is the largest study by far in the sample, more than twice as large as the next-largest study. 
 
 \subsubsection{Cross-sectional research}
+Cross-sectional associations were more robust and less contaminated by small-study effects. Among studies selected as best-practices, the PET estimate was significant ($p < .001$), and PEESE recommended a slightly adjusted effect size ($r = .26$). However, small-study effects were detected ($p = .02$). Among the set of all cross-sectional studies, the PET estimate was again significant ($p < .001$), and PEESE recommended an only slightly-adjusted effect size ($r = .19$). Again, small-study effects were detected ($p < .001$).
+
+% Sensitivity analysis needed here. Looks like 1 outlier in best-practices, 2-3 in full sample.
 
 \subsection{Aggressive cognition}
 \subsubsection{Experiments}
-Among studies selected as best-practices, PET found neither a significant effect of violent games nor a significant effect of bias. The effect size estimate was $r = .11$, much smaller than the naive estimate of $r = .22$.
+Among experiments selected as best-practices, PET found neither a significant effect of violent games ($p = .055$) nor a significant effect of bias ($p = .086$). The effect size estimate was $r = .11$, much smaller than the naive estimate of $r = .22$. Because the $p$-value is very close to the critical threshold, one might consider the PEESE-adjusted effect size estimate of $r = .18$.
 
-Among all studies, PET found a significant effect of violent games on aggressive cognitions ($p = .049, r = .14$). PEESE estimated the effect as $r = .18$, again smaller than the naive or trim-and-fill estimates. 
+Among all studies, PET found a significant effect of violent games on aggressive cognitions ($p = .003$) and no significant small-study effects ($p = .111$). PEESE estimated the effect as $r = .18$, again smaller than the naive or trim-and-fill estimates. 
 
+%There's a cook's d of ~1 in the best sample, two of ~.7 in the full sample.
 No observations had excessive distance. 
 
 \subsubsection{Cross-sectional research}
+Among cross-sectional research selected as best-practices, PET found significant effects of both violent games ($p = .001$) and small studies ($p = .013$). The PEESE-adjusted effect size estimate was $r = .15$, slightly smaller than the naive estimate.
 
+Among the full sample of studies, PET again found significant associations with violent games ($p = .005$) and moderation by sample size ($p < .001$). PEESE recommended an adjusted effect size of $r = .13$, moderately smaller than the naive estimate.
+
+% There are again some outliers, at least one big one at d>3 in best-practices; several d > 1 in all-studies
+% So some sensitivity analysis is due here.
 
 \subsection{Physiological Arousal}
 \subsubsection{Experiments}
+Among the subset of best-practices experiments, PET detected neither an effect of violent games ($p = .227$) nor an effect of small studies ($p = .466$). PET recommended an adjusted effect size of $r = .13$, substantially smaller than the $r = .20$ estimate given by naive meta-analysis.
+
+In the total sample of all experiments, PET did not detect an effect of violent games ($p = .942$) but did detect small-study effects ($p = .039$). The PET estimate of the effect size was $r = -.01$, very nearly zero.
+
+%Sensitivity analysis needed -- best-practices has one outlier with d=2, another with d=1.5; full sample has no outliers.
 
 \section{Discussion}
 % Gone from predicting 4.4\% of variance to 0.6\%

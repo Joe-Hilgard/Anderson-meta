@@ -55,7 +55,70 @@ dir.create("./petpeese_plotdump")
 dir.create("./petpeese_plotdump/petInfluence")
 dir.create("./petpeese_plotdump/peeseInfluence")
 
-# Let's do this:
+# Let's make a table of stats:
+# Let's make the model objects, then extract the parameter stats
+outputFrame = data.frame(
+  # ID data
+  "Outcome.Group" = NULL,
+  "Design" = NULL,
+  "Outcome.Type" = NULL,
+  # PET stats
+  "PET.b0" = NULL,
+  "PET.b0.se" = NULL,
+  "PET.b0.p" = NULL,
+  "PET.b1" = NULL,
+  "PET.b1.se" = NULL,
+  "PET.b1.p" = NULL,
+  # PEESE stats
+  "PEESE.b0" = NULL,
+  "PEESE.b0.se" = NULL,
+  "PEESE.b0.p" = NULL,
+  "PEESE.b1" = NULL,
+  "PEESE.b1.se" = NULL,
+  "PEESE.b1.p" = NULL
+)
+for (i in unique(dat$Outcome)) {
+  for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
+    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      best = list("y", c("n", "y"))
+      filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
+      if (sum(filter) < 10) next # must have at least ten studies 
+      modelPET = PET(dat[filter,])
+      modelPEESE = PEESE(dat[filter,])
+      output = data.frame(
+        # ID data
+        "Outcome" = i,
+        "Design" = j,
+        "Best" = ifelse(k==1, "Best-only", "All"),
+        # PET stats
+        "PET.b0" = modelPET$b[1],
+        "PET.b0.se" = modelPET$se[1],
+        "PET.b0.p" = modelPET$pval[1],
+        "PET.b1" = modelPET$b[2],
+        "PET.b1.se" = modelPET$se[2],
+        "PET.b1.p" = modelPET$pval[2],
+        # PEESE stats
+        "PEESE.b0" = modelPEESE$b[1],
+        "PEESE.b0.se" = modelPEESE$se[1],
+        "PEESE.b0.p" = modelPEESE$pval[1],
+        "PEESE.b1" = modelPEESE$b[2],
+        "PEESE.b1.se" = modelPEESE$se[2],
+        "PEESE.b1.p" = modelPEESE$pval[2]
+      )
+      outputFrame = rbind(outputFrame, output)
+    }
+  }
+}
+#Round to 3 decimals
+outputFrame[,sapply(outputFrame, is.numeric)] = round(outputFrame[,sapply(outputFrame, is.numeric)],3)
+# fix tiny p-values
+outputFrame[outputFrame == 0] = "< .001"
+View(outputFrame)
+# Remember that b0 is still in units of Fisher's Z and not r
+# May want to shave off some of the less-useful columns
+write.table(outputFrame, "PETPEESE_output.txt", row.names=F)
+
+# Let's make funnel plots:
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
@@ -224,17 +287,18 @@ verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp"
 
 # Looking at unpublished dissertations:
 table(dat$Pub, dat$Setting, dat$Outcome)
-library(dplyr)
 library(ggplot2)
 dat = 
   dat %>%
   mutate("Diss" = ifelse(dat$Pub == "Dissertation (unpub)", "Diss", "Not Diss"))
 # Brady (2006) is already included as a peer-reviewed journal article
 dat$Diss[grep("Brady, S. (2006).", dat$Full.Reference, fixed=T)] = "Not Diss"
+table(dat$Diss)
 
 dat %>%
   filter(Setting == "Exp") %>%
   ggplot(aes(x=Fisher.s.Z, y=Std.Err, pch=Diss)) +
-  geom_point(cex=3) +
-  scale_shape_manual(values=c(1, 16)) +
+  geom_point(cex=4) +
+  scale_shape_manual(values=c(16, 1)) +
   scale_y_reverse()
+
