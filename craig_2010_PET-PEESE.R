@@ -46,7 +46,7 @@ pubTable =
   distinct(Full.Reference, Study) %>%
   select(Full.Reference, Study, Pub) %>%
   arrange(Full.Reference, Study)
-View(pubTable)
+#View(pubTable)
 table(pubTable$Pub)
 # Could go back later and look at effect of stat. significance on pub/unpub.
 
@@ -109,12 +109,19 @@ for (i in unique(dat$Outcome)) {
     }
   }
 }
+# Convert beta estimates to Pearson r and make CIs
+outputFrame$PET.r = atanh(outputFrame$PET.b0)
+outputFrame$PET.r.LL = atanh(outputFrame$PET.b0 - 1.96*outputFrame$PET.b0.se)
+outputFrame$PET.r.UL = atanh(outputFrame$PET.b0 + 1.96*outputFrame$PET.b0.se)
+outputFrame$PEESE.r = atanh(outputFrame$PEESE.b0)
+outputFrame$PEESE.r.LL = atanh(outputFrame$PEESE.b0 - 1.96*outputFrame$PEESE.b0.se)
+outputFrame$PEESE.r.UL = atanh(outputFrame$PEESE.b0 + 1.96*outputFrame$PEESE.b0.se)
 #Round to 3 decimals
 outputFrame[,sapply(outputFrame, is.numeric)] = round(outputFrame[,sapply(outputFrame, is.numeric)],3)
 # fix tiny p-values
 outputFrame[outputFrame == 0] = "< .001"
-View(outputFrame)
-# Remember that b0 is still in units of Fisher's Z and not r
+# View(outputFrame)
+
 # May want to shave off some of the less-useful columns
 write.table(outputFrame, "PETPEESE_output.txt", row.names=F)
 
@@ -175,6 +182,7 @@ dat %>% subset(row.names(.)== 172)
 # or use grep()
 dat[grep("U06PB", dat$Study.name),]
 
+# Aggressive Affect, Experiments -----------
 # Removing Ballard & Wiest from AggAff.Exp
   # best-practices estimates
 temp = 
@@ -198,43 +206,84 @@ funnelPETPEESE(temp)
 temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot
 
+# Aggressive Affect, Cross-sectional -------
 # Removing Yukawa & Sakamoto from AggAff.Nonexp.Best
 temp = 
   dat %>% 
   subset(Outcome=="AggAff" & 
            Setting=="Nonexp" & 
-           Best. %in% c("y") & 
+           Best. %in% c("y", "n") & 
            Study.name != "YS01AAb")
 funnelPETPEESE(temp)
 temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot  
 
-# Removing Uozumi and Urashima & Suzuki from AggAff.Nonexp.All
+# Removing Urashima & Suzuki (2003) from AggAff.Nonexp.All
 temp = 
   dat %>% 
   subset(Outcome=="AggAff" & 
            Setting=="Nonexp" & 
            Best. %in% c("y", "n") &
-           !(Study.name %in% c("U06AA","US03AA"))
-  )
+           !(Study.name %in% c("US03AA")) )
 funnelPETPEESE(temp)
 temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot  
+# Then removing Uozumi (2006)
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("US03AA", "U06AA")) )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot 
+# Then removing Matsuzaki et al (2004) study 2
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("US03AA", "U06AA", "MWS04AA2b")) )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot 
+# Then removing Yukawa & Sakamoto (2001)
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("US03AA", "U06AA", "MWS04AA2b", "YS01AAb")) )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot 
+# Then removing National Assembly for Youth Development (2006)
+temp = 
+  dat %>% 
+  subset(Outcome=="AggAff" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("US03AA", "U06AA", "MWS04AA2b", 
+                               "YS01AAb", "NA06AA")) )
+funnelPETPEESE(temp)
+temp %>% PET %>% influence %>% plot
+temp %>% PEESE %>% influence %>% plot 
 
-# Removing Anderson Gentile Buckley (2007) study 1 for influence?
-  # Best-practices?
+# Aggressive Behavior, Experiments -----
+# Best-practices
+# Removing Anderson Gentile Buckley (2007) study 1 for influence
 temp = 
   dat %>% 
   subset(Outcome=="AggBeh" & 
            Setting=="Exp" & 
            Best. %in% c("y") &
-           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye"))
-  )
+           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye")) )
 funnelPETPEESE(temp)
 temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot  
 
-  # and all-studies analysis?
+# and all-studies analysis?
 temp = 
   dat %>% 
   subset(Outcome=="AggBeh" & 
@@ -246,8 +295,13 @@ funnelPETPEESE(temp)
 temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot  
 
+# Aggressive Behavior, Cross-sectional -----
+
+# Aggressive Cognition, Experiments ------
 # No outliers for AggCog.Exp.Best
 # Nor for AggCog.Exp.All
+
+# Aggressive Cognition, Cross-sectional ----
 # Removing from AggCog.Nonexp.Best?
 # Then AB&G 2007 is outlier too
 verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp" 
@@ -285,7 +339,7 @@ verbosePET(dat[dat$Outcome=="AggCog" & dat$Setting=="Nonexp"
 #                & dat$Best. %in% c("y", "n") 
 #                & !(rownames(dat)%in%c(187, 131,219,472)),])
 
-# Looking at unpublished dissertations:
+# Unpublished dissertations -------
 table(dat$Pub, dat$Setting, dat$Outcome)
 library(ggplot2)
 dat = 
