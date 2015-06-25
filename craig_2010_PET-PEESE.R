@@ -271,31 +271,167 @@ temp %>% PET %>% influence %>% plot
 temp %>% PEESE %>% influence %>% plot 
 
 # Aggressive Behavior, Experiments -----
-# Best-practices
-# Removing Anderson Gentile Buckley (2007) study 1 for influence
-temp = 
-  dat %>% 
-  subset(Outcome=="AggBeh" & 
-           Setting=="Exp" & 
-           Best. %in% c("y") &
-           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye")) )
-funnelPETPEESE(temp)
-temp %>% PET %>% influence %>% plot
-temp %>% PEESE %>% influence %>% plot  
-
-# and all-studies analysis?
-temp = 
-  dat %>% 
-  subset(Outcome=="AggBeh" & 
-           Setting=="Exp" & 
-           Best. %in% c("y", "n") &
-           !(Study.name %in% c("AGB07AB1oe/AGB07AB1ye"))
-  )
-funnelPETPEESE(temp)
-temp %>% PET %>% influence %>% plot
-temp %>% PEESE %>% influence %>% plot  
+# Anderson Gentile & Buckley was previously influential when
+  # we were using a multiplicative error term (e.g. lm() not rma())
+  # It is no longer influential
+# There were no outliers.
 
 # Aggressive Behavior, Cross-sectional -----
+# Best-practices
+# Removing Youth Affairs Admin (1999) d = 1.45
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Anderson et al (2004) study 4 d = 0.71
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb", "ACF04AB4b")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Anderson et al (2004) study 4 d = 0.71
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb", "ACF04AB4b")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Ferguson et al. (2008) d = 3.76
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb", "ACF04AB4b", "FRC08AB1c")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Gentile & Gentile (2008) study 3, d = 3.3
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb", "ACF04AB4b", "FRC08AB1c",
+                               "GG08AB3")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+
+# Remvoing Carnagey & Anderson (2005) study 3, d = 0.58
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y") &
+           !(Study.name %in% c("YA99ABb", "ACF04AB4b", "FRC08AB1c",
+                               "GG08AB3", "CA05AB3c")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+
+# All studies
+# Removing Youth Affairs Administration (1999) study 1, d = 4.08
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Santisteban et al (2007) study 1, d = 2.8
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Gentile & Gentile (2008) study 3, d = 0.98
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Grusser et al. (2007) study 1, d = 0.96
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3",
+                               "GTG87AB")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Anderson et al. (2004) study 4, d = 1.02
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3",
+                               "GTG87AB", "ACF04AB4b")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Durkin & Barber (2002) study 1, d = 0.62
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3",
+                               "GTG87AB", "ACF04AB4b", "DB02AB")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Endo et al (2007) study 1, d = 0.93
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3",
+                               "GTG87AB", "ACF04AB4b", "DB02AB",
+                               "EHY07AB")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Removing Wittman et al. (2008) study 2, d = 1.06
+temp = 
+  dat %>% 
+  subset(Outcome=="AggBeh" & 
+           Setting=="Nonexp" & 
+           Best. %in% c("y", "n") &
+           !(Study.name %in% c("YA99ABb", "SAR07AB", "GG08AB3",
+                               "GTG87AB", "ACF04AB4b", "DB02AB",
+                               "EHY07AB", "WAS08AB2")))
+funnelPETPEESE(temp)
+PET(temp) %>% influence %>% plot
+PEESE(temp) %>% influence %>% plot
+# Christ, there are still outliers. 
+# Making me think that leave-one-out sensitivity analysis would be better
 
 # Aggressive Cognition, Experiments ------
 # No outliers for AggCog.Exp.Best

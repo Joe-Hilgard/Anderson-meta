@@ -173,7 +173,7 @@ Within the analyses, all effect sizes were converted to Fischer's z so that they
 Because PET-PEESE is a regression method, it is likely to perform poorly when there are few datapoints. Therefore, our analysis is restricted to effects and experimental paradigms with at least ten independent effect sizes. %citation needed from Carter & McCullough, 2014
 Data and code have been made available online in the case that the reader nevertheless wants to generate PET-PEESE estimates for more sparse datasets or explore the impact of our inclusion and exclusion decisions.
 
-In addition to our analysis of the full dataset as provided by Anderson and colleagues, we perform sensitivity analyses. In these analyses, we remove datapoints with a Cook's distance of more than 0.5, as these may have excessive influence over the slope of the regression line. Estimates are provided with and without these influential observations.
+In addition to our analysis of the full dataset as provided by Anderson and colleagues, we perform sensitivity analyses. In these analyses, we remove datapoints with a Cook's distance of more than 0.5 on the PET regression, as these may have excessive influence over the slope of the regression line. Estimates are provided with and without these influential observations. In the case that several observations were excessively influential, we performed an iterative procedure, deleting the single most influential observation and checking again for influence until no observations had excessive influence. The data and code are available such that readers can explore the effects of such sensitivity analysis on the PEESE regression lines.
 
 Two studies were removed from the meta-analysis in all analyses, not just sensitivity analysis. First, \citet[study 1]{Matsuzaki:etal:2006} was removed because its entered effect sizes were unusually large for their precision (i.e., effects on aggressive behavior $r = .60$ and aggressive cognition $r = .53$), were highly influential on the meta-regression model, and most importantly could not be found as entered in the \citet{Anderson:etal:2010} dataset by inspection of the original article. % I have reached out to Anderson for comment on this.
 Similarly, \citet{Panee:Ballard:2002} was removed because the study tested the effects of violent primes during gameplay and not the effects of violent gameplay itself; therefore, it does not provide a relevant test of the hypothesis. %might need to follow up on this
@@ -201,25 +201,21 @@ When including both best- and not-best-practices studies, PET still found no sig
 We proceeded to explore the analysis by excluding observations with excessive influence. One study \citep{Ballard:Weist:1996} had substantial influence over the meta-regression line. After removing this study, PET estimates were still not significant whether for best-practices or all studies. After this exclusion, the estimated effect size was almost exactly zero and small-study effects were still apparent (best-practices subsample: $r = -.01$, $p = .888$, $p_{slope} = .002$; all studies: $r = -.05$, $p = .365$, $p_{slope} < .001$). No other data points had excessive influence on the PET regression test. 
 
 \subsubsection{Cross-sectional Research}
-Insufficient studies were selected to conduct separate best-practices and full-sample meta-regressions, so PET-PEESE was applied only to the full sample. Effects were significant ($p < .001$), biased ($p = .049$), and slightly adjusted from the naive estimate ($r = .14$).
+Insufficient studies were selected to conduct separate best-practices and full-sample meta-regressions, so PET-PEESE was applied only to the full sample. Effects were significant ($p < .001$), contaminated by small-study effects ($p_{slope} = .049$), and slightly adjusted from the naive estimate ($r = .14$).
 
-Several studies were highly influential on the meta-regression.
-% I still have to come back to this and flesh it out.
+Several studies were highly influential on the meta-regression. In sequence, the studies removed, and the PET-PEESE estimates obtained after their removal, were as follows:  \citet{Urashima:Suzuki:2003}, $r = .16$; \citet{Uozumi:2006}, $r = .13$; \citet[study 2]{Matsuzaki:etal:2004}, $r = .09$;  \citet{Yukawa:Sakamoto:2001}, $r = .05$;  \citet{NationalAssemblyForYouthDevelopment:2006}, $r = .10$. We do not valorize any of these values in particular as being more likely to reflect some true effect size, but they may help the reader to appraise the uncertainty in the estimate introduced by the substantial between-study variance.
 
 \subsection{Aggressive behavior}
 \subsubsection{Experiments}
-Among studies selected as best-practices by \citet{Anderson:etal:2010}, significant bias was detected ($p$ = .007), but a significant effect was not ($p$ = .126). PET estimated the effect as $r = .081$, substantially smaller than that of the naive or trim-and-fill estimates.
+Among studies selected as best-practices by \citet{Anderson:etal:2010}, significant small-study effects were detected ($p_{slope}$ = .007), but a significant effect was not ($p$ = .126). PET estimated the effect as $r = .081$, substantially smaller than that of the naive or trim-and-fill estimates. No studies had substantial influence on the PET regression line (all Cook's $d < 0.5$).
 
-Among all studies, PET found a significant effect of violent games on aggressive behavior ($p = .001$) and no significant small-study effects ($p = .322$). PEESE estimated the effect as $r = .157$, again smaller than that of the naive or trim-and-fill estimates. 
-
-We proceeded to explore the analysis by assessing the influence of individual studies. The largest study in the best-practices sample, \citet[Study 1]{Anderson:etal:2007}, had a Cook's distance just above .5. 
-% Recheck the numbers below -- probably old holdovers from lm() version.
-Excluding this influential observation increased the PEESE estimate ($r = .19$) and naive estimate ($r = .24$). The decision to include or exclude this study may be a point of some contention given its influence over the PEESE estimate. On the other hand, it is the largest study by far in the sample, more than twice as large as the next-largest study. 
+Among all studies, PET found a significant effect of violent games on aggressive behavior ($p = .001$) and no significant small-study effects ($p = .322$). PEESE estimated the effect as $r = .157$, again smaller than that of the naive or trim-and-fill estimates. Again, no studies were found to be excessively influential.
 
 \subsubsection{Cross-sectional research}
 Cross-sectional associations were more robust and less contaminated by small-study effects. Among studies selected as best-practices, the PET estimate was significant ($p < .001$), and PEESE recommended a slightly adjusted effect size ($r = .26$). However, small-study effects were detected ($p = .02$). Among the set of all cross-sectional studies, the PET estimate was again significant ($p < .001$), and PEESE recommended an only slightly-adjusted effect size ($r = .19$). Again, small-study effects were detected ($p < .001$).
 
 % Sensitivity analysis needed here. Looks like 1 outlier in best-practices, 2-3 in full sample.
+Due to the substantial between-study heterogeneity, an attempt to remove observations with Cook's distance in excess of 0.5 resulted in a frantic and unfruitful game of whack-an-outlier. When the dust settled, it seemed that the PEESE recommendation was still about $r = .20$. I will probably rewrite this to use leave-one-out analysis instead.
 
 \subsection{Aggressive cognition}
 \subsubsection{Experiments}
