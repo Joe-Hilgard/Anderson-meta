@@ -95,3 +95,62 @@ funnelPETPEESE = function(dataset,
       mtext(line = 1)
   }
 }
+
+# Leave-one-out sensitivity analysis ----
+  # I felt it necessary to do this b/c influence.rma.uni
+  # gives DFBETAs but those don't translate nicely to actual coefficients
+  # (I don't know what the standard deviation of betas are)
+# I'm gonna write it in a loop instead of lapply() or whatever. Screw it.
+sensitivityPETPEESE = function(dataset) {
+  sensitivityFrame = data.frame("Study.name" = NULL,
+                                # PET stats
+                                "PET.b0" = NULL,
+                                "PET.b0.se" = NULL,
+                                "PET.b0.p" = NULL,
+                                "PET.b1" = NULL,
+                                "PET.b1.se" = NULL,
+                                "PET.b1.p" = NULL,
+                                # PEESE stats
+                                "PEESE.b0" = NULL,
+                                "PEESE.b0.se" = NULL,
+                                "PEESE.b0.p" = NULL,
+                                "PEESE.b1" = NULL,
+                                "PEESE.b1.se" = NULL,
+                                "PEESE.b1.p" = NULL,
+                                # Other ID
+                                "Full.Reference" = NULL)
+  for (i in 1:nrow(dataset)) {
+    modelPET = PET(dataset[-i,])
+    modelPEESE = PEESE(dataset[-i,])
+    output = data.frame(
+      # ID data
+      "Study.name" = dataset$Study.name[i],
+      # PET stats
+      "PET.b0" = modelPET$b[1],
+      "PET.b0.se" = modelPET$se[1],
+      "PET.b0.p" = modelPET$pval[1],
+      "PET.b1" = modelPET$b[2],
+      "PET.b1.se" = modelPET$se[2],
+      "PET.b1.p" = modelPET$pval[2],
+      # PEESE stats
+      "PEESE.b0" = modelPEESE$b[1],
+      "PEESE.b0.se" = modelPEESE$se[1],
+      "PEESE.b0.p" = modelPEESE$pval[1],
+      "PEESE.b1" = modelPEESE$b[2],
+      "PEESE.b1.se" = modelPEESE$se[2],
+      "PEESE.b1.p" = modelPEESE$pval[2],
+      # Other identifiers
+      "Full.Reference" = dataset$Full.Reference[i]
+    )
+    sensitivityFrame = rbind(sensitivityFrame, output)
+  }
+  # Conditional estimator
+  sensitivityFrame$PETPEESE.r = ifelse(sensitivityFrame$PET.b0.p < .05,
+                                       atanh(sensitivityFrame$PEESE.b0),
+                                       atanh(sensitivityFrame$PET.b0))
+  # Could then add cook's d or dfbetas to sensitivityFrame using cbind()
+  sensitivityFrame$PET.dfbeta.0 = influence(PET(dataset))$dfb[,1]
+  sensitivityFrame$PEESE.dfbeta.0 = influence(PEESE(dataset))$dfb[,1]
+  return(sensitivityFrame)
+}
+  
