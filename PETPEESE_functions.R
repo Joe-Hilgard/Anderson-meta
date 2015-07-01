@@ -9,7 +9,7 @@ library(magrittr)
   # sei is "Std.Err"
 # If this assumption is wrong, please rename your columns
 #   or change this code.
-# If you're working in d instead of r, remove the atanh steps
+# If you're working in d instead of r, remove the tanh steps
 # Also note that everything is in fixed-effects, not random, models
 
 # Of these functions, the most useful is probably funnelPETPEESE()
@@ -60,14 +60,14 @@ funnelPETPEESE = function(dataset,
   funnel(naiveModel)
   title(plotName, line=3)
   naiveModel$b[1] %>% 
-    atanh %>% 
+    tanh %>% 
     round(3) %>%
     paste("Naive meta estimate, r =", .) %>%
     mtext(side=1)
   # add line and text from PET
   petModel %$% 
     abline(a = -b[1]/b[2], b = 1/b[2])
-  r = petModel$b[1] %>% atanh %>% round(3)
+  r = petModel$b[1] %>% tanh %>% round(3)
   p.effect = petModel$pval[1] %>% round(3)
   p.bias = petModel$pval[2] %>% round(3)
   mtext(paste("PET r = ", r
@@ -89,7 +89,7 @@ funnelPETPEESE = function(dataset,
     grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
     points(x = (peeseModel$b[1]), y=0, cex=1.5, pch=5)
     peeseModel$b[1] %>%
-      atanh %>%
+      tanh %>%
       round(3) %>%
       paste("PEESE r =", .) %>%
       mtext(line = 1)
@@ -146,8 +146,8 @@ sensitivityPETPEESE = function(dataset) {
   }
   # Conditional estimator
   sensitivityFrame$PETPEESE.r = ifelse(sensitivityFrame$PET.b0.p < .05,
-                                       atanh(sensitivityFrame$PEESE.b0),
-                                       atanh(sensitivityFrame$PET.b0))
+                                       tanh(sensitivityFrame$PEESE.b0),
+                                       tanh(sensitivityFrame$PET.b0))
   # Could then add cook's d or dfbetas to sensitivityFrame using cbind()
   sensitivityFrame$PET.dfbeta.0 = influence(PET(dataset))$dfb[,1]
   sensitivityFrame$PEESE.dfbeta.0 = influence(PEESE(dataset))$dfb[,1]
