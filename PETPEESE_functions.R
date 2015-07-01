@@ -22,7 +22,7 @@ library(magrittr)
 # To inspect influence statistics for outliers, etc., 
 # Try plot(influence(PET(...))) or plot(influence(PEESE(...)))
 
-# naive meta-analysis
+# naive meta-analysis ----
 naive = function(dataset) {
   rma(yi = Fisher.s.Z,
       sei = Std.Err,
@@ -30,7 +30,7 @@ naive = function(dataset) {
       method = "FE")
 }
 
-# PET
+# basic PET ----
 PET=function(dataset) {
   petOut = rma(yi = Fisher.s.Z, 
                sei = Std.Err, 
@@ -40,7 +40,7 @@ PET=function(dataset) {
   return(petOut)
 }
 
-# PEESE
+# basic PEESE ----
 PEESE=function(dataset) {
   peeseOut = rma(yi = Fisher.s.Z, 
                  sei = Std.Err, 
@@ -50,7 +50,7 @@ PEESE=function(dataset) {
   return(peeseOut)
 }
 
-# make a funnel plot with PET line and conditional PEESE line
+# funnel plot with PET line and conditional PEESE line ----
 funnelPETPEESE = function(dataset, 
                           alwaysPEESE=F, plotName=NULL, ...) {
   naiveModel = naive(dataset)
@@ -154,3 +154,13 @@ sensitivityPETPEESE = function(dataset) {
   return(sensitivityFrame)
 }
   
+
+# Peters meta-regression ----
+peters = function(dataset) {
+  petersOut = rma(yi = Fisher.s.Z,
+                  sei = Std.Err,
+                  mods = ~I(1/Sample.size),
+                  wt = Sample.size,
+                  data = dataset,
+                  method = "FE")
+}
