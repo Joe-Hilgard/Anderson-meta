@@ -55,8 +55,7 @@ dir.create("./petpeese_plotdump")
 dir.create("./petpeese_plotdump/petInfluence")
 dir.create("./petpeese_plotdump/peeseInfluence")
 
-# Let's make a table of stats:
-# Let's make the model objects, then extract the parameter stats
+# Statistic value export ----
 outputFrame = data.frame(
   # ID data
   "Outcome.Group" = NULL,
@@ -125,7 +124,7 @@ outputFrame[outputFrame == 0] = "< .001"
 # May want to shave off some of the less-useful columns
 write.table(outputFrame, "PETPEESE_output.txt", row.names=F)
 
-# Let's make funnel plots:
+# Funnel plots ----
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
