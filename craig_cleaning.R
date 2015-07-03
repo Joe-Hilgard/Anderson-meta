@@ -138,7 +138,11 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
 # dat$Setting[dat$Setting == "NonexpS"] = "Nonexp" # will need to combine male and female samples
 #dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
 
-# what effect sizes within a study appear on more than one row?
-# A lot of damn studies! Ass! 
+# Generate t-values and p-values from Fisher's Z and SE(Z)
+# One-tailed? Two-tailed?
+dat$t = dat$Fisher.s.Z / dat$Std.Err
+dat$df = dat$Sample.size - 2
+dat$p.onetail = pt(dat$t, df = dat$df, lower.tail=F) 
+dat$p.twotail = 2*pt(dat$t, df = dat$df, lower.tail=F) 
 
 write.table(dat, file="cleaned_craig.txt", sep="\t", row.names=F)
