@@ -158,7 +158,7 @@ sensitivityPETPEESE = function(dataset) {
 # Peters meta-regression (PET-like function) ----
 peters_linear = function(dataset) {
   petersOut = rma(yi = Fisher.s.Z,
-                  sei = 1/Sample.size,
+                  sei = Std.Err,
                   mods = ~I(1/sqrt(Sample.size)),
                   data = dataset,
                   method = "FE")
@@ -167,7 +167,7 @@ peters_linear = function(dataset) {
 # Peters meta-regression (PEESE-like function) ----
 peters_quadratic = function(dataset) {
   petersOut = rma(yi = Fisher.s.Z,
-                  sei = 1/Sample.size,
+                  sei = Std.Err,
                   mods = ~I(1/Sample.size),
                   data = dataset,
                   method = "FE")
