@@ -216,3 +216,8 @@ dat %>%
   scale_shape_manual(values=c(16, 1)) +
   scale_y_reverse()
 
+dat$pch = ifelse(dat$Diss == "Diss", 9, 1)
+dissDat = dat %>% filter(Setting == "Exp") 
+dissMod = rma(yi = Fisher.s.Z, sei = Std.Err, data = dissDat)
+funnel(dissMod, pch=1)
+points(x = dissDat$Fisher.s.Z, y = dissDat$Std.Err, pch = dissDat$pch)
