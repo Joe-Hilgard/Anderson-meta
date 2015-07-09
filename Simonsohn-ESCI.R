@@ -2,6 +2,7 @@
 # d-to-r conversion
 d2r = function(d) {
   r = d / sqrt(d ^ 2 + 4)
+  return(r)
 }
 #Define the loss function
 loss=function(t,df,d_est) { #Syntax t: vector of t-values, df of degrees of freedom, d_est: candidate d
