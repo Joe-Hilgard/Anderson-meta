@@ -1,4 +1,8 @@
 # R-CODE for estimating effect size via p-curve - written by Uri Simonsohn 
+# d-to-r conversion
+d2r = function(d) {
+  r = d / sqrt(d ^ 2 + 4)
+}
 #Define the loss function
 loss=function(t,df,d_est) { #Syntax t: vector of t-values, df of degrees of freedom, d_est: candidate d
   t=abs(t) #Take absolute value of t-value (p-curve assumes same sign and/or sign does not matter)
@@ -31,14 +35,17 @@ plotloss=function(t,df,dmin,dmax) #Syntax, same as above plus: dmin/dmax: smalle
   points(dhat$minimum,dhat$objective,pch=19,col="red",cex=2) #Put a red dot in the estimated effect size
   #Add a label
   text(dhat$minimum,dhat$objective-.08,paste0("p-curve's estimate of effect size:\nd=",round(dhat$minimum,3)),col="red")
-  return(dhat$minimum)
+  #Convert to Pearson r. n1 n2 probably not important given size of n here.
+  r = d2r(dhat$minimum)
+  #output
+  return(c(dhat$minimum, r))
 }
 
 # Leave-one-out Sensitivity Analysis ----
 sensitive_pcurve = function(t, df, dmin, dmax) {
-  outputFrame = data.frame(t, df, dhat=NA)
+  outputFrame = data.frame(t, df, dhat = NA, r = NA)
   for (i in 1:length(t)) {
-    outputFrame$dhat[i] = plotloss(t[-i], df[-i], dmin, dmax)
+    outputFrame[i, c("dhat", "r")] = plotloss(t[-i], df[-i], dmin, dmax)
   }
   return(outputFrame)
 }

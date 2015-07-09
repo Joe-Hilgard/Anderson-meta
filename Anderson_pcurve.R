@@ -33,7 +33,13 @@ for (i in unique(dat$Outcome)) {
       graphics.off()
       
       # conduct and export sensitivity analysis
-      sensFrame = sensitive_pcurve(set$t, set$df, dmin = -.5, dmax = 1)
+      sensFrame = cbind(Study.name = as.character(set$Study.name), 
+                        sensitive_pcurve(set$t, set$df, dmin = -.5, dmax = 1))
+      IDFrame = dat[filter, c("Study.name", "Full.Reference", 
+                              "Correlation", "Fisher.s.Z")]
+      sensFrame = right_join(IDFrame,
+                             sensFrame,
+                             by = "Study.name")
       write.table(sensFrame, 
                   file = paste("./pcurve_plotdump/", paste(i, j, k, sep="_"), ".txt", sep = ""),
                   sep = "\t",
