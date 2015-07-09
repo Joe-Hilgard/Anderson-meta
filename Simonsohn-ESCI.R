@@ -34,6 +34,15 @@ plotloss=function(t,df,dmin,dmax) #Syntax, same as above plus: dmin/dmax: smalle
   return(dhat$minimum)
 }
 
+# Leave-one-out Sensitivity Analysis ----
+sensitive_pcurve = function(t, df, dmin, dmax) {
+  outputFrame = data.frame(t, df, dhat=NA)
+  for (i in 1:length(t)) {
+    outputFrame$dhat[i] = plotloss(t[-i], df[-i], dmin, dmax)
+  }
+  return(outputFrame)
+}
+
 # #Example 
 # t= c(1.7, 2.8, -3.1, 2.4) # include one p>.05 and one negative t-value to highlight how we treat those
 # df=c(44, 75, 125, 200)
