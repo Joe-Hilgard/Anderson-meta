@@ -1,16 +1,26 @@
 # Cleaning Anderson's dataset
 
-require(plyr)
+library(plyr)
+library(readxl)
+library(dplyr)
 
 source("table_managing_functions.R")
-dat = read.delim("Craig_Table_2010.txt", stringsAsFactors=F)
-dat = dat[dat$Best.!="",] # delete the blank row
-dat = dat[!is.na(dat$Correlation),] # delete my dumb entries where I aggregated by hand
+dat = read_excel("Master9-5-2short.xls")
+# Bring in and append my coding information re: publication status
+dat2 = read_excel("Pub_Style.xlsx")
+dat = left_join(dat, dat2)
+# Fix names
+names(dat) = c("ID", "Study.name", "Outcome", "PERSON", "Sample.size",
+               "Correlation", "Fisher.s.Z", "Std.Err", "Full.Reference",
+               "Long.Dup", "raw.r.", "Study", "SEX", "Best.", "AGE",
+               "East.West", "setting2", "Setting", "1st", "2nd", "3rd", "4th",
+               "aveORonlyR", "aveDVs", "Country", "Pub")
+dat = dat[dat$Best. != "",] # delete the blank row
 # Std.Err refers to Std.Err of z-transformed value
 
 # Inspect suspicious Matsuzaki et al study
 # View(dat[grep("Matsuzaki", dat$Full.Reference),])
-# !! I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
+# I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
 dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
 # Drop Brady & Matthews (06) as it's the same as Brady (06) but divided into more rows
 dat = dat[-grep("Brady, S.S., & Mathews", dat$Full.Reference),]
@@ -24,8 +34,8 @@ dat = dat[!(dat$Study.name %in%
                 ,"AGB07AB3F", "AGB07AB3M", "AGB07AC3F", "AGB07AC3M", "AGB07PB3F", "AGB07PB3M" #AG&B 07 S3
               )),] # The rest of double-entries (for aggbeh at least) are separate M&F with no MF row.
 for (i in unique(dat$Outcome)) {
-  for (j in "Exp") { #unique(dat$Setting)) {
-    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+  for (j in "Exp") { 
+    for (k in 1:2) { # Anderson didn't look at not-best separately but rolled them in
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 3) next # must have at least two studies
@@ -69,11 +79,11 @@ dat = combine.rows(dat, dat$Study.name %in% c("M07PAF", "M07PAM"), "sum")
 
 # What about nonexp?
 for (i in unique(dat$Outcome)) {
-  for (j in "Nonexp") { #unique(dat$Setting)) {
-    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+  for (j in "Nonexp") { 
+    for (k in 1:2) { 
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
-      if (sum(filter) < 3) next # must have at least two studies
+      if (sum(filter) < 3) next # must have at least two rows
       name = paste("Outcome: ", i,
                    ", Setting: ", j,
                    ", Best?: ", k
@@ -97,8 +107,8 @@ dat = dat[dat$Study.name != "HHW08ACs",]
 # And Long?
 # What about nonexp?
 for (i in unique(dat$Outcome)) {
-  for (j in "Long") { #unique(dat$Setting)) {
-    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+  for (j in "Long") { 
+    for (k in 1:2) { 
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 3) next # must have at least two studies
@@ -112,8 +122,9 @@ for (i in unique(dat$Outcome)) {
   }
 }
 
-# lots of too-many. ugh. let's avoid the longitudinal stuff b/c prob won't be enough datapoints
-  # for PET-PEESE
+# lots of too-many. ugh. 
+  # let's avoid the longitudinal stuff b/c prob won't be enough datapoints for meta-reg
+  # Also the distinctions between Long, LongS, LongP, LongPS make my head hurt.
 
 # Could deal with Empathy and Desen some other time, maybe. Super small samples
 
@@ -126,7 +137,8 @@ for (i in unique(dat$Outcome)) {
 #                   "BA02AB")),]
 
 
-# dump the use of sex as a control for now in dataset  # Later to be made separate dat1, maybe
+# dump the use of sex as a control for now in dataset  
+  # Later to be made separate dat1, maybe
 dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
           # Sometimes studies are entered with S suffix and "MF" when effect
             # was reported only once, including gender covariate
@@ -135,8 +147,8 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
           # or for longitudinal studies
           | (dat$Setting %in% "LongPs" & dat$SEX %in% c("M", "F")) 
           ,]
-# dat$Setting[dat$Setting == "NonexpS"] = "Nonexp" # will need to combine male and female samples
-#dat$Setting[dat$Setting %in% c("LongP", "LongPs"]
+# dat$Setting[dat$Setting == "NonexpS"] = "Nonexp" 
+  # will need to combine male and female samples
 
 # Generate t-values and p-values and cohen's d from Fisher's Z and SE(Z)
 # One-tailed? Two-tailed?
@@ -146,4 +158,4 @@ dat$d_est = 2*dat$Correlation/sqrt(1 - dat$Correlation^2) # per Borenstein textb
 dat$p.onetail = pt(dat$t, df = dat$df, lower.tail=F) 
 dat$p.twotail = 2*pt(dat$t, df = dat$df, lower.tail=F) 
 
-write.table(dat, file="cleaned_craig.txt", sep="\t", row.names=F)
+write.table(dat, file="cleaned_data.txt", sep="\t", row.names=F)
