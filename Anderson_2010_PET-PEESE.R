@@ -27,7 +27,7 @@
   # LT1 for ???
 
 # Read in the data
-dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
+dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 
 ## Read in PET-PEESE functions
 source("PETPEESE_functions.R")

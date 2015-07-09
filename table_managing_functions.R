@@ -1,10 +1,7 @@
-# NOTE: using atanh to get back to Correlation will introduce
-  # some bias. I can't recall inverse of z-transform right now.
-  # And we're working with the z-scores anyway.
-
 require(plyr) #should I move to dplyr? need to learn it first
 
 stringMerge = function(strings) {
+  strings = as.vector(strings)
   if (length(unique(strings)) == 1) return(strings[1]) 
   else return(paste(unique(strings), collapse="/"))
 }
@@ -34,11 +31,12 @@ combine.rows=function(dat, filter, do) {
     tempOut$Std.Err = mean(temp$Std.Err)
   }
   # do the string stuff
-  stringCols = names(dat)[!names(dat) %in% c("Sample.size", "Correlation", "Cor.Joe",
-                                             "Fisher.s.Z", "Z.Joe", "Std.Err", "Std.Err.Joe",
+  stringCols = names(dat)[!names(dat) %in% c("Sample.size", "Correlation", 
+                                             "Fisher.s.Z", "Std.Err", 
                                              "t", "df", "p", "p.value", "Std.Err.r", "Study", 
-                                             "Full.Reference", "Citation")]
-  for (i in stringCols) tempOut[,i] = stringMerge(temp[,i])
+                                             "Full.Reference", "Citation", 
+                                             "1st", "2nd", "3rd", "4th")]
+  for (i in stringCols) tempOut[,i] = stringMerge(temp[[i]])
   # Export all the rows, minus the ones that were aggregated, plus their aggregation.
   fullOut = rbind(dat[!(filter),], tempOut)
   return(fullOut)

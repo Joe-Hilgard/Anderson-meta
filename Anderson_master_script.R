@@ -1,7 +1,7 @@
 # Anderson_2010 master script
 
-source("craig_cleaning.R")
-source("craig_2010_PET-PEESE.R")
+source("Anderson_cleaning.R")
+source("Anderson_2010_PET-PEESE.R")
 source("Anderson_pcurve.R")
 
 

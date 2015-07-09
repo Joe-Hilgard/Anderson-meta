@@ -1,7 +1,7 @@
 # p-curve estimates?
 source("Simonsohn-ESCI.R")
 
-dat = read.delim("cleaned_craig.txt", stringsAsFactors=F)
+dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 
 dir.create("./pcurve_plotdump/")
 
@@ -19,11 +19,17 @@ for (i in unique(dat$Outcome)) {
       # conduct and export p-curve
       saveName = paste("./pcurve_plotdump/", paste(i,j,k, sep="_"),".png", sep="")
       set = dat[filter,]
+      par(mfrow=c(2,1))
       windows()
       plotloss(set$t, set$df, dmin=-.5, dmax = 1)
       mtext(name)
       print(name)
       savePlot(filename=saveName, type="png")
+      
+      hist(set$p.twotail[set$p.twotail<.05], 
+           main = "p-curve",
+           xlab = "p-value (two-tailed)",
+           breaks=seq(0, .05, by=.01))
       graphics.off()
       
       # conduct and export sensitivity analysis
