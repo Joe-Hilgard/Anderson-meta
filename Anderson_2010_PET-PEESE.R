@@ -122,7 +122,7 @@ outputFrame[outputFrame == 0] = "< .001"
 # View(outputFrame)
 
 # May want to shave off some of the less-useful columns
-write.table(outputFrame, "PETPEESE_output.txt", row.names=F)
+write.table(outputFrame, "PETPEESE_output.txt", row.names=F, sep="\t")
 
 # Funnel plots ----
 for (i in unique(dat$Outcome)) {
