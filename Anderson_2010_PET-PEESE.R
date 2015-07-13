@@ -59,7 +59,7 @@ dir.create("./petpeese_plotdump/peeseInfluence")
 outputFrame = data.frame(
   # ID data
   "Outcome.Group" = NULL,
-  "Design" = NULL,
+  "Setting" = NULL,
   "Outcome.Type" = NULL,
   # PET stats
   "PET.b0" = NULL,
@@ -84,11 +84,19 @@ for (i in unique(dat$Outcome)) {
       if (sum(filter) < 10) next # must have at least ten studies 
       modelPET = PET(dat[filter,])
       modelPEESE = PEESE(dat[filter,])
+      modelNaiveFE = rma(yi = Fisher.s.Z, sei=Std.Err, method="FE", data=dat[filter,])
+      # Had to increase tolerance on threshold b/c aggbeh/exp/best wasn't converging.
+      modelNaiveRE = rma(yi = Fisher.s.Z, sei=Std.Err, method="REML", data=dat[filter,],
+                         control=list(threshold=5e-4))
       output = data.frame(
         # ID data
         "Outcome" = i,
-        "Design" = j,
+        "Setting" = j,
         "Best" = ifelse(k==1, "Best-only", "All"),
+        "naive-FE.r" = tanh(modelNaiveFE$b[1]),
+        "naive-RE.r" = tahn(modelNaiveRE$b[1]),
+        "heterogeneity_RE" = modelNaiveRE$QE,
+        "heterogeneity_RE_pval" = modelNaiveRE$QEp,
         # PET stats
         "PET.b0" = modelPET$b[1],
         "PET.b0.se" = modelPET$se[1],
@@ -96,13 +104,18 @@ for (i in unique(dat$Outcome)) {
         "PET.b1" = modelPET$b[2],
         "PET.b1.se" = modelPET$se[2],
         "PET.b1.p" = modelPET$pval[2],
-        # PEESE stats
+          #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
+        "PET_heterogeneity" = modelPET$QE,
+        "PET_heterogeneity_p" = modelPET$QEp,
+            # PEESE stats
         "PEESE.b0" = modelPEESE$b[1],
         "PEESE.b0.se" = modelPEESE$se[1],
         "PEESE.b0.p" = modelPEESE$pval[1],
         "PEESE.b1" = modelPEESE$b[2],
         "PEESE.b1.se" = modelPEESE$se[2],
-        "PEESE.b1.p" = modelPEESE$pval[2]
+        "PEESE.b1.p" = modelPEESE$pval[2],
+        "PEESE_heterogeneity" = modelPEESE$QE,
+        "PEESE_heterogeneity_p" = modelPEESE$QEp
       )
       outputFrame = rbind(outputFrame, output)
     }
