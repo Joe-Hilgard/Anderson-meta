@@ -31,31 +31,46 @@ naive = function(dataset) {
 }
 
 # basic PET ----
-PET=function(dataset) {
-  petOut = rma(yi = Fisher.s.Z, 
-               sei = Std.Err, 
-               mods = ~Std.Err, 
-               data=dataset,
-               method = "FE")
-  return(petOut)
+PET=function(dataset, error = "additive") {
+  if (error == "additive") {
+    petOut = rma(yi = Fisher.s.Z, 
+                 sei = Std.Err, 
+                 mods = ~Std.Err, 
+                 data=dataset,
+                 method = "FE")
+  }
+  if (error == "multiplicative") {
+    petOut = lm(Fisher.s.Z ~ Std.Err,
+                weights = 1/Std.Err,
+                data=dataset)
+  }
+    return(petOut)
 }
 
 # basic PEESE ----
-PEESE=function(dataset) {
-  peeseOut = rma(yi = Fisher.s.Z, 
-                 sei = Std.Err, 
-                 mods = ~I(Std.Err^2), 
-                 data=dataset,
-                 method = "FE")
-  return(peeseOut)
+PEESE=function(dataset, error = "additive") {
+  if (error == "additive") {
+    peeseOut = rma(yi = Fisher.s.Z, 
+                   sei = Std.Err, 
+                   mods = ~I(Std.Err^2), 
+                   data=dataset,
+                   method = "FE")
+  }
+  if (error == "multiplicative") {
+    peeseOut = lm(Fisher.s.Z ~ ~I(Std.Err^2), 
+                  weights = 1/Std.Err,
+                  data=dataset)
+  }
+    return(peeseOut)
 }
 
 # funnel plot with PET line and conditional PEESE line ----
 funnelPETPEESE = function(dataset, 
-                          alwaysPEESE=F, plotName=NULL, ...) {
+                          error = "additive",
+                          alwaysPEESE=T, plotName=NULL, ...) {
   naiveModel = naive(dataset)
-  petModel = PET(dataset)
-  peeseModel = PEESE(dataset)
+  petModel = PET(dataset, error)
+  peeseModel = PEESE(dataset, error)
   # make funnel plot
   funnel(naiveModel)
   title(plotName, line=3)

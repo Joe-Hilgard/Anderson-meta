@@ -31,9 +31,9 @@ for (i in unique(dat$Outcome)) {
       print(name)
       pcurveOutput = 
         pcurveOutput %>% 
-        rbind(data.frame("Outcome" = i, "Setting" = j, "Best-practices" = c("Best-only", "All")[k],
+        rbind(data.frame("Outcome" = i, "Setting" = j, "Best" = c("Best-only", "All")[k],
                          "k" = sum(filter), "n" = sum(set$Sample.size),
-                         "dhat" = pcurve[1], "rhat" = pcurve[2]))
+                         "dhat_pcurve" = pcurve[1], "rhat_pcurve" = pcurve[2]))
       savePlot(filename=saveName, type="png")
       
       
