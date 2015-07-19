@@ -94,7 +94,7 @@ for (i in unique(dat$Outcome)) {
         "Setting" = j,
         "Best" = ifelse(k==1, "Best-only", "All"),
         "naive-FE.r" = tanh(modelNaiveFE$b[1]),
-        "naive-RE.r" = tahn(modelNaiveRE$b[1]),
+        "naive-RE.r" = tanh(modelNaiveRE$b[1]),
         "heterogeneity_RE" = modelNaiveRE$QE,
         "heterogeneity_RE_pval" = modelNaiveRE$QEp,
         # PET stats
