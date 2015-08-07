@@ -1,5 +1,7 @@
 library(dplyr)
 library(tidyr)
+library(metafor)
+library(ggplot2)
 
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 
@@ -34,3 +36,10 @@ smalldat2 = dat %>%
   distinct(Best., Full.Reference, Study)
 t4 = table(smalldat2$Best., smalldat2$Diss)
 prop.test(t4)
+
+dat %>% 
+  filter(Setting == "Exp", !(Outcome %in% c("Empathy", "ProsBeh", "Empathy"))) %>% 
+  ggplot(aes(x=Fisher.s.Z, y = Std.Err, col=Diss)) +
+  geom_point(cex=3) +
+  theme_bw() +
+  scale_y_reverse()
