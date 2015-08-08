@@ -149,7 +149,8 @@ for (i in unique(dat$Outcome)) {
                    ", Best?: ", k
                    , sep="")
       windows()
-      saveName = paste("./petpeese_plotdump/", paste(i,j,k, sep="_"),".png", sep="")
+      x = c("best-only", "full")[k]
+      saveName = paste("./petpeese_plotdump/", paste(i,j,x, sep="_"),".png", sep="")
       print(name)
       
       # Conduct and plot PET-PEESE
@@ -169,8 +170,9 @@ for (i in unique(dat$Outcome)) {
       PET %>%
       influence %>%
       plot
+    x = c("best-only", "full")[k]
     saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
-                              paste(i,j,k, sep="_"),".png", sep="")
+                              paste(i,j,x, sep="_"),".png", sep="")
     savePlot(filename = saveNamePetInf, type="png")
     graphics.off()
     
@@ -181,8 +183,9 @@ for (i in unique(dat$Outcome)) {
       PEESE %>%
       influence %>%
       plot
+    x = c("best-only", "full")[k]
     saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
-                           paste(i,j,k, sep="_"),".png", sep="")
+                           paste(i,j,x, sep="_"),".png", sep="")
     savePlot(filename = saveNamePeeseInf, type="png")
     graphics.off()
     }
