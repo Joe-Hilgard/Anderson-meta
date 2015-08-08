@@ -22,7 +22,8 @@ for (i in unique(dat$Outcome)) {
                    , sep="")
       
       # conduct and export p-curve
-      saveName = paste("./pcurve_plotdump/", paste(i,j,k, sep="_"),".png", sep="")
+      x = c("best-only", "full")[k]
+      saveName = paste("./pcurve_plotdump/", paste(i,j,x, sep="_"),".png", sep="")
       set = dat[filter,]
       #par(mfrow=c(2,1))
       windows()
@@ -41,7 +42,8 @@ for (i in unique(dat$Outcome)) {
            main = "p-curve",
            xlab = "p-value (two-tailed)",
            breaks=seq(0, .05, by=.01))
-      saveName = paste("./pcurve_plotdump/", paste(i,j,k,"curve", sep="_"),".png", sep="")
+      x = c("best-only", "full")[k]
+      saveName = paste("./pcurve_plotdump/", paste(i,j,x,"curve", sep="_"),".png", sep="")
       savePlot(filename=saveName, type="png")
       graphics.off()
       
