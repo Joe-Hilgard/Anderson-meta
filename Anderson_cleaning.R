@@ -156,6 +156,11 @@ dat$t = dat$Fisher.s.Z / dat$Std.Err
 dat$df = dat$Sample.size - 2
 dat$d_est = 2*dat$Correlation/sqrt(1 - dat$Correlation^2) # per Borenstein textbook p. 48
 dat$p.onetail = pt(dat$t, df = dat$df, lower.tail=F) 
-dat$p.twotail = 2*pt(dat$t, df = dat$df, lower.tail=F) 
+dat$p.twotail = 2*pt(abs(dat$t), df = dat$df, lower.tail=F) 
+# kludge for hypothesized decreases in empathy
+dat$p.onetail[dat$Outcome == "Empathy"] = pt(dat$t[dat$Outcome == "Empathy"], 
+                                             df = dat$df[dat$Outcome == "Empathy"], 
+                                             lower.tail=T) 
+
 
 write.table(dat, file="cleaned_data.txt", sep="\t", row.names=F)

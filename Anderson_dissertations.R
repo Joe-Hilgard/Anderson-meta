@@ -38,7 +38,7 @@ t4 = table(smalldat2$Best., smalldat2$Diss)
 prop.test(t4)
 
 dat %>% 
-  filter(Setting == "Exp", !(Outcome %in% c("Empathy", "ProsBeh", "Empathy"))) %>% 
+  filter(Setting == "Exp", !(Outcome %in% c("Empathy", "ProsBeh"))) %>% 
   ggplot(aes(x=Fisher.s.Z, y = Std.Err, col=Diss)) +
   geom_point(cex=3) +
   theme_bw() +
