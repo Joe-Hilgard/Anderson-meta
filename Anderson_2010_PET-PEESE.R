@@ -98,24 +98,24 @@ for (i in unique(dat$Outcome)) {
         "heterogeneity_RE" = modelNaiveRE$QE,
         "heterogeneity_RE_pval" = modelNaiveRE$QEp,
         # PET stats
-        "PET.b0" = modelPET$b[1],
-        "PET.b0.se" = modelPET$se[1],
-        "PET.b0.p" = modelPET$pval[1],
-        "PET.b1" = modelPET$b[2],
-        "PET.b1.se" = modelPET$se[2],
-        "PET.b1.p" = modelPET$pval[2],
+        "PET.b0" = summary(modelPET)$coefficients[1,1],
+        "PET.b0.se" = summary(modelPET)$coefficients[1,2],
+        "PET.b0.p" = summary(modelPET)$coefficients[1,4],
+        "PET.b1" = summary(modelPET)$coefficients[2,1],
+        "PET.b1.se" = summary(modelPET)$coefficients[2,2],
+        "PET.b1.p" = summary(modelPET)$coefficients[2,4],
           #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
-        "PET_heterogeneity" = modelPET$QE,
-        "PET_heterogeneity_p" = modelPET$QEp,
+        #"PET_heterogeneity" = modelPET$QE,
+        #"PET_heterogeneity_p" = modelPET$QEp,
             # PEESE stats
-        "PEESE.b0" = modelPEESE$b[1],
-        "PEESE.b0.se" = modelPEESE$se[1],
-        "PEESE.b0.p" = modelPEESE$pval[1],
-        "PEESE.b1" = modelPEESE$b[2],
-        "PEESE.b1.se" = modelPEESE$se[2],
-        "PEESE.b1.p" = modelPEESE$pval[2],
-        "PEESE_heterogeneity" = modelPEESE$QE,
-        "PEESE_heterogeneity_p" = modelPEESE$QEp
+        "PEESE.b0" = summary(modelPEESE)$coefficients[1,1],
+        "PEESE.b0.se" = summary(modelPEESE)$coefficients[1,2],
+        "PEESE.b0.p" = summary(modelPEESE)$coefficients[1,4],
+        "PEESE.b1" = summary(modelPEESE)$coefficients[2,1],
+        "PEESE.b1.se" = summary(modelPEESE)$coefficients[2,2],
+        "PEESE.b1.p" = summary(modelPEESE)$coefficients[2,4]
+        #"PEESE_heterogeneity" = modelPEESE$QE,
+        #"PEESE_heterogeneity_p" = modelPEESE$QEp
       )
       outputFrame = rbind(outputFrame, output)
     }
@@ -164,30 +164,30 @@ for (i in unique(dat$Outcome)) {
 
     # Fetch influence diagnostics and export
       # PET influence
-    windows()
-    dat %>%
-      subset(filter) %>%
-      PET %>%
-      influence %>%
-      plot
-    x = c("best-only", "full")[k]
-    saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
-                              paste(i,j,x, sep="_"),".png", sep="")
-    savePlot(filename = saveNamePetInf, type="png")
-    graphics.off()
-    
-      # PEESE influence
-    windows()
-    dat %>%
-      subset(filter) %>%
-      PEESE %>%
-      influence %>%
-      plot
-    x = c("best-only", "full")[k]
-    saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
-                           paste(i,j,x, sep="_"),".png", sep="")
-    savePlot(filename = saveNamePeeseInf, type="png")
-    graphics.off()
+#     windows()
+#     dat %>%
+#       subset(filter) %>%
+#       PET %>%
+#       influence %>%
+#       plot
+#     x = c("best-only", "full")[k]
+#     saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
+#                               paste(i,j,x, sep="_"),".png", sep="")
+#     savePlot(filename = saveNamePetInf, type="png")
+#     graphics.off()
+#     
+#       # PEESE influence
+#     windows()
+#     dat %>%
+#       subset(filter) %>%
+#       PEESE %>%
+#       influence %>%
+#       plot
+#     x = c("best-only", "full")[k]
+#     saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
+#                            paste(i,j,x, sep="_"),".png", sep="")
+#     savePlot(filename = saveNamePeeseInf, type="png")
+#     graphics.off()
     }
   }
 }
