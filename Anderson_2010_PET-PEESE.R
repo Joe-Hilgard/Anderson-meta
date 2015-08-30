@@ -10,12 +10,6 @@
 # PET: b0 is estimated sig. of effect after bias
 #    : b1 is estimated sig. of pub bias
 
-# NOTES:
-# Std.Err seems to refer to Fisher.s.Z's standard error, which is convenient.
-# Not sure what some of these subscripts mean on setting:
-# "Exp", "Nonexp", and "Long" are obvious, 
-#   but what are "NonexpS", "LongP", and "LongPs"?
-# Would be nice to make x-axis always bottom out at 0
 
 # I think "S" stands for whether sex was applied as a covariate
   # and/or the sexes were analyzed separately
@@ -138,9 +132,13 @@ outputFrame[outputFrame == 0] = "< .001"
 write.table(outputFrame, "PETPEESE_output.txt", row.names=F, sep="\t")
 
 # Funnel plots ----
+plotList = list(NULL) # my plotList / curPlot scheme doesn't work b/c funnelPETPEESE doesn't return anything
+# I guess only ggplots can be stored to objects. ugh. 
+# I'll need a separate plotting script or to use Powerpoint.
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 10) next # must have at least ten studies
@@ -154,11 +152,14 @@ for (i in unique(dat$Outcome)) {
       print(name)
       
       # Conduct and plot PET-PEESE
-      dat %>%
+      #curPlot = 
+        dat %>%
         subset(filter) %>%
         funnelPETPEESE(plotName = name)
       
       # Export plot
+      #curPlot
+      plotList = list(unlist(plotList), curPlot)
       savePlot(filename=saveName, type="png")
       graphics.off()
 
