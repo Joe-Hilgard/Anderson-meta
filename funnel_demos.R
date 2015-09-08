@@ -53,89 +53,99 @@ gen_k_studies = function(k, percent_sig, avg_n,
   var_d = ( (2*n_per_cell / (n_per_cell^2)) + d^2 / (2*df) ) * (2*n_per_cell / df)
   se_d = sqrt(var_d)
   p=2*pt(t, df=df, lower.tail = F)
+  # convert to r, z for convenience
+  # per Borenstein, Hedges, Higgins & Rothstein (2009) textbook, Ch 7.
+  a = ((n_per_cell*2)^2) / (n_per_cell^2) # a will be 4 so long as we assume n1=n2
+  r = d / sqrt(d^2 + a)
+  z = atanh(r)
+  se_z = sqrt(1/sqrt(n_per_cell*2 - 3))
+  var_z = se_z^2
   # output
   out = data.frame("Study" = 1:k, "nobs" = n_per_cell, 
                    "dobs" = d, "sedobs" = se_d, "vardobs" = var_d,
+                   "robs" = r, "zobs" = z, "sezobs" = se_z, "varzobs" = var_z,
                    "t" = t, "p" = p)
 }
 
 # PET and PEESE seem to perform terribly in many of these demos
 # maybe not enough variabilty in sample size?
 set.seed(1)
-d_true = .2
+d_true = .4
+(r_true = d_true/sqrt(d_true^2 + 4))
+(z_true = atanh(r_true))
 unbiased = gen_k_studies(20, 0, 40, sdlog = 1, force_nonsig = F, d_true = d_true)
 biased = gen_k_studies(20, .80, 40, sdlog = 1, force_nonsig = T, d_true = d_true)
 biased.null = gen_k_studies(20, .80, 40, sdlog = 1, force_nonsig = T, d_true = 0)
 
-unbiased.model = rma(yi = dobs, sei = sedobs, data = unbiased)
-biased.model = rma(yi = dobs, sei = sedobs, data = biased)
-biased.null.model = rma(yi = dobs, sei = sedobs, data = biased.null)
+unbiased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = unbiased)
+biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
+biased.null.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased.null)
 
 
-png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
-par(mfrow = c(3,2))
+# png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
+# par(mfrow = c(3,2))
 # funnel plots
 funnel(unbiased.model)
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 funnel(biased.model)
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 # trim and fill
 funnel(trimfill(unbiased.model))
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 funnel(trimfill(biased.model))
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
 # Egger test
 # Is egger weighted or unweighted? additive or multiplicative?
 funnel(unbiased.model)
-unbiased.egger = lm(dobs ~ sedobs, weights = 1/sedobs, data = unbiased)
+unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
 funnel(biased.model)
-biased.egger = lm(dobs ~ sedobs, weights = 1/sedobs, data = biased)
+biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
-dev.off()
+# dev.off()
 
-png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
-par(mfrow = c(2,3))
+# png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
+# par(mfrow = c(2,3))
 
 # PET estimate
 funnel(unbiased.model)
-unbiased.egger = lm(dobs ~ sedobs, weights = 1/sedobs, data = unbiased)
+unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 
 funnel(biased.model)
-biased.egger = lm(dobs ~ sedobs, weights = 1/sedobs, data = biased)
+biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 funnel(biased.null.model)
-biased.null.egger = lm(dobs ~ sedobs, weights = 1/sedobs, data = biased.null)
+biased.null.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased.null)
 biased.null.egger.coefs = summary(biased.null.egger)$coef[,1]
 b = biased.null.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
@@ -146,7 +156,7 @@ mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 
 # PEESE estimate
 funnel(unbiased.model)
-unbiased.PEESE = lm(dobs ~ vardobs, weights = 1/sedobs, data = unbiased)
+unbiased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = unbiased)
 unbiased.PEESE.coefs = summary(unbiased.PEESE)$coef[,1]
 b = unbiased.PEESE.coefs
 grid = 
@@ -156,16 +166,16 @@ grid =
   seq(0, ., .001) %>%
   data.frame("Std.Err" = .)
 grid$Var = grid$Std.Err^2
-grid$dobs = 
+grid$zobs = 
   b[1] + b[2]*grid$Var
-grid %$% lines(x=dobs, y=Std.Err, typ='l')
+grid %$% lines(x=zobs, y=Std.Err, typ='l')
 points(x = b[1], y=0, cex=1.5, pch=5)
 abline(v = b[1], lty = 3)
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
 funnel(biased.model)
-biased.PEESE = lm(dobs ~ vardobs, weights = 1/sedobs, data = biased)
+biased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased)
 biased.PEESE.coefs = summary(biased.PEESE)$coef[,1]
 b = biased.PEESE.coefs
 grid = 
@@ -175,16 +185,16 @@ grid =
   seq(0, ., .001) %>%
   data.frame("Std.Err" = .)
 grid$Var = grid$Std.Err^2
-grid$dobs = 
+grid$zobs = 
   b[1] + b[2]*grid$Var
-grid %$% lines(x=dobs, y=Std.Err, typ='l')
+grid %$% lines(x=zobs, y=Std.Err, typ='l')
 points(x = b[1], y=0, cex=1.5, pch=5)
 abline(v = b[1], lty = 3)
-abline(v = d_true, lty = 2)
+abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
 funnel(biased.null.model)
-biased.null.PEESE = lm(dobs ~ vardobs, weights = 1/sedobs, data = biased.null)
+biased.null.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased.null)
 biased.null.PEESE.coefs = summary(biased.null.PEESE)$coef[,1]
 b = biased.null.PEESE.coefs
 grid = 
@@ -194,15 +204,15 @@ grid =
   seq(0, ., .001) %>%
   data.frame("Std.Err" = .)
 grid$Var = grid$Std.Err^2
-grid$dobs = 
+grid$zobs = 
   b[1] + b[2]*grid$Var
-grid %$% lines(x=dobs, y=Std.Err, typ='l')
+grid %$% lines(x=zobs, y=Std.Err, typ='l')
 points(x = b[1], y=0, cex=1.5, pch=5)
 abline(v = b[1], lty = 3)
 abline(v = 0, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
-dev.off()
+# dev.off()
 
 # p-curve
 hist(unbiased$p[unbiased$p < .05], breaks = seq(0, .05, .01),
