@@ -9,7 +9,7 @@ library(magrittr)
 library(metafor)
 
 gen_k_studies = function(k, percent_sig, avg_n, 
-                         min_n = 15, max_n = Inf, sdlog = .5,
+                         min_n = 15, max_n = 300, sdlog = .5,
                          d_true=0,
                          tails = 2, force_nonsig = T) {
   
@@ -58,7 +58,7 @@ gen_k_studies = function(k, percent_sig, avg_n,
   a = ((n_per_cell*2)^2) / (n_per_cell^2) # a will be 4 so long as we assume n1=n2
   r = d / sqrt(d^2 + a)
   z = atanh(r)
-  se_z = sqrt(1/sqrt(n_per_cell*2 - 3))
+  se_z = 1/sqrt(n_per_cell*2 - 3)
   var_z = se_z^2
   # output
   out = data.frame("Study" = 1:k, "nobs" = n_per_cell, 
@@ -69,40 +69,44 @@ gen_k_studies = function(k, percent_sig, avg_n,
 
 # PET and PEESE seem to perform terribly in many of these demos
 # maybe not enough variabilty in sample size?
-set.seed(1)
+set.seed(42069)
 d_true = .4
 (r_true = d_true/sqrt(d_true^2 + 4))
 (z_true = atanh(r_true))
-unbiased = gen_k_studies(20, 0, 40, sdlog = 1, force_nonsig = F, d_true = d_true)
-biased = gen_k_studies(20, .80, 40, sdlog = 1, force_nonsig = T, d_true = d_true)
-biased.null = gen_k_studies(20, .80, 40, sdlog = 1, force_nonsig = T, d_true = 0)
+unbiased = gen_k_studies(20, 0, 40, sdlog = .5, force_nonsig = F, d_true = d_true)
+biased = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = T, d_true = d_true)
+biased.null = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = T, d_true = 0)
 
 unbiased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = unbiased)
 biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
 biased.null.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased.null)
+# cohen's d just b/c i'm curious
+unbiased.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = unbiased)
+biased.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased)
+biased.null.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased.null)
 
 
-# png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
-# par(mfrow = c(3,2))
+png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
+par(mfrow = c(3,2))
 # funnel plots
-funnel(unbiased.model)
+funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
-funnel(biased.model)
+funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 # trim and fill
-funnel(trimfill(unbiased.model))
+funnel(trimfill(unbiased.model), xlim = c(z_true - .6, z_true + .6))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
-funnel(trimfill(biased.model))
+funnel(trimfill(biased.model), xlim = c(z_true - .6, z_true + .6))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
 # Egger test
 # Is egger weighted or unweighted? additive or multiplicative?
-funnel(unbiased.model)
+funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
 unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
@@ -110,7 +114,7 @@ abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
-funnel(biased.model)
+funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
 biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
@@ -118,13 +122,13 @@ abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
-# dev.off()
+dev.off()
 
-# png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
-# par(mfrow = c(2,3))
+png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
+par(mfrow = c(2,3))
 
 # PET estimate
-funnel(unbiased.model)
+funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
 unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
@@ -134,7 +138,7 @@ points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 
-funnel(biased.model)
+funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
 biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
@@ -144,7 +148,7 @@ points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
-funnel(biased.null.model)
+funnel(biased.null.model, xlim = c(0 - .6, 0 + .6))
 biased.null.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased.null)
 biased.null.egger.coefs = summary(biased.null.egger)$coef[,1]
 b = biased.null.egger.coefs
@@ -155,7 +159,7 @@ abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 
 # PEESE estimate
-funnel(unbiased.model)
+funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
 unbiased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = unbiased)
 unbiased.PEESE.coefs = summary(unbiased.PEESE)$coef[,1]
 b = unbiased.PEESE.coefs
@@ -174,7 +178,7 @@ abline(v = b[1], lty = 3)
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
-funnel(biased.model)
+funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
 biased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased)
 biased.PEESE.coefs = summary(biased.PEESE)$coef[,1]
 b = biased.PEESE.coefs
@@ -193,7 +197,7 @@ abline(v = b[1], lty = 3)
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
-funnel(biased.null.model)
+funnel(biased.null.model, xlim = c(0 - .6, 0 + .6))
 biased.null.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased.null)
 biased.null.PEESE.coefs = summary(biased.null.PEESE)$coef[,1]
 b = biased.null.PEESE.coefs
@@ -212,7 +216,7 @@ abline(v = b[1], lty = 3)
 abline(v = 0, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
-# dev.off()
+dev.off()
 
 # p-curve
 hist(unbiased$p[unbiased$p < .05], breaks = seq(0, .05, .01),
