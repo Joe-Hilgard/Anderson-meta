@@ -89,24 +89,24 @@ biased.null.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased.null
 png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
 par(mfrow = c(3,2))
 # funnel plots
-funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
-funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(biased.model, xlim = c(z_true - .4, z_true + .4))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 # trim and fill
-funnel(trimfill(unbiased.model), xlim = c(z_true - .6, z_true + .6))
+funnel(trimfill(unbiased.model), xlim = c(z_true - .4, z_true + .4))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
-funnel(trimfill(biased.model), xlim = c(z_true - .6, z_true + .6))
+funnel(trimfill(biased.model), xlim = c(z_true - .4, z_true + .4))
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
 # Egger test
 # Is egger weighted or unweighted? additive or multiplicative?
-funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4))
 unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
@@ -114,7 +114,7 @@ abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
-funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(biased.model, xlim = c(z_true - .4, z_true + .4))
 biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
@@ -128,7 +128,7 @@ png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
 par(mfrow = c(2,3))
 
 # PET estimate
-funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4))
 unbiased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$coef[,1]
 b = unbiased.egger.coefs
@@ -138,7 +138,7 @@ points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 
-funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(biased.model, xlim = c(z_true - .4, z_true + .4))
 biased.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$coef[,1]
 b = biased.egger.coefs
@@ -148,7 +148,7 @@ points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
-funnel(biased.null.model, xlim = c(0 - .6, 0 + .6))
+funnel(biased.null.model, xlim = c(0 - .4, 0 + .4))
 biased.null.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased.null)
 biased.null.egger.coefs = summary(biased.null.egger)$coef[,1]
 b = biased.null.egger.coefs
@@ -159,7 +159,7 @@ abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 
 # PEESE estimate
-funnel(unbiased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4))
 unbiased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = unbiased)
 unbiased.PEESE.coefs = summary(unbiased.PEESE)$coef[,1]
 b = unbiased.PEESE.coefs
@@ -178,7 +178,7 @@ abline(v = b[1], lty = 3)
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
-funnel(biased.model, xlim = c(z_true - .6, z_true + .6))
+funnel(biased.model, xlim = c(z_true - .4, z_true + .4))
 biased.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased)
 biased.PEESE.coefs = summary(biased.PEESE)$coef[,1]
 b = biased.PEESE.coefs
@@ -197,7 +197,7 @@ abline(v = b[1], lty = 3)
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
-funnel(biased.null.model, xlim = c(0 - .6, 0 + .6))
+funnel(biased.null.model, xlim = c(0 - .4, 0 + .4))
 biased.null.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased.null)
 biased.null.PEESE.coefs = summary(biased.null.PEESE)$coef[,1]
 b = biased.null.PEESE.coefs
