@@ -11,7 +11,7 @@ library(metafor)
 gen_k_studies = function(k, percent_sig, avg_n, 
                          min_n = 15, max_n = 300, sdlog = .5,
                          d_true=0,
-                         tails = 2, force_nonsig = T) {
+                         tails = 2, force_nonsig = F) {
   
   if (avg_n == min_n && avg_n == max_n) {
     n_per_cell <- avg_n
@@ -52,7 +52,7 @@ gen_k_studies = function(k, percent_sig, avg_n,
   d=2*t/sqrt(2*n_per_cell)
   var_d = ( (2*n_per_cell / (n_per_cell^2)) + d^2 / (2*df) ) * (2*n_per_cell / df)
   se_d = sqrt(var_d)
-  p=2*pt(t, df=df, lower.tail = F)
+  p=2*pt(t, df=df, lower.tail = F) %>% round(3)
   # convert to r, z for convenience
   # per Borenstein, Hedges, Higgins & Rothstein (2009) textbook, Ch 7.
   a = ((n_per_cell*2)^2) / (n_per_cell^2) # a will be 4 so long as we assume n1=n2
@@ -70,12 +70,15 @@ gen_k_studies = function(k, percent_sig, avg_n,
 # PET and PEESE seem to perform terribly in many of these demos
 # maybe not enough variabilty in sample size?
 set.seed(42069)
-d_true = .4
-(r_true = d_true/sqrt(d_true^2 + 4))
-(z_true = atanh(r_true))
+# d_true = .4
+# (r_true = d_true/sqrt(d_true^2 + 4))
+# (z_true = atanh(r_true))
+z_true = .2
+r_true = tanh(z_true)
+d_true = (2*r_true)/sqrt(1 - r_true^2) # formula from Borenstein et al. textbook
 unbiased = gen_k_studies(20, 0, 40, sdlog = .5, force_nonsig = F, d_true = d_true)
-biased = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = T, d_true = d_true)
-biased.null = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = T, d_true = 0)
+biased = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = F, d_true = d_true)
+biased.null = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = F, d_true = 0)
 
 unbiased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = unbiased)
 biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
@@ -86,8 +89,9 @@ biased.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased)
 biased.null.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased.null)
 
 
-png("funnels_1.png", width = 8, height = 11, units = 'in', res = 72)
-par(mfrow = c(3,2))
+png("funnels_1.png", width = 5, height = 6, units = 'in', res = 280)
+par(mfrow = c(3,2),
+    mar = c(2, 4, 2, 1) + .01)
 # funnel plots
 funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4))
 abline(v = z_true, lty = 2)
@@ -124,7 +128,7 @@ mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
 dev.off()
 
-png("funnels_2.png", width = 11, height = 8, units = 'in', res = 72)
+png("funnels_2.png", width = 11, height = 8, units = 'in', res = 280)
 par(mfrow = c(2,3))
 
 # PET estimate
@@ -148,7 +152,7 @@ points(x = b[1], y = 0, pch = 6)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
-funnel(biased.null.model, xlim = c(0 - .4, 0 + .4))
+funnel(biased.null.model, xlim = c(0 - .5, 0 + .5))
 biased.null.egger = lm(zobs ~ sezobs, weights = 1/sezobs, data = biased.null)
 biased.null.egger.coefs = summary(biased.null.egger)$coef[,1]
 b = biased.null.egger.coefs
@@ -197,7 +201,7 @@ abline(v = b[1], lty = 3)
 abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
-funnel(biased.null.model, xlim = c(0 - .4, 0 + .4))
+funnel(biased.null.model, xlim = c(0 - .5, 0 + .5))
 biased.null.PEESE = lm(zobs ~ varzobs, weights = 1/sezobs, data = biased.null)
 biased.null.PEESE.coefs = summary(biased.null.PEESE)$coef[,1]
 b = biased.null.PEESE.coefs
