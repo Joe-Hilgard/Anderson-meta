@@ -3,11 +3,11 @@
 # back-selection function and examples ----
 # Select a number of published studies and sample statistics according
 # to effect size, n, and bias.
-library(truncdist)
-library(dplyr)
-library(magrittr)
-library(metafor)
+library(truncdist) # for sampling biased studies
+library(magrittr) # for piping
+library(metafor) # for meta-analysis
 
+# function for generating k studies of some effect, at least X percent of which are significant
 gen_k_studies = function(k, percent_sig, avg_n, 
                          min_n = 15, max_n = 300, sdlog = .5,
                          d_true=0,
@@ -76,20 +76,19 @@ set.seed(42069)
 z_true = .2
 r_true = tanh(z_true)
 d_true = (2*r_true)/sqrt(1 - r_true^2) # formula from Borenstein et al. textbook
+# generate datasets: unbiased|H1, biased|H1, biased|H0
 unbiased = gen_k_studies(20, 0, 40, sdlog = .5, force_nonsig = F, d_true = d_true)
 biased = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = F, d_true = d_true)
 biased.null = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = F, d_true = 0)
-
+# fit meta-analyses
 unbiased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = unbiased)
 biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
 biased.null.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased.null)
-# cohen's d just b/c i'm curious
-unbiased.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = unbiased)
-biased.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased)
-biased.null.model.d = rma(yi = dobs, sei = sedobs, ni = nobs, data = biased.null)
 
 
+# prepare .png export
 png("funnels_1.png", width = 5, height = 6, units = 'in', res = 280)
+# prepare faceting
 par(mfrow = c(3,2),
     mar = c(2, 4, 2, 1) + .01)
 # funnel plots
