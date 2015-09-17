@@ -67,15 +67,15 @@ PEESE=function(dataset, error = "multiplicative") {
 # funnel plot with PET line and conditional PEESE line ----
 funnelPETPEESE = function(dataset, 
                           error = "multiplicative",
-                          alwaysPEESE=T, plotName=NULL, ...) {
+                          alwaysPEESE=T, plotName=NULL, printText = T, ...) {
   naiveModel = naive(dataset)
   petModel = PET(dataset, error)
   peeseModel = PEESE(dataset, error)
   # make funnel plot
-  funnel(naiveModel)
+  funnel(naiveModel, ...)
   title(plotName, line=3)
   if (error == "additive") {
-    naiveModel$b[1] %>% 
+    if (printText == T) naiveModel$b[1] %>% 
       tanh %>% 
       round(3) %>%
       paste("Naive meta estimate, r =", .) %>%
@@ -86,10 +86,10 @@ funnelPETPEESE = function(dataset,
     r = petModel$b[1] %>% tanh %>% round(3)
     p.effect = petModel$pval[1] %>% round(3)
     p.bias = petModel$pval[2] %>% round(3)
-    mtext(paste("PET r = ", r
-                , ", p-effect = ", p.effect
-                , ", p-bias = ", p.bias
-                , sep=""))
+    if (printText == T) mtext(paste("PET r = ", r
+                                    , ", p-effect = ", p.effect
+                                    , ", p-bias = ", p.bias
+                                    , sep=""))
     points(x = petModel$b[1], y=0, cex=1.5)
     abline(v = petModel$b[1], lty = 2)
     # add line and text from PEESE
@@ -106,15 +106,17 @@ funnelPETPEESE = function(dataset,
       grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
       points(x = (peeseModel$b[1]), y=0, cex=1.5, pch=5)
       abline(v = peeseModel$b[1], lty = 2)
-      peeseModel$b[1] %>%
-        tanh %>%
-        round(3) %>%
-        paste("PEESE r =", .) %>%
-        mtext(line = 1)
+      if (printText == T) { 
+        peeseModel$b[1] %>%
+          tanh %>%
+          round(3) %>%
+          paste("PEESE r =", .) %>%
+          mtext(line = 1)
+      }
     }
   }
   if(error == "multiplicative") {
-    naiveModel$b[1] %>% 
+    if (printText == T) naiveModel$b[1] %>% 
       tanh %>% 
       round(3) %>%
       paste("Naive meta estimate, r =", .) %>%
@@ -126,10 +128,10 @@ funnelPETPEESE = function(dataset,
     r = b[1] %>% tanh %>% round(3)
     p.effect = summary(petModel)$coefficients[1,4] %>% round(3)
     p.bias = summary(petModel)$coefficients[2,4] %>% round(3)
-    mtext(paste("PET r = ", r
-                , ", p-effect = ", p.effect
-                , ", p-bias = ", p.bias
-                , sep=""))
+    if (printText == T) mtext(paste("PET r = ", r
+                                    , ", p-effect = ", p.effect
+                                    , ", p-bias = ", p.bias
+                                    , sep=""))
     points(x = b[1], y=0, cex=1.5)
     abline(v = b[1], lty = 2)
     # add line and text from PEESE
@@ -147,11 +149,13 @@ funnelPETPEESE = function(dataset,
       grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
       points(x = b[1], y=0, cex=1.5, pch=5)
       abline(v = b[1], lty = 2)
-      b[1] %>%
-        tanh %>%
-        round(3) %>%
-        paste("PEESE r =", .) %>%
-        mtext(line = 1)
+      if (printText == T) {
+        b[1] %>%
+          tanh %>%
+          round(3) %>%
+          paste("PEESE r =", .) %>%
+          mtext(line = 1)
+      }
     }
   }
 }

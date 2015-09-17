@@ -159,7 +159,7 @@ for (i in unique(dat$Outcome)) {
       
       # Export plot
       #curPlot
-      plotList = list(unlist(plotList), curPlot)
+      #plotList = list(unlist(plotList), curPlot)
       savePlot(filename=saveName, type="png")
       graphics.off()
 
