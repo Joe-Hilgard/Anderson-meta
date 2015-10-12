@@ -1,24 +1,11 @@
 # PET-PEESE of the meta-analysis
-
-# My greatest concern right now is how to deal with multiple entries for a study, 
-#   e.g. study appears as raw and as partial
-
-# According to Carter & McCullough's citation of Stanley & Doucouliagos (2007)
-  # Use PET to see if the estimated effect size != 0
-  # If estimated effect size == 0 then use PET estimate
-  # If PET says estimated effect != 0 then use PEESE estimate
-# PET: b0 is estimated sig. of effect after bias
-#    : b1 is estimated sig. of pub bias
-
+# Maybe I should also consider consulting Top-Ten? 
+  # But that will really only ever use one or two studies at most
 
 # I think "S" stands for whether sex was applied as a covariate
   # and/or the sexes were analyzed separately
 # I think "P" stands for "partial"
-# Similarly "Long.Dup" varies:
-  # L for Longitudinal
-  # LS for Longitudinal separated by sex
-  # LT1s for ???
-  # LT1 for ???
+# I'm keeping it simple and avoiding dealing with the partials & longitudinals
 
 # Read in the data
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
@@ -27,6 +14,8 @@ dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 source("PETPEESE_functions.R")
 # get dplyr package for distinct()
 library(dplyr)
+# I wonder if broom() could fix up rma() vs lm() complexities.
+  # tidy(rma()) throws an error so I'm guessing not.
 
 # let's just loop through this stuff.
 # Would be nicer if I knew all these sub-categories...
@@ -42,7 +31,6 @@ pubTable =
   arrange(Full.Reference, Study)
 #View(pubTable)
 table(pubTable$Pub)
-# Could go back later and look at effect of stat. significance on pub/unpub.
 
 # make directories to hold PETPEESE output and diagnostic output
 dir.create("./petpeese_plotdump") 
@@ -116,6 +104,7 @@ for (i in unique(dat$Outcome)) {
   }
 }
 # Convert beta estimates to Pearson r and make CIs
+  # It occurs to me that bootstrapped CIs might be preferable, but that's more work...
 outputFrame$PET.r = atanh(outputFrame$PET.b0)
 outputFrame$PET.r.LL = atanh(outputFrame$PET.b0 - 1.96*outputFrame$PET.b0.se)
 outputFrame$PET.r.UL = atanh(outputFrame$PET.b0 + 1.96*outputFrame$PET.b0.se)
