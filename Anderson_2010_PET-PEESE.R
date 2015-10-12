@@ -1,11 +1,30 @@
 # PET-PEESE of the meta-analysis
-# Maybe I should also consider consulting Top-Ten? 
-  # But that will really only ever use one or two studies at most
+
+# My greatest concern right now is how to deal with multiple entries for a study, 
+#   e.g. study appears as raw and as partial
+
+# According to Carter & McCullough's citation of Stanley & Doucouliagos (2007)
+  # Use PET to see if the estimated effect size != 0
+  # If estimated effect size == 0 then use PET estimate
+  # If PET says estimated effect != 0 then use PEESE estimate
+# PET: b0 is estimated sig. of effect after bias
+#    : b1 is estimated sig. of pub bias
+
+# NOTES:
+# Std.Err seems to refer to Fisher.s.Z's standard error, which is convenient.
+# Not sure what some of these subscripts mean on setting:
+# "Exp", "Nonexp", and "Long" are obvious, 
+#   but what are "NonexpS", "LongP", and "LongPs"?
+# Would be nice to make x-axis always bottom out at 0
 
 # I think "S" stands for whether sex was applied as a covariate
   # and/or the sexes were analyzed separately
 # I think "P" stands for "partial"
-# I'm keeping it simple and avoiding dealing with the partials & longitudinals
+# Similarly "Long.Dup" varies:
+  # L for Longitudinal
+  # LS for Longitudinal separated by sex
+  # LT1s for ???
+  # LT1 for ???
 
 # Read in the data
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
@@ -14,8 +33,6 @@ dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 source("PETPEESE_functions.R")
 # get dplyr package for distinct()
 library(dplyr)
-# I wonder if broom() could fix up rma() vs lm() complexities.
-  # tidy(rma()) throws an error so I'm guessing not.
 
 # let's just loop through this stuff.
 # Would be nicer if I knew all these sub-categories...
@@ -31,6 +48,7 @@ pubTable =
   arrange(Full.Reference, Study)
 #View(pubTable)
 table(pubTable$Pub)
+# Could go back later and look at effect of stat. significance on pub/unpub.
 
 # make directories to hold PETPEESE output and diagnostic output
 dir.create("./petpeese_plotdump") 
@@ -80,31 +98,30 @@ for (i in unique(dat$Outcome)) {
         "heterogeneity_RE" = modelNaiveRE$QE,
         "heterogeneity_RE_pval" = modelNaiveRE$QEp,
         # PET stats
-        "PET.b0" = summary(modelPET)$coefficients[1,1],
-        "PET.b0.se" = summary(modelPET)$coefficients[1,2],
-        "PET.b0.p" = summary(modelPET)$coefficients[1,4],
-        "PET.b1" = summary(modelPET)$coefficients[2,1],
-        "PET.b1.se" = summary(modelPET)$coefficients[2,2],
-        "PET.b1.p" = summary(modelPET)$coefficients[2,4],
+        "PET.b0" = modelPET$b[1],
+        "PET.b0.se" = modelPET$se[1],
+        "PET.b0.p" = modelPET$pval[1],
+        "PET.b1" = modelPET$b[2],
+        "PET.b1.se" = modelPET$se[2],
+        "PET.b1.p" = modelPET$pval[2],
           #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
-        #"PET_heterogeneity" = modelPET$QE,
-        #"PET_heterogeneity_p" = modelPET$QEp,
+        "PET_heterogeneity" = modelPET$QE,
+        "PET_heterogeneity_p" = modelPET$QEp,
             # PEESE stats
-        "PEESE.b0" = summary(modelPEESE)$coefficients[1,1],
-        "PEESE.b0.se" = summary(modelPEESE)$coefficients[1,2],
-        "PEESE.b0.p" = summary(modelPEESE)$coefficients[1,4],
-        "PEESE.b1" = summary(modelPEESE)$coefficients[2,1],
-        "PEESE.b1.se" = summary(modelPEESE)$coefficients[2,2],
-        "PEESE.b1.p" = summary(modelPEESE)$coefficients[2,4]
-        #"PEESE_heterogeneity" = modelPEESE$QE,
-        #"PEESE_heterogeneity_p" = modelPEESE$QEp
+        "PEESE.b0" = modelPEESE$b[1],
+        "PEESE.b0.se" = modelPEESE$se[1],
+        "PEESE.b0.p" = modelPEESE$pval[1],
+        "PEESE.b1" = modelPEESE$b[2],
+        "PEESE.b1.se" = modelPEESE$se[2],
+        "PEESE.b1.p" = modelPEESE$pval[2],
+        "PEESE_heterogeneity" = modelPEESE$QE,
+        "PEESE_heterogeneity_p" = modelPEESE$QEp
       )
       outputFrame = rbind(outputFrame, output)
     }
   }
 }
 # Convert beta estimates to Pearson r and make CIs
-  # It occurs to me that bootstrapped CIs might be preferable, but that's more work...
 outputFrame$PET.r = atanh(outputFrame$PET.b0)
 outputFrame$PET.r.LL = atanh(outputFrame$PET.b0 - 1.96*outputFrame$PET.b0.se)
 outputFrame$PET.r.UL = atanh(outputFrame$PET.b0 + 1.96*outputFrame$PET.b0.se)
@@ -121,13 +138,9 @@ outputFrame[outputFrame == 0] = "< .001"
 write.table(outputFrame, "PETPEESE_output.txt", row.names=F, sep="\t")
 
 # Funnel plots ----
-plotList = list(NULL) # my plotList / curPlot scheme doesn't work b/c funnelPETPEESE doesn't return anything
-# I guess only ggplots can be stored to objects. ugh. 
-# I'll need a separate plotting script or to use Powerpoint.
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
-      
       best = list("y", c("n", "y"))
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 10) next # must have at least ten studies
@@ -141,43 +154,40 @@ for (i in unique(dat$Outcome)) {
       print(name)
       
       # Conduct and plot PET-PEESE
-      #curPlot = 
-        dat %>%
+      dat %>%
         subset(filter) %>%
         funnelPETPEESE(plotName = name)
       
       # Export plot
-      #curPlot
-      #plotList = list(unlist(plotList), curPlot)
       savePlot(filename=saveName, type="png")
       graphics.off()
 
     # Fetch influence diagnostics and export
       # PET influence
-#     windows()
-#     dat %>%
-#       subset(filter) %>%
-#       PET %>%
-#       influence %>%
-#       plot
-#     x = c("best-only", "full")[k]
-#     saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
-#                               paste(i,j,x, sep="_"),".png", sep="")
-#     savePlot(filename = saveNamePetInf, type="png")
-#     graphics.off()
-#     
-#       # PEESE influence
-#     windows()
-#     dat %>%
-#       subset(filter) %>%
-#       PEESE %>%
-#       influence %>%
-#       plot
-#     x = c("best-only", "full")[k]
-#     saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
-#                            paste(i,j,x, sep="_"),".png", sep="")
-#     savePlot(filename = saveNamePeeseInf, type="png")
-#     graphics.off()
+    windows()
+    dat %>%
+      subset(filter) %>%
+      PET %>%
+      influence %>%
+      plot
+    x = c("best-only", "full")[k]
+    saveNamePetInf = paste("./petpeese_plotdump/petInfluence/", 
+                              paste(i,j,x, sep="_"),".png", sep="")
+    savePlot(filename = saveNamePetInf, type="png")
+    graphics.off()
+    
+      # PEESE influence
+    windows()
+    dat %>%
+      subset(filter) %>%
+      PEESE %>%
+      influence %>%
+      plot
+    x = c("best-only", "full")[k]
+    saveNamePeeseInf = paste("./petpeese_plotdump/peeseInfluence/", 
+                           paste(i,j,x, sep="_"),".png", sep="")
+    savePlot(filename = saveNamePeeseInf, type="png")
+    graphics.off()
     }
   }
 }

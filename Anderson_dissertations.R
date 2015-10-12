@@ -3,7 +3,9 @@ library(tidyr)
 library(metafor)
 library(ggplot2)
 
+
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
+source("PETPEESE_functions.R")
 
 dat$sig = ifelse(dat$p.twotail < .05, "significant", "not-significant")
 
@@ -28,7 +30,7 @@ aggregate_p = function(p) ifelse(sum(p < .05) > 0,
 smalldat1 = dat %>% 
   group_by(Full.Reference, Study) %>% 
   summarize("pattern" = aggregate_p(p.twotail),
-            "Diss" = Diss)
+            "Diss" = unique(Diss))
 t3 = table(smalldat1$pattern, smalldat1$Diss)
 prop.test(t3)
 

@@ -31,7 +31,7 @@ naive = function(dataset) {
 }
 
 # basic PET ----
-PET=function(dataset, error = "multiplicative") {
+PET=function(dataset, error = "additive") {
   if (error == "additive") {
     petOut = rma(yi = Fisher.s.Z, 
                  sei = Std.Err, 
@@ -48,7 +48,7 @@ PET=function(dataset, error = "multiplicative") {
 }
 
 # basic PEESE ----
-PEESE=function(dataset, error = "multiplicative") {
+PEESE=function(dataset, error = "additive") {
   if (error == "additive") {
     peeseOut = rma(yi = Fisher.s.Z, 
                    sei = Std.Err, 
@@ -66,7 +66,7 @@ PEESE=function(dataset, error = "multiplicative") {
 
 # funnel plot with PET line and conditional PEESE line ----
 funnelPETPEESE = function(dataset, 
-                          error = "multiplicative",
+                          error = "additive",
                           alwaysPEESE=T, plotName=NULL, printText = T, ...) {
   naiveModel = naive(dataset)
   petModel = PET(dataset, error)
@@ -165,7 +165,7 @@ funnelPETPEESE = function(dataset,
   # gives DFBETAs but those don't translate nicely to actual coefficients
   # (I don't know what the standard deviation of betas are)
 # I'm gonna write it in a loop instead of lapply() or whatever. Screw it.
-sensitivityPETPEESE = function(dataset, error = "multiplicative") {
+sensitivityPETPEESE = function(dataset, error = "additive") {
   sensitivityFrame = data.frame("Study.name" = NULL,
                                 # PET stats
                                 "PET.b0" = NULL,
