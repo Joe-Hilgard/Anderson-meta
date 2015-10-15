@@ -24,9 +24,12 @@ dat = dat[dat$Best. != "",] # delete the blank row
 dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
 # Drop Brady & Matthews (06) as it's the same as Brady (06) but divided into more rows
 dat = dat[-grep("Brady, S.S., & Mathews", dat$Full.Reference),]
-# Drop Panee & Ballard because in-game behavior is not aggressive behavior,
+# Drop Panee & Ballard (2002) because in-game behavior is not aggressive behavior,
   # Nor is this a violent videogame manipulation (it is a priming manipulation)
 dat = dat[-grep("Panee, C. D., & Ballard", dat$Full.Reference),]
+# Drop Graybill et al. (1985) because manipulation check is not aggressive cognition
+dat = dat[-grep("Graybill, D., Kirsch, J. R.", dat$Full.Reference),]
+
 # I'm also gonna drop the redundant M,F rows when there's already an MF row. 
 dat = dat[!(dat$Study.name %in% 
               c("AD00AB1bF", "AD00AB1bM" # Anderson & Dill, 2000, s1

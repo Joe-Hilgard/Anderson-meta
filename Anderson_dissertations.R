@@ -51,14 +51,20 @@ par(mfrow = c(1, 3))
 
 dat.aggAff =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggAff", Best. %in% c("y", "n"))
-funnel(naive(dat.aggAff), pch = ifelse(dat.aggAff$Diss == "Diss", 16, 1))
+funnel(naive(dat.aggAff), 
+       pch = ifelse(dat.aggAff$Diss == "Diss", 4, 16),
+       main = "Aggressive Affect")
 
 dat.aggBeh =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggBeh", Best. %in% c("y", "n"))
-funnel(naive(dat.aggBeh), pch = ifelse(dat.aggBeh$Diss == "Diss", 16, 1))
+funnel(naive(dat.aggBeh), 
+       pch = ifelse(dat.aggBeh$Diss == "Diss", 4, 16),
+       main = "Aggressive Behavior")
 
 dat.aggCog =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggCog", Best. %in% c("y", "n"))
-funnel(naive(dat.aggCog), pch = ifelse(dat.aggCog$Diss == "Diss", 16, 1))
+funnel(naive(dat.aggCog), 
+       pch = ifelse(dat.aggCog$Diss == "Diss", 4, 16),
+       main = "Aggressive Cognition")
 
 dev.off()
