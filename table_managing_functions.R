@@ -7,7 +7,7 @@ stringMerge = function(strings) {
 }
 
 r2ztrans = function(r) .5*log((1+r)/(1-r))
-z2rtrans = function(z) exp(2*z - 1) / exp(2*z + 1)
+z2rtrans = function(z) (exp(2*z) - 1) / (exp(2*z) + 1)
 
 combine.rows=function(dat, filter, do) {
   temp = dat[filter,]
