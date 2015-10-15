@@ -23,11 +23,12 @@ library(magrittr)
 # Try plot(influence(PET(...))) or plot(influence(PEESE(...)))
 
 # naive meta-analysis ----
-naive = function(dataset) {
+naive = function(dataset, ...) {
   rma(yi = Fisher.s.Z,
       sei = Std.Err,
       data = dataset,
-      method = "FE")
+      method = "FE",
+      ...)
 }
 
 # basic PET ----
