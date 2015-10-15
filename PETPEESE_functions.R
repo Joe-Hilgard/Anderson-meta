@@ -73,7 +73,8 @@ funnelPETPEESE = function(dataset,
   peeseModel = PEESE(dataset, error)
   # make funnel plot
   funnel(naiveModel, ...)
-  title(plotName, line=3)
+  if (printText == T) title(plotName, line=3)
+  if (printText == F) title(plotName)
   if (error == "additive") {
     if (printText == T) naiveModel$b[1] %>% 
       tanh %>% 
@@ -261,7 +262,7 @@ peters_quadratic = function(dataset) {
                   method = "FE")
 }
 
-# funnel plot with PET and PEESE-like Peters estimates
+# funnel plot with PET and PEESE-like Peters estimates ----
 funnelPeters = function(dataset, 
                           alwaysPEESE=T, plotName=NULL, ...) {
   naiveModel = naive(dataset)
