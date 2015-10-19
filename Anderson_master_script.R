@@ -16,14 +16,20 @@ full_join(results2, results1) %>%
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 source("PETPEESE_functions.R")
 # Affect ----
-windows(width = 12, height = 4)
-par(mfrow = c(1, 3))
+windows(width = 8, height = 8)
+par(mfrow = c(2, 2))
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Exp",
          Best. %in% c("y", "n")) %>%
   funnelPETPEESE(plotName = "All experiments", printText = F,
                  xlim = c(-.5, 1.5), ylim = c(.32, 0))
+dat %>%
+  filter(Outcome == "AggAff", 
+         Setting == "Nonexp",
+         Best. %in% c("y", "n")) %>%
+  funnelPETPEESE(plotName = "All cross-sectional", printText = F, 
+                 xlim = c(-.1, .6), ylim = c(.1, 0))
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Exp",
@@ -33,9 +39,10 @@ dat %>%
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Nonexp",
-         Best. %in% c("y", "n")) %>%
-  funnelPETPEESE(plotName = "All cross-sectional", printText = F)
-savePlot(filename="funnels_AggAff.png", type="png")
+         Best. %in% c("y")) %>%
+  funnelPETPEESE(plotName = "Best cross-sectional", printText = F,
+                 xlim = c(-.1, .6), ylim = c(.1, 0))
+savePlot(filename="funnels_AggAff.pdf", type = "pdf")
 dev.off()
 
 # Behavior ----
@@ -49,6 +56,12 @@ dat %>%
                  xlim = c(-.4, .8), ylim = c(.3, 0))
 dat %>%
   filter(Outcome == "AggBeh", 
+         Setting == "Nonexp",
+         Best. %in% c("y", "n")) %>%
+  funnelPETPEESE(plotName = "All cross-sectional", printText = F,
+                 xlim = c(-.2, .6), ylim = c(.185, 0))
+dat %>%
+  filter(Outcome == "AggBeh", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   funnelPETPEESE(plotName = "Best experiments", printText = F,
@@ -56,16 +69,10 @@ dat %>%
 dat %>%
   filter(Outcome == "AggBeh", 
          Setting == "Nonexp",
-         Best. %in% c("y", "n")) %>%
-  funnelPETPEESE(plotName = "All cross-sectional", printText = F,
-                 xlim = c(-.2, .6), ylim = c(.185, 0))
-dat %>%
-  filter(Outcome == "AggBeh", 
-         Setting == "Nonexp",
          Best. %in% c("y")) %>%
   funnelPETPEESE(plotName = "Best cross-sectional", printText = F,
                  xlim = c(-.2, .6), ylim = c(.185, 0))
-savePlot(filename="funnels_AggBeh.png", type="png")
+savePlot(filename="funnels_AggBeh.pdf", type = "pdf")
 dev.off()
 
 # Cognition ----
@@ -79,6 +86,12 @@ dat %>%
                  xlim = c(-.5, 1), ylim = c(.315, 0))
 dat %>%
   filter(Outcome == "AggCog", 
+         Setting == "Nonexp",
+         Best. %in% c("y", "n")) %>%
+  funnelPETPEESE(plotName = "All cross-sectional", printText = F,
+                 xlim = c(-.1, .6), ylim = c(.125, 0))
+dat %>%
+  filter(Outcome == "AggCog", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   funnelPETPEESE(plotName = "Best experiments", printText = F,
@@ -86,21 +99,15 @@ dat %>%
 dat %>%
   filter(Outcome == "AggCog", 
          Setting == "Nonexp",
-         Best. %in% c("y", "n")) %>%
-  funnelPETPEESE(plotName = "All cross-sectional", printText = F,
-                 xlim = c(-.1, .6), ylim = c(.125, 0))
-dat %>%
-  filter(Outcome == "AggCog", 
-         Setting == "Nonexp",
          Best. %in% c("y")) %>%
   funnelPETPEESE(plotName = "Best cross-sectional", printText = F,
                  xlim = c(-.1, .6), ylim = c(.125, 0))
-savePlot(filename="funnels_AggCog.png", type="png")
+savePlot(filename="funnels_AggCog.pdf", type = "pdf")
 dev.off()
 
 # Arousal ----
-windows(width = 8, height = 4)
-par(mfrow = c(1, 2))
+windows(width = 4, height = 8)
+par(mfrow = c(2, 1))
 dat %>%
   filter(Outcome == "PhysArous", 
          Setting == "Exp",
@@ -113,7 +120,7 @@ dat %>%
          Best. %in% c("y")) %>%
   funnelPETPEESE(plotName = "Best experiments", printText = F,
                  xlim = c(-.5, 1), ylim = c(.41, 0))
-savePlot(filename="funnels_PhysArous.png", type="png")
+savePlot(filename="funnels_PhysArous.pdf", type = "pdf")
 dev.off()
 
 # Et voila! ----
