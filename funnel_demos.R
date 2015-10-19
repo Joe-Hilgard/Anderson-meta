@@ -86,8 +86,8 @@ biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
 biased.null.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased.null)
 
 
-# prepare .png export
-png("funnels_1.png", width = 5, height = 6, units = 'in', res = 280)
+# prepare .pdf export
+pdf("funnels_1.pdf", width = 5, height = 6)
 # prepare faceting
 par(mfrow = c(3,2),
     mar = c(2, 4, 2, 1) + .01)
@@ -127,7 +127,7 @@ mtext(side=3,adj=.05,cex=1.5,'F.',line=-1.5)
 
 dev.off()
 
-png("funnels_2.png", width = 11, height = 8, units = 'in', res = 280)
+pdf("funnels_2.pdf", width = 11, height = 8)
 par(mfrow = c(2,3))
 
 # PET estimate
