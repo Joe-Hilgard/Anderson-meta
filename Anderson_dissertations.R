@@ -48,14 +48,15 @@ dat %>%
   theme_bw() +
   scale_y_reverse()
 
-png("funnel_diss.png", width = 8, height = 3, units = 'in', res = 280)
+pdf("funnel_diss.pdf", width = 8, height = 3)
 par(mfrow = c(1, 3))
 
 dat.aggAff =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggAff", Best. %in% c("y", "n"))
 funnel(naive(dat.aggAff), 
        pch = ifelse(dat.aggAff$Diss == "Diss", 4, 16),
-       main = "Aggressive Affect")
+       main = "Aggressive Affect",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
 m1 = naive(dat.aggAff)
 m1
 lapply(c(m1$b, m1$ci.lb, m1$ci.ub), FUN = z2rtrans)
@@ -67,7 +68,8 @@ dat.aggBeh =  dat %>%
   filter(Setting == "Exp", Outcome == "AggBeh", Best. %in% c("y", "n"))
 funnel(naive(dat.aggBeh), 
        pch = ifelse(dat.aggBeh$Diss == "Diss", 4, 16),
-       main = "Aggressive Behavior")
+       main = "Aggressive Behavior",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
 m2 = naive(dat.aggBeh)
 m2
 lapply(c(m2$b, m2$ci.lb, m2$ci.ub), FUN = z2rtrans)
@@ -79,7 +81,8 @@ dat.aggCog =  dat %>%
   filter(Setting == "Exp", Outcome == "AggCog", Best. %in% c("y", "n"))
 funnel(naive(dat.aggCog), 
        pch = ifelse(dat.aggCog$Diss == "Diss", 4, 16),
-       main = "Aggressive Cognition")
+       main = "Aggressive Cognition",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
 m3 = naive(dat.aggCog)
 m3
 lapply(c(m3$b, m3$ci.lb, m3$ci.ub), FUN = z2rtrans)
