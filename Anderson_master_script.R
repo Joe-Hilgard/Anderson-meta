@@ -12,6 +12,9 @@ results2 = read.delim("pcurve_results.txt")
 full_join(results2, results1) %>% 
   write.table(file = "full_results.txt", sep="\t", row.names=F)
 
+# make demonstration funnels
+source("funnel_demos.R")
+
 # export plots in publication-ready format ----
 source("Anderson_plotting.R")
 # Et voila! ----
