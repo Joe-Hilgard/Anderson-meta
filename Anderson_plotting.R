@@ -276,3 +276,20 @@ dat %>%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_PhysArous.pdf", type = "pdf")
 dev.off()
+
+# Double funnel plots with 0-reference and naive-centered funnels ----
+
+# Behavior
+MA = dat %>%
+  filter(Outcome == "AggBeh", 
+         Setting == "Exp",
+         Best. %in% c("y")) %>%
+  naive() 
+funnel(MA, level=c(90, 95, 99), 
+       shade = c("grey98", "grey55", "grey75"), refline=0,
+       back = NULL, hlines = NULL,
+       main = "'Best' experiments",
+       xlim = c(-.6, .8), ylim = c(.30, 0))
+par(new=T)
+funnel(MA, xlim = c(-.6, .8), ylim = c(.30, 0), shade=NULL, back=NULL, hlines=NULL,
+       xlab=NA, ylab=NA, main=NA)
