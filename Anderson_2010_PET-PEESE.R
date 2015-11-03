@@ -1,31 +1,4 @@
 # PET-PEESE of the meta-analysis
-
-# My greatest concern right now is how to deal with multiple entries for a study, 
-#   e.g. study appears as raw and as partial
-
-# According to Carter & McCullough's citation of Stanley & Doucouliagos (2007)
-  # Use PET to see if the estimated effect size != 0
-  # If estimated effect size == 0 then use PET estimate
-  # If PET says estimated effect != 0 then use PEESE estimate
-# PET: b0 is estimated sig. of effect after bias
-#    : b1 is estimated sig. of pub bias
-
-# NOTES:
-# Std.Err seems to refer to Fisher.s.Z's standard error, which is convenient.
-# Not sure what some of these subscripts mean on setting:
-# "Exp", "Nonexp", and "Long" are obvious, 
-#   but what are "NonexpS", "LongP", and "LongPs"?
-# Would be nice to make x-axis always bottom out at 0
-
-# I think "S" stands for whether sex was applied as a covariate
-  # and/or the sexes were analyzed separately
-# I think "P" stands for "partial"
-# Similarly "Long.Dup" varies:
-  # L for Longitudinal
-  # LS for Longitudinal separated by sex
-  # LT1s for ???
-  # LT1 for ???
-
 # Read in the data
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 

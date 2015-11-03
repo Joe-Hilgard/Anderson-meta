@@ -68,7 +68,8 @@ PEESE=function(dataset, error = "additive") {
 # funnel plot with PET line and conditional PEESE line ----
 funnelPETPEESE = function(dataset, 
                           error = "additive",
-                          alwaysPEESE=T, plotName=NULL, printText = T, ...) {
+                          alwaysPEESE=T, plotName=NULL, printText = T,
+                          ...) {
   naiveModel = naive(dataset)
   petModel = PET(dataset, error)
   peeseModel = PEESE(dataset, error)
@@ -93,7 +94,8 @@ funnelPETPEESE = function(dataset,
                                     , ", p-bias = ", p.bias
                                     , sep=""))
     points(x = petModel$b[1], y=0, cex=1.5)
-    abline(v = petModel$b[1], lty = 2)
+    #abline(v = petModel$b[1], lty = 2)
+    #lines(x = rep(petModel$b[1], 2), y = c(ymin, ymin - .1)
     # add line and text from PEESE
     if(petModel$pval[1] < .05 || alwaysPEESE == T) {
       grid = 
@@ -107,7 +109,7 @@ funnelPETPEESE = function(dataset,
         peeseModel$b[1] + peeseModel$b[2]*grid$Var
       grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
       points(x = (peeseModel$b[1]), y=0, cex=1.5, pch=5)
-      abline(v = peeseModel$b[1], lty = 2)
+      #abline(v = peeseModel$b[1], lty = 2)
       if (printText == T) { 
         peeseModel$b[1] %>%
           tanh %>%
@@ -135,7 +137,7 @@ funnelPETPEESE = function(dataset,
                                     , ", p-bias = ", p.bias
                                     , sep=""))
     points(x = b[1], y=0, cex=1.5)
-    abline(v = b[1], lty = 2)
+    #abline(v = b[1], lty = 2)
     # add line and text from PEESE
     if(summary(petModel)$coefficients[1,4] < .05 || alwaysPEESE == T) {
       grid = 
@@ -150,7 +152,7 @@ funnelPETPEESE = function(dataset,
         b[1] + b[2]*grid$Var
       grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
       points(x = b[1], y=0, cex=1.5, pch=5)
-      abline(v = b[1], lty = 2)
+      #abline(v = b[1], lty = 2)
       if (printText == T) {
         b[1] %>%
           tanh %>%

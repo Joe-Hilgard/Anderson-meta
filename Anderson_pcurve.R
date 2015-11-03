@@ -2,6 +2,7 @@
 # Next step: Generated bootstrapped 95% CIs. That will take a lot of cycles!
 source("Simonsohn-ESCI.R")
 library(dplyr)
+library(ggplot2)
 
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 
@@ -35,17 +36,26 @@ for (i in unique(dat$Outcome)) {
         rbind(data.frame("Outcome" = i, "Setting" = j, "Best" = c("Best-only", "All")[k],
                          "k" = sum(filter), "n" = sum(set$Sample.size),
                          "dhat_pcurve" = pcurve[1], "rhat_pcurve" = pcurve[2]))
+      # Export v-plot
       savePlot(filename=saveName, type="png")
+      dev.off()
       
-      
-      hist(set$p.twotail[set$p.twotail<.05], 
-           main = "p-curve",
-           xlab = "p-value (two-tailed)",
-           breaks=seq(0, .05, by=.01))
-      x = c("best-only", "full")[k]
+      # Plot curve of relative frequencies
+      set = set %>% filter(set$p.twotail < .05)
+      set$bin = ceiling(set$p.twotail*100)/100
+      tmp = data.frame(Var1 = as.factor(seq(.01, .05, .01)))
+      tmp = left_join(tmp, data.frame(table(set$bin)/sum(table(set$bin))))
+      tmp$Freq[is.na(tmp$Freq)] = 0
+      ggplot(tmp, aes(x = Var1, y = Freq)) +
+        geom_point() +
+        geom_line(aes(group=1)) +
+        scale_y_continuous("Percentage of test results", limits = c(0, 1)) +
+        scale_x_discrete(expression(italic(p)~-value)) +
+        theme_bw() +
+        annotate("text") +
+        ggtitle(name)
       saveName = paste("./pcurve_plotdump/", paste(i,j,x,"curve", sep="_"),".png", sep="")
-      savePlot(filename=saveName, type="png")
-      graphics.off()
+      ggsave(filename=saveName)
       
       # conduct and export sensitivity analysis
       sensFrame = cbind(Study.name = as.character(set$Study.name), 
