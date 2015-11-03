@@ -7,6 +7,15 @@ library(truncdist) # for sampling biased studies
 library(magrittr) # for piping
 library(metafor) # for meta-analysis
 
+# My funnel plot style
+source("PETPEESE_functions.R")
+myFunnel = function(set, ...) {
+  funnelPETPEESE(set, printText = F,
+                 back = NULL, hlines = "grey80", 
+                 pch = ifelse(set$sig, 16, 1),
+                 ...)
+}
+
 # function for generating k studies of some effect, at least X percent of which are significant
 gen_k_studies = function(k, percent_sig, avg_n, 
                          min_n = 15, max_n = 300, sdlog = .5,
@@ -84,7 +93,10 @@ biased.null = gen_k_studies(20, .80, 40, sdlog = .5, force_nonsig = F, d_true = 
 unbiased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = unbiased)
 biased.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased)
 biased.null.model = rma(yi = zobs, sei = sezobs, ni = nobs, data = biased.null)
-
+# make sig column
+unbiased$sig = unbiased$p < .05
+biased$sig = biased$p < .05
+biased.null$sig = biased.null$p < .05
 
 # prepare .pdf export
 pdf("funnels_1.pdf", width = 5, height = 6)
@@ -93,24 +105,30 @@ par(mfrow = c(3,2),
     mar = c(2, 4, 2, 1) + .01)
 # funnel plots
 funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = NULL, hlines = "grey80"#, pch = ifelse(unbiased$sig, 16, 1)
+       )
 abline(v = z_true, lty = 2)
 abline(v = unbiased.model$b, lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 funnel(biased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = NULL, hlines = "grey80"#, pch = ifelse(biased$sig, 16, 1)
+       )
 abline(v = z_true, lty = 2)
 abline(v = biased.model$b, lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 # trim and fill
 funnel(trimfill(unbiased.model), xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = NULL, hlines = "grey80")
 abline(v = z_true, lty = 2)
 abline(v = trimfill(unbiased.model)$b, lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 funnel(trimfill(biased.model), xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80")
 abline(v = z_true, lty = 2)
 abline(v = trimfill(biased.model)$b, lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
@@ -118,7 +136,9 @@ mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 # Egger test
 # additive (not multiplicative) error in meta-regression
 funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80"#, pch = ifelse(unbiased$sig, 16, 1)
+       )
 unbiased.egger = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$b
 b = unbiased.egger.coefs
@@ -128,7 +148,9 @@ abline(v = unbiased.model$b, lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
 funnel(biased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80"#, pch = ifelse(biased$sig, 16, 1)
+       )
 biased.egger = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$b
 b = biased.egger.coefs
@@ -145,41 +167,45 @@ par(mfrow = c(2,3))
 
 # PET estimate
 funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(unbiased$sig, 16, 1))
 unbiased.egger = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = unbiased)
 unbiased.egger.coefs = summary(unbiased.egger)$b
 b = unbiased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = z_true, lty = 2)
-points(x = b[1], y = 0, pch = 6)
+points(x = b[1], y = 0, pch = 1)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'A.',line=-1.5)
 
 funnel(biased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(biased$sig, 16, 1))
 biased.egger = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = biased)
 biased.egger.coefs = summary(biased.egger)$b
 b = biased.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = z_true, lty = 2)
-points(x = b[1], y = 0, pch = 6)
+points(x = b[1], y = 0, pch = 1)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'B.',line=-1.5)
 
 funnel(biased.null.model, xlim = c(0 - .5, 0 + .5),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(biased.null$sig, 16, 1))
 biased.null.egger = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = biased.null)
 biased.null.egger.coefs = summary(biased.null.egger)$b
 b = biased.null.egger.coefs
 abline(a = -b[1]/b[2], b = 1/b[2])
 abline(v = 0, lty = 2)
-points(x = b[1], y = 0, pch = 6)
+points(x = b[1], y = 0, pch = 1)
 abline(v = b[1], lty = 3)
 mtext(side=3,adj=.05,cex=1.5,'C.',line=-1.5)
 
 # PEESE estimate
 funnel(unbiased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(unbiased$sig, 16, 1))
 unbiased.PEESE = rma(yi=zobs, sei=sezobs, mods = ~varzobs, data = unbiased)
 unbiased.PEESE.coefs = summary(unbiased.PEESE)$b
 b = unbiased.PEESE.coefs
@@ -199,7 +225,8 @@ abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'D.',line=-1.5)
 
 funnel(biased.model, xlim = c(z_true - .4, z_true + .4),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(biased$sig, 16, 1))
 biased.PEESE = rma(yi=zobs, sei=sezobs, mods = ~varzobs, data = biased)
 biased.PEESE.coefs = summary(biased.PEESE)$b
 b = biased.PEESE.coefs
@@ -219,7 +246,8 @@ abline(v = z_true, lty = 2)
 mtext(side=3,adj=.05,cex=1.5,'E.',line=-1.5)
 
 funnel(biased.null.model, xlim = c(0 - .5, 0 + .5),
-       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       #level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0)
+       back = NULL, hlines = "grey80", pch = ifelse(biased.null$sig, 16, 1))
 biased.null.PEESE = rma(yi=zobs, sei=sezobs, mods = ~sezobs, data = biased.null)
 biased.null.PEESE.coefs = summary(biased.null.PEESE)$b
 b = biased.null.PEESE.coefs

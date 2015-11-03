@@ -39,7 +39,8 @@ other.all
 funnel(model, 
        pch = ifelse(dat.aggBeh$CRTT %in% "Yes", 16, 1),
        cex = ifelse(dat.aggBeh$CRTT %in% "Yes", 1, .5),
-       refline = 0, level = c(90, 95, 99), shade = c("white", "gray95", "gray90"))
+       refline = 0, level = c(90, 95, 99), shade = c("white", "gray95", "gray90"),
+       back = NULL)
 
 tapply(dat.aggBeh$Sample.size, dat.aggBeh$CRTT, FUN = mean)
 
