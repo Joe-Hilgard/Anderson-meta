@@ -21,25 +21,29 @@ dat %>%
          Setting == "Exp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All experiments", 
-           xlim = c(-.5, 1.5), ylim = c(.32, 0))
+           xlim = c(-.5, 1.5), ylim = c(.32, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Nonexp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All cross-sections",
-           xlim = c(-.1, .6), ylim = c(.1, 0))
+           xlim = c(-.1, .6), ylim = c(.1, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best experiments", 
-           xlim = c(-.5, 1.5), ylim = c(.32, 0))
+           xlim = c(-.5, 1.5), ylim = c(.32, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Nonexp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best cross-sectional",
-           xlim = c(-.1, .6), ylim = c(.1, 0))
+           xlim = c(-.1, .6), ylim = c(.1, 0),
+           xlab = "Observed Effect Size (z)")
 savePlot(filename="funnels_AggAff.pdf", type = "pdf")
 dev.off()
 
@@ -51,25 +55,29 @@ dat %>%
          Setting == "Exp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All experiments",
-           xlim = c(-.4, .8), ylim = c(.3, 0))
+           xlim = c(-.4, .8), ylim = c(.3, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggBeh", 
          Setting == "Nonexp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All cross-sectional", 
-           xlim = c(-.2, .6), ylim = c(.185, 0))
+           xlim = c(-.2, .6), ylim = c(.185, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggBeh", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best experiments", 
-           xlim = c(-.4, .8), ylim = c(.3, 0))
+           xlim = c(-.4, .8), ylim = c(.3, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggBeh", 
          Setting == "Nonexp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best cross-sectional", 
-           xlim = c(-.2, .6), ylim = c(.185, 0))
+           xlim = c(-.2, .6), ylim = c(.185, 0),
+           xlab = "Observed Effect Size (z)")
 savePlot(filename="funnels_AggBeh.pdf", type = "pdf")
 dev.off()
 
@@ -81,25 +89,29 @@ dat %>%
          Setting == "Exp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All experiments", 
-                 xlim = c(-.5, 1), ylim = c(.315, 0))
+           xlim = c(-.5, 1), ylim = c(.315, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggCog", 
          Setting == "Nonexp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All cross-sectional", 
-                 xlim = c(-.1, .6), ylim = c(.125, 0))
+           xlim = c(-.1, .6), ylim = c(.125, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggCog", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best experiments", 
-                 xlim = c(-.5, 1), ylim = c(.315, 0))
+           xlim = c(-.5, 1), ylim = c(.315, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "AggCog", 
          Setting == "Nonexp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best cross-sectional", 
-                 xlim = c(-.1, .6), ylim = c(.125, 0))
+           xlim = c(-.1, .6), ylim = c(.125, 0),
+           xlab = "Observed Effect Size (z)")
 savePlot(filename="funnels_AggCog.pdf", type = "pdf")
 dev.off()
 
@@ -111,13 +123,15 @@ dat %>%
          Setting == "Exp",
          Best. %in% c("y", "n")) %>%
   myFunnel(main = "All experiments", 
-                 xlim = c(-.5, 1), ylim = c(.41, 0))
+           xlim = c(-.5, 1), ylim = c(.41, 0),
+           xlab = "Observed Effect Size (z)")
 dat %>%
   filter(Outcome == "PhysArous", 
          Setting == "Exp",
          Best. %in% c("y")) %>%
   myFunnel(main = "Best experiments", 
-                 xlim = c(-.5, 1), ylim = c(.41, 0))
+           xlim = c(-.5, 1), ylim = c(.41, 0),
+           xlab = "Observed Effect Size (z)")
 savePlot(filename="funnels_PhysArous.pdf", type = "pdf")
 dev.off()
 
