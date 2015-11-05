@@ -74,3 +74,17 @@ for (i in unique(dat$Outcome)) {
 }
 
 write.table(pcurveOutput, file = "pcurve_results.txt", row.names=F, sep="\t")
+
+# export for p-curve web app
+tmp = dat %>% 
+  filter(Outcome == "AggBeh",
+         Setting == "Exp",
+         Best. == "y")
+cat(paste("t(", tmp$df, ")=", tmp$t, "\n", sep=""))
+
+tmp = dat %>% 
+  filter(Outcome == "AggBeh",
+         Setting == "Exp",
+         Best. %in% c("y", "n"))
+cat(paste("t(", tmp$df, ")=", tmp$t, "\n", sep=""))
+#etc. etc.
