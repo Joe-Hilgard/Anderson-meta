@@ -77,14 +77,103 @@ write.table(pcurveOutput, file = "pcurve_results.txt", row.names=F, sep="\t")
 
 # export for p-curve web app
 tmp = dat %>% 
+  filter(Outcome == "AggAff",
+         Setting == "Exp",
+         Best. == "y")
+cat(paste("t(", tmp$df, ")=", tmp$t, "\n", sep="")) %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggAff",
+         Setting == "Exp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggAff",
+         Setting == "Nonexp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+# AggBeh
+tmp = dat %>% 
   filter(Outcome == "AggBeh",
          Setting == "Exp",
          Best. == "y")
-cat(paste("t(", tmp$df, ")=", tmp$t, "\n", sep=""))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard
 
 tmp = dat %>% 
   filter(Outcome == "AggBeh",
          Setting == "Exp",
          Best. %in% c("y", "n"))
-cat(paste("t(", tmp$df, ")=", tmp$t, "\n", sep=""))
-#etc. etc.
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggBeh",
+         Setting == "Nonexp",
+         Best. %in% c("y"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggBeh",
+         Setting == "Nonexp",
+         Best. %in% c("y"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggBeh",
+         Setting == "Nonexp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+# AggCog
+tmp = dat %>% 
+  filter(Outcome == "AggCog",
+         Setting == "Exp",
+         Best. == "y")
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggCog",
+         Setting == "Exp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggCog",
+         Setting == "Nonexp",
+         Best. %in% c("y"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "AggCog",
+         Setting == "Nonexp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+# PhysArous
+tmp = dat %>% 
+  filter(Outcome == "PhysArous",
+         Setting == "Exp",
+         Best. == "y")
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
+tmp = dat %>% 
+  filter(Outcome == "PhysArous",
+         Setting == "Exp",
+         Best. %in% c("y", "n"))
+paste("t(", tmp$df, ")=", tmp$t, "\n", sep="") %>% 
+  writeClipboard()
+
