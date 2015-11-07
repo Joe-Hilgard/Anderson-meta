@@ -1,0 +1,19 @@
+p 
+{
+margin-left:2cm;
+}
+	tr.border_bottom td {
+	  border-bottom:1pt dashed blue;
+	}
+
+#individual-vals td, #individual-vals td {
+	border:1px solid #555;
+	padding-left:1em;
+	padding-right:1em;
+}
+
+#individual-vals th {
+	background:#CCC;
+	border:1px solid #555;
+	padding-left:1em;
+}
