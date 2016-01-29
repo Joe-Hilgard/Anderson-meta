@@ -38,7 +38,7 @@ PET=function(dataset, error = "additive") {
                  sei = Std.Err, 
                  mods = ~Std.Err, 
                  data=dataset,
-                 method = "FE")
+                 method = "REML")
   }
   if (error == "multiplicative") {
     petOut = lm(Fisher.s.Z ~ Std.Err,
@@ -55,7 +55,7 @@ PEESE=function(dataset, error = "additive") {
                    sei = Std.Err, 
                    mods = ~I(Std.Err^2), 
                    data=dataset,
-                   method = "FE")
+                   method = "REML")
   }
   if (error == "multiplicative") {
     peeseOut = lm(Fisher.s.Z ~ I(Std.Err^2), 

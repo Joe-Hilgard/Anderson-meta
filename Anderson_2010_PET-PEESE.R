@@ -29,26 +29,27 @@ dir.create("./petpeese_plotdump/petInfluence")
 dir.create("./petpeese_plotdump/peeseInfluence")
 
 # Statistic value export ----
-outputFrame = data.frame(
-  # ID data
-  "Outcome.Group" = NULL,
-  "Setting" = NULL,
-  "Outcome.Type" = NULL,
-  # PET stats
-  "PET.b0" = NULL,
-  "PET.b0.se" = NULL,
-  "PET.b0.p" = NULL,
-  "PET.b1" = NULL,
-  "PET.b1.se" = NULL,
-  "PET.b1.p" = NULL,
-  # PEESE stats
-  "PEESE.b0" = NULL,
-  "PEESE.b0.se" = NULL,
-  "PEESE.b0.p" = NULL,
-  "PEESE.b1" = NULL,
-  "PEESE.b1.se" = NULL,
-  "PEESE.b1.p" = NULL
-)
+outputFrame = NULL
+# outputFrame = data.frame(
+#   # ID data
+#   "Outcome.Group" = NULL,
+#   "Setting" = NULL,
+#   "Outcome.Type" = NULL,
+#   # PET stats
+#   "PET.b0" = NULL,
+#   "PET.b0.se" = NULL,
+#   "PET.b0.p" = NULL,
+#   "PET.b1" = NULL,
+#   "PET.b1.se" = NULL,
+#   "PET.b1.p" = NULL,
+#   # PEESE stats
+#   "PEESE.b0" = NULL,
+#   "PEESE.b0.se" = NULL,
+#   "PEESE.b0.p" = NULL,
+#   "PEESE.b1" = NULL,
+#   "PEESE.b1.se" = NULL,
+#   "PEESE.b1.p" = NULL
+# )
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
@@ -68,8 +69,9 @@ for (i in unique(dat$Outcome)) {
         "Best" = ifelse(k==1, "Best-only", "All"),
         "naive-FE.r" = tanh(modelNaiveFE$b[1]),
         "naive-RE.r" = tanh(modelNaiveRE$b[1]),
-        "heterogeneity_RE" = modelNaiveRE$QE,
-        "heterogeneity_RE_pval" = modelNaiveRE$QEp,
+        "RE_Q" = modelNaiveRE$QE,
+        "RE_Q_p" = modelNaiveRE$QEp,
+        "RE_I2" = modelNaiveRE$I2,
         # PET stats
         "PET.b0" = modelPET$b[1],
         "PET.b0.se" = modelPET$se[1],
@@ -78,8 +80,9 @@ for (i in unique(dat$Outcome)) {
         "PET.b1.se" = modelPET$se[2],
         "PET.b1.p" = modelPET$pval[2],
           #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
-        "PET_heterogeneity" = modelPET$QE,
-        "PET_heterogeneity_p" = modelPET$QEp,
+        "PET_Q" = modelPET$QE,
+        "PET_Q_p" = modelPET$QEp,
+        "PET_I2" = modelPET$I2,
             # PEESE stats
         "PEESE.b0" = modelPEESE$b[1],
         "PEESE.b0.se" = modelPEESE$se[1],
@@ -87,8 +90,9 @@ for (i in unique(dat$Outcome)) {
         "PEESE.b1" = modelPEESE$b[2],
         "PEESE.b1.se" = modelPEESE$se[2],
         "PEESE.b1.p" = modelPEESE$pval[2],
-        "PEESE_heterogeneity" = modelPEESE$QE,
-        "PEESE_heterogeneity_p" = modelPEESE$QEp
+        "PEESE_Q" = modelPEESE$QE,
+        "PEESE_Q_p" = modelPEESE$QEp,
+        "PEESE_I2" = modelPEESE$I2
       )
       outputFrame = rbind(outputFrame, output)
     }
@@ -103,8 +107,10 @@ outputFrame$PEESE.r.LL = atanh(outputFrame$PEESE.b0 - 1.96*outputFrame$PEESE.b0.
 outputFrame$PEESE.r.UL = atanh(outputFrame$PEESE.b0 + 1.96*outputFrame$PEESE.b0.se)
 #Round to 3 decimals
 outputFrame[,sapply(outputFrame, is.numeric)] = round(outputFrame[,sapply(outputFrame, is.numeric)],3)
-# fix tiny p-values
-outputFrame[outputFrame == 0] = "< .001"
+# TODO: fix tiny p-values
+# outputFrame %>% 
+#   select(ends_with("p")) %>% 
+#   mutate_each( , )
 # View(outputFrame)
 
 # May want to shave off some of the less-useful columns
