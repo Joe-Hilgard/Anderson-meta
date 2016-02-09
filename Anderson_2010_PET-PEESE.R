@@ -62,6 +62,7 @@ for (i in unique(dat$Outcome)) {
       # Had to increase tolerance on threshold b/c aggbeh/exp/best wasn't converging.
       modelNaiveRE = rma(yi = Fisher.s.Z, sei=Std.Err, method="REML", data=dat[filter,],
                          control=list(threshold=5e-4))
+      # Output data frame
       output = data.frame(
         # ID data
         "Outcome" = i,
