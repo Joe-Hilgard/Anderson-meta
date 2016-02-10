@@ -4,6 +4,7 @@ source("Anderson_cleaning.R")
 source("Anderson_2010_PET-PEESE.R")
 source("Anderson_pcurve.R")
 source("Anderson_dissertations.R")
+source("p-uniform.R")
 
 # aggregate results ----
 library(dplyr)

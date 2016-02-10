@@ -155,7 +155,8 @@ dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long")
 
 # Generate t-values and p-values and cohen's d from Fisher's Z and SE(Z)
 # One-tailed? Two-tailed?
-dat$t = dat$Fisher.s.Z / dat$Std.Err
+dat$z = dat$Fisher.s.Z / dat$Std.Err
+dat$t = dat$Correlation * sqrt((dat$Sample.size - 2) / (1-dat$Correlation^2))
 dat$df = dat$Sample.size - 2
 dat$d_est = 2*dat$Correlation/sqrt(1 - dat$Correlation^2) # per Borenstein textbook p. 48
 dat$p.onetail = pt(dat$t, df = dat$df, lower.tail=F) 

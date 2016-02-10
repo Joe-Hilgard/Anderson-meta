@@ -143,7 +143,6 @@ out = bind_rows(out,
 
 # TODO: prune rows where k < 10
 # TODO: Add p-uniform's test for (publication?) bias
-# TODO: Does row aggregation screw up the dat$Correlation column?
 out = out %>% 
   mutate_each(funs(round(., 3)), mod.est:mod.pval.pb)
 out$mod.pval.0[out$mod.pval.0 == 0] = "< .001"
