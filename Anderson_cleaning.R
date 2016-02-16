@@ -9,14 +9,18 @@ dat = read_excel("Master9-5-2short.xls")
 # Bring in and append my coding information re: publication status
 dat2 = read_excel("Pub_Style.xlsx")
 dat = left_join(dat, dat2)
-# Fix names
+# Fix column names
 names(dat) = c("ID", "Study.name", "Outcome", "PERSON", "Sample.size",
                "Correlation", "Fisher.s.Z", "Std.Err", "Full.Reference",
                "Long.Dup", "raw.r.", "Study", "SEX", "Best.", "AGE",
                "East.West", "setting2", "Setting", "1st", "2nd", "3rd", "4th",
                "aveORonlyR", "aveDVs", "Country", "Pub")
-dat = dat[dat$Best. != "",] # delete the blank row
 # Std.Err refers to Std.Err of z-transformed value
+dat = dat[dat$Best. != "",] # delete the blank row
+# Fix excess space in full reference of one entry.
+dat$Full.Reference[dat$Full.Reference == "Austin, L. H. (1987). The effects of playing video games with aggressive features.Dissertation: The Fielding Institute, "] =
+  "Austin, L. H. (1987). The effects of playing video games with aggressive features.Dissertation: The Fielding Institute,"
+
 
 # Inspect suspicious Matsuzaki et al study
 # View(dat[grep("Matsuzaki", dat$Full.Reference),])
