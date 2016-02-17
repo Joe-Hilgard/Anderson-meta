@@ -17,6 +17,8 @@ out = data.frame("Outcome" = NULL,
                  "ci.ub" = NULL, 
                  "pval" = NULL)
 
+# TODO: sensitivity analyses
+
 # Aggressive affect ----
 # Best experiments
 sel = dat %>% 

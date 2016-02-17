@@ -70,9 +70,9 @@ for (i in unique(dat$Outcome)) {
         "Best" = ifelse(k==1, "Best-only", "All"),
         "naive-FE.r" = tanh(modelNaiveFE$b[1]),
         "naive-RE.r" = tanh(modelNaiveRE$b[1]),
-        "RE_Q" = modelNaiveRE$QE,
-        "RE_Q_p" = modelNaiveRE$QEp,
-        "RE_I2" = modelNaiveRE$I2,
+        "RE.Q" = modelNaiveRE$QE,
+        "RE.Q.p" = modelNaiveRE$QEp,
+        "RE.I2" = modelNaiveRE$I2,
         # PET stats
         "PET.b0" = modelPET$b[1],
         "PET.b0.se" = modelPET$se[1],
@@ -81,9 +81,9 @@ for (i in unique(dat$Outcome)) {
         "PET.b1.se" = modelPET$se[2],
         "PET.b1.p" = modelPET$pval[2],
           #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
-        "PET_Q" = modelPET$QE,
-        "PET_Q_p" = modelPET$QEp,
-        "PET_I2" = modelPET$I2,
+        "PET.Q" = modelPET$QE,
+        "PET.Q.p" = modelPET$QEp,
+        "PET.I2" = modelPET$I2,
             # PEESE stats
         "PEESE.b0" = modelPEESE$b[1],
         "PEESE.b0.se" = modelPEESE$se[1],
@@ -91,9 +91,9 @@ for (i in unique(dat$Outcome)) {
         "PEESE.b1" = modelPEESE$b[2],
         "PEESE.b1.se" = modelPEESE$se[2],
         "PEESE.b1.p" = modelPEESE$pval[2],
-        "PEESE_Q" = modelPEESE$QE,
-        "PEESE_Q_p" = modelPEESE$QEp,
-        "PEESE_I2" = modelPEESE$I2
+        "PEESE.Q" = modelPEESE$QE,
+        "PEESE.Q.p" = modelPEESE$QEp,
+        "PEESE.I2" = modelPEESE$I2
       )
       outputFrame = rbind(outputFrame, output)
     }

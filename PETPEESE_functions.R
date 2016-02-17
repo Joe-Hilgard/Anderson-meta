@@ -10,7 +10,6 @@ library(magrittr)
 # If this assumption is wrong, please rename your columns
 #   or change this code.
 # If you're working in d instead of r, remove the tanh steps
-# Also note that everything is in fixed-effects, not random, models
 
 # Of these functions, the most useful is probably funnelPETPEESE()
 # This compares the naive meta-analysis against the PET estimate and,
@@ -22,7 +21,7 @@ library(magrittr)
 # To inspect influence statistics for outliers, etc., 
 # Try plot(influence(PET(...))) or plot(influence(PEESE(...)))
 
-# naive meta-analysis ----
+# naive fixed-effects meta-analysis ----
 naive = function(dataset, ...) {
   rma(yi = Fisher.s.Z,
       sei = Std.Err,
@@ -32,35 +31,41 @@ naive = function(dataset, ...) {
 }
 
 # basic PET ----
-PET=function(dataset, error = "additive") {
+PET=function(dataset, error = "additive", ...) {
   if (error == "additive") {
     petOut = rma(yi = Fisher.s.Z, 
                  sei = Std.Err, 
                  mods = ~Std.Err, 
-                 data=dataset,
-                 method = "REML")
+                 data = dataset,
+                 method = "REML", 
+                 control = list(stepadj = .5), # reduced step length to help convergence
+                 ...)
   }
   if (error == "multiplicative") {
     petOut = lm(Fisher.s.Z ~ Std.Err,
                 weights = 1/Std.Err,
-                data=dataset)
+                data=dataset,
+                ...)
   }
     return(petOut)
 }
 
 # basic PEESE ----
-PEESE=function(dataset, error = "additive") {
+PEESE=function(dataset, error = "additive", ...) {
   if (error == "additive") {
     peeseOut = rma(yi = Fisher.s.Z, 
                    sei = Std.Err, 
                    mods = ~I(Std.Err^2), 
                    data=dataset,
-                   method = "REML")
+                   method = "REML",
+                   control = list(stepadj = .5), # reduced step length to help convergence
+                   ...)
   }
   if (error == "multiplicative") {
     peeseOut = lm(Fisher.s.Z ~ I(Std.Err^2), 
                   weights = 1/Std.Err,
-                  data=dataset)
+                  data = dataset,
+                  ...)
   }
     return(peeseOut)
 }

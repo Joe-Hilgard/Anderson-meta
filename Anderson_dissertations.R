@@ -50,6 +50,7 @@ prop.test(t3)
 smalldat2 = dat %>% 
   distinct(Best., Full.Reference, Study)
 t4 = table(smalldat2$Best., smalldat2$Diss)
+t4
 prop.test(t4)
 
 dat %>% 
