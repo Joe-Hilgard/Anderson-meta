@@ -146,7 +146,7 @@ out = bind_rows(out,
 out = out %>% 
   mutate_each(funs(round(., 3)), mod.est:mod.pval.pb)
 out$mod.pval.0[out$mod.pval.0 == 0] = "< .001"
-write.table(out, "puniform_results.txt")
+write.table(out, "puniform_results.txt", sep = "\t")
 # TODO: Implement sensitivity analyses, outlier detection
 # TODO: Curious that for many outcomes the p-uniform estimate is higher than the FE estimate.
 # e.g. Ballard & Wiest (1998) outlier in aggressive affect

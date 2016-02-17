@@ -10,11 +10,13 @@ source("p-uniform.R")
 library(dplyr)
 results1 = read.delim("PETPEESE_output.txt")
 results2 = read.delim("pcurve_results.txt")
+results3 = read.delim("puniform_results.txt")
 full_join(results2, results1) %>% 
+  full_join(results3) %>% 
   write.table(file = "full_results.txt", sep="\t", row.names=F)
 
 # make demonstration funnels
-source("funnel_demos.R")
+# source("funnel_demos.R")
 
 # export plots in publication-ready format ----
 source("Anderson_plotting.R")
