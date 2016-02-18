@@ -28,6 +28,18 @@ TES = function(dataset, r) {
     return()
 }
 
+# Make output data frame
+out = expand.grid("Best" = c("Best", "Full"),
+                  "Outcome" = c("AggAff", "AggBeh", "AggCog", "PhysArous"),
+                  "Setting" = c("Exp", "NonExp"))
+# Sort and clean it
+out = out %>% 
+  filter(!(Outcome == "PhysArous" & Setting == "NonExp")) %>% 
+  select(Setting, Outcome, Best)
+# TODO: Make triple loop to run all analyses, sensitivity analyses.
+
+
+
 # Aggressive behavior ----
 # Experiments, best-practices 
 dat %>% 
