@@ -5,6 +5,7 @@ source("2_PET-PEESE.R")
 source("3_pcurve.R")
 source("4_dissertations.R")
 source("5_puniform.R")
+source("6_TES.R")
 
 # aggregate results & make tables ----
 library(dplyr)
@@ -28,6 +29,6 @@ results %>%
 # source("funnel_demos.R")
 
 # export plots in publication-ready format ----
-source("Anderson_plotting.R")
+source("7_plotting.R")
 # Et voila! ----
 cat("And that's a wrap!")
