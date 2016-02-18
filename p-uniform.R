@@ -149,6 +149,52 @@ out = out %>%
   mutate_each(funs(round(., 3)), mod.est:mod.pval.pb)
 out$mod.pval.0[out$mod.pval.0 == 0] = "< .001"
 write.table(out, "puniform_results.txt", sep = "\t")
+
+# Sensitivity analyses ----
 # TODO: Implement sensitivity analyses, outlier detection
-# TODO: Curious that for many outcomes the p-uniform estimate is higher than the FE estimate.
 # e.g. Ballard & Wiest (1998) outlier in aggressive affect
+
+# conduct and export sensitivity analysis
+# Leave-one-out Sensitivity function
+sensitive_punif = function(ri, ni, ...) {
+  outputFrame = data.frame(ri, ni, rhat = NA, bias.test = NA)
+  for (i in 1:length(ri)) {
+    temp = puniform(ri = ri[-i],
+                    ni = ni[-i],
+                    ...)
+    outputFrame$rhat[i] = temp$est
+    outputFrame$bias.test[i] = temp$pval.pb
+  }
+  return(outputFrame)
+}
+
+dir.create("./punif_sensitive/")
+for (i in unique(dat$Outcome)) {
+  for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
+    for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
+      best = list("y", c("n", "y"))
+      set = dat %>% 
+        filter(Outcome == i, Setting == j, Best. %in% best[[k]])
+      if (nrow(set) < 10) next
+      
+      # Run leave-one-out analyses
+      sensFrame = cbind(Study.name = as.character(set$Study.name), 
+                        sensitive_punif(set$Correlation, set$Sample.size,
+                                        alpha = .025, side = "right", method = "P"))
+      # Combine with raw data, ID vars
+      IDFrame = set %>% 
+        select(Study.name, Full.Reference, 
+               Correlation, Fisher.s.Z)
+      sensFrame = right_join(IDFrame,
+                             sensFrame,
+                             by = "Study.name")
+      
+      # Export analysis
+      write.table(sensFrame, 
+                  file = paste("./punif_sensitive/", paste(i, j, k, sep="_"), ".txt", sep = ""),
+                  sep = "\t",
+                  row.names = F)
+      
+    }
+  }
+}
