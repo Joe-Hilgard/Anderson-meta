@@ -1,10 +1,10 @@
 # Anderson_2010 master script
 
-source("Anderson_cleaning.R")
-source("Anderson_2010_PET-PEESE.R")
-source("Anderson_pcurve.R")
-source("Anderson_dissertations.R")
-source("p-uniform.R")
+source("1_cleaning.R")
+source("2_PET-PEESE.R")
+source("3_pcurve.R")
+source("4_dissertations.R")
+source("5_puniform.R")
 
 # aggregate results & make tables ----
 library(dplyr)
