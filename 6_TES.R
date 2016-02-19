@@ -28,16 +28,44 @@ TES = function(dataset, r) {
     return()
 }
 
-# Make output data frame
-out = expand.grid("Best" = c("Best", "Full"),
-                  "Outcome" = c("AggAff", "AggBeh", "AggCog", "PhysArous"),
-                  "Setting" = c("Exp", "NonExp"))
-# Sort and clean it
-out = out %>% 
-  filter(!(Outcome == "PhysArous" & Setting == "NonExp")) %>% 
-  select(Setting, Outcome, Best)
-# TODO: Make triple loop to run all analyses, sensitivity analyses.
+# TODO: Add sensitive TES function??
 
+# Make output data frame
+# out = expand.grid("Best" = c("Best", "Full"),
+#                   "Outcome" = c("AggAff", "AggBeh", "AggCog", "PhysArous"),
+#                   "Setting" = c("Exp", "NonExp"))
+# # Sort and clean it
+# out = out %>% 
+#   filter(!(Outcome == "PhysArous" & Setting == "NonExp")) %>% 
+#   select(Setting, Outcome, Best)
+# out$TES.p = NULL
+
+# Prepare holster
+out = data.frame(NULL)
+
+# TODO: Make triple loop to run all analyses, sensitivity analyses.
+for (i in unique(dat$Setting)) {
+  for (j in unique(dat$Outcome)) {
+    for (k in 1:2) {
+      best = list("y", c("n", "y"))
+      set = dat %>% 
+        filter(Outcome == i, Setting == j, Best. %in% best[[k]])
+      if (nrow(set) < 10) next
+      
+      # Conduct TES
+      out_1run = data.frame("Setting" = i,
+                            "Outcome" = j,
+                            "Best" = c("Best", "All")[k],
+                            "TES.pval" = TES(set))
+      # Append to previous
+      out = rbind(out, out_1run)
+      
+      # TODO: Conduct sensitivity analyses
+      sensitive_TES(set)
+      
+      }
+  }
+}
 
 
 # Aggressive behavior ----
