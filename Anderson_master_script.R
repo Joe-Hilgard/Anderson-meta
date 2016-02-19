@@ -23,7 +23,9 @@ results %>%
   select(Outcome:n, RE.I2, PET.I2, PEESE.I2)
 
 results %>% 
-  select(Outcome:n, naive.RE.r, mod.est, rhat_pcurve)
+  select(Outcome, Setting, Best, 
+         naive.RE.r, PET.r, PEESE.r, mod.est, rhat_pcurve) %>% 
+  View
 
 # make demonstration funnels
 # source("funnel_demos.R")
