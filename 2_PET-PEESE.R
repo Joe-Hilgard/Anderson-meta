@@ -30,26 +30,7 @@ dir.create("./petpeese_plotdump/peeseInfluence")
 
 # Statistic value export ----
 outputFrame = NULL
-# outputFrame = data.frame(
-#   # ID data
-#   "Outcome.Group" = NULL,
-#   "Setting" = NULL,
-#   "Outcome.Type" = NULL,
-#   # PET stats
-#   "PET.b0" = NULL,
-#   "PET.b0.se" = NULL,
-#   "PET.b0.p" = NULL,
-#   "PET.b1" = NULL,
-#   "PET.b1.se" = NULL,
-#   "PET.b1.p" = NULL,
-#   # PEESE stats
-#   "PEESE.b0" = NULL,
-#   "PEESE.b0.se" = NULL,
-#   "PEESE.b0.p" = NULL,
-#   "PEESE.b1" = NULL,
-#   "PEESE.b1.se" = NULL,
-#   "PEESE.b1.p" = NULL
-# )
+
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
@@ -73,6 +54,8 @@ for (i in unique(dat$Outcome)) {
         "RE.Q" = modelNaiveRE$QE,
         "RE.Q.p" = modelNaiveRE$QEp,
         "RE.I2" = modelNaiveRE$I2,
+        "RE.I2.lb" = confint(modelNaiveRE)$random["I^2(%)", "ci.lb"],
+        "RE.I2.ub" = confint(modelNaiveRE)$random["I^2(%)", "ci.ub"],
         # PET stats
         "PET.b0" = modelPET$b[1],
         "PET.b0.se" = modelPET$se[1],
@@ -84,6 +67,8 @@ for (i in unique(dat$Outcome)) {
         "PET.Q" = modelPET$QE,
         "PET.Q.p" = modelPET$QEp,
         "PET.I2" = modelPET$I2,
+        "PET.I2.lb" = confint(modelPET)$random["I^2(%)", "ci.lb"],
+        "PET.I2.ub" = confint(modelPET)$random["I^2(%)", "ci.ub"],
             # PEESE stats
         "PEESE.b0" = modelPEESE$b[1],
         "PEESE.b0.se" = modelPEESE$se[1],
@@ -93,7 +78,9 @@ for (i in unique(dat$Outcome)) {
         "PEESE.b1.p" = modelPEESE$pval[2],
         "PEESE.Q" = modelPEESE$QE,
         "PEESE.Q.p" = modelPEESE$QEp,
-        "PEESE.I2" = modelPEESE$I2
+        "PEESE.I2" = modelPEESE$I2,
+        "PEESE.I2.lb" = confint(modelPEESE)$random["I^2(%)", "ci.lb"],
+        "PEESE.I2.ub" = confint(modelPEESE)$random["I^2(%)", "ci.ub"]
       )
       outputFrame = rbind(outputFrame, output)
     }

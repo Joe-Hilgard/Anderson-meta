@@ -169,6 +169,31 @@ funnelPETPEESE = function(dataset,
   }
 }
 
+# # 95% CI for I2 statistic [MOTHBALLED -- USE confint() INSTEAD]
+# # Based on equations 16-18 in Huedo-Medina et al. 2006
+# CI_I2 = function(model) {
+#   # Get stats from model object
+#   Q = model$QE
+#   k = model$k
+#   H = sqrt(model$H2)
+#   # Calculate SE of log(H) (eqtn 18)
+#   lnH.se = ifelse(Q > k,
+#                 1/2 * (log(Q) - log(k-1)) / (sqrt(2*Q) - sqrt(2*k - 3)), # if Q > k
+#                 sqrt(1/(2*(k-2)) * (1 - (1 / (3 * (k-2)^2)))) # if Q <= k
+#   )
+#   # Use SE to make upper & lower bound of 95% CI on log(H) (eqtn 17)
+#   lnH.lb = log(H) + qnorm(.025) * lnH.se
+#   lnH.ub = log(H) + qnorm(.975) * lnH.se
+#   # Convert log(H) to H 
+#   H.lb = exp(lnH.lb)
+#   H.ub = exp(lnH.ub)
+#   # Use H to get I^2 (eqtn 16)
+#   I2.lb = (H.lb^2 - 1)/H.lb^2
+#   I2.lb = max(c(0, I2.lb))
+#   I2.ub = (H.ub^2 - 1)/H.ub^2
+#   return(c(I2.lb, I2.ub))
+# }
+
 # Leave-one-out sensitivity analysis ----
   # I felt it necessary to do this b/c influence.rma.uni
   # gives DFBETAs but those don't translate nicely to actual coefficients

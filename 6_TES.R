@@ -8,7 +8,9 @@ dat$sig = ifelse(dat$p.twotail < .05, "significant", "not-significant")
 # From Ioannidis & Trikalinos, p. 246
 # Expected # of sig results is sum of studies' powers
 # (We use meta-analytic estimate r = .21 as hypothesized ES)
-TES = function(dataset, r) {
+TES = function(dataset) {
+  modelNaiveFE = rma(yi = Fisher.s.Z, sei = Std.Err, method = "FE", data = dataset)
+  r = tanh(modelNaiveFE$b[1])
   # generate power estimates
   for (i in 1:nrow(dataset)) {
     dataset$power[i] = pwr.r.test(n=dataset$Sample.size[i],
@@ -28,7 +30,14 @@ TES = function(dataset, r) {
     return()
 }
 
-# TODO: Add sensitive TES function??
+# Leave-one-out sensitivity analysis for TES
+sensitive_TES = function(dataset) {
+  outputFrame = data.frame(dataset$Fisher.s.Z, dataset$Std.Err, TES.pval = NA)
+  for (i in 1:length(dataset$Fisher.s.Z)) {
+    outputFrame[i, c("TES.pval")] = TES(dataset[-i,])
+  }
+  return(outputFrame)
+}
 
 # Make output data frame
 # out = expand.grid("Best" = c("Best", "Full"),
@@ -43,9 +52,12 @@ TES = function(dataset, r) {
 # Prepare holster
 out = data.frame(NULL)
 
-# TODO: Make triple loop to run all analyses, sensitivity analyses.
-for (i in unique(dat$Setting)) {
-  for (j in unique(dat$Outcome)) {
+# Make directory for sensitivity analyses
+dir.create("TES_sensitive")
+
+# Triple loop to run all analyses, sensitivity analyses.
+for (i in unique(dat$Outcome)) {
+  for (j in c("Exp", "NonExp")) {
     for (k in 1:2) {
       best = list("y", c("n", "y"))
       set = dat %>% 
@@ -60,85 +72,27 @@ for (i in unique(dat$Setting)) {
       # Append to previous
       out = rbind(out, out_1run)
       
-      # TODO: Conduct sensitivity analyses
-      sensitive_TES(set)
+      # Run leave-one-out sensitivity analyses
+      sensFrame = cbind(Study.name = as.character(set$Study.name), 
+                        sensitive_TES(set))
       
-      }
+      # Combine sensitivity analyses with labels
+      IDFrame = set %>% 
+        select(Study.name, Full.Reference, 
+               Correlation, Fisher.s.Z)
+      sensFrame = right_join(IDFrame,
+                             sensFrame,
+                             by = "Study.name")
+      
+      # Export sensitivity analyses
+      write.table(sensFrame, 
+                  file = paste("./TES_sensitive/", paste(i, j, k, sep="_"), ".txt", sep = ""),
+                  sep = "\t",
+                  row.names = F)
+      
+    }
   }
 }
 
-
-# Aggressive behavior ----
-# Experiments, best-practices 
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggBeh", Best. == "y") %>% 
-  TES(r = .210)
-# significant, p = .016
-
-# Experiments, all
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggBeh") %>% 
-  TES(r = .181)
-# significant, p = .058
-
-# Cross-section, best-practices
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggBeh", Best. == "y") %>% 
-  TES(r = .262)
-# not significant, p = .916
-
-# Cross-section, all
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggBeh") %>% 
-  TES(r = .189)
-# not significant, p = .274
-
-# Aggressive Cognition ----
-# Experiments, best-practices
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggCog", Best. == "y") %>% 
-  TES(r = .217)
-# not significant, p = .550
-
-# Experiments, all
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggCog") %>% 
-  TES(r = .207)
-# not significant, p = .791
-
-# Cross-section, best-practices
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggCog", Best. == "y") %>% 
-  TES(r = .183)
-# not significant, p = .568
-
-# Cross-section, all
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggCog") %>% 
-  TES(r = .164)
-# not significant, p = .278
-
-# Aggressive affect ----
-# Experiments, best
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggAff", Best. == "y") %>% 
-  TES(r = .294)
-# significant, p = .096
-
-# Experiments, all
-dat %>% 
-  filter(Setting == "Exp", Outcome == "AggAff") %>% 
-  TES(r = .181)
-# significant, p = .048
-
-# Cross-section, best-practices
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggAff", Best. == "y") %>% 
-  TES(r = .101)
-# not significant, p = .915
-
-# Cross-section, all
-dat %>% 
-  filter(Setting == "Nonexp", Outcome == "AggAff") %>% 
-  TES(r = .145)
-# not significant, p = .253
+# Export primary analyses
+write.table(out, file = "TES_results.txt", sep = "\t", row.names = F)
