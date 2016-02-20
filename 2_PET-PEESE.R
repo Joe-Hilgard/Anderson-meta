@@ -173,9 +173,8 @@ for (i in unique(dat$Outcome)) {
       filter = dat$Outcome == i & dat$Setting == j & dat$Best. %in% best[[k]]
       if (sum(filter) < 10) next # must have at least ten studies 
       # Conduct sensitivity analysis & blow it out to .txt file
-      name = 
-        paste(i, j, k, sep = "_") %>% 
-        paste("./sensitivity_analyses/", ., ".txt", sep="") 
+      name = paste(i, j, k, sep = "_") %>% 
+        paste0("./sensitivity_analyses/meta_", ., ".txt") 
       sensitivityPETPEESE(dat[filter,]) %>% 
         write.table(file = name, row.names=F, sep="\t")
     }

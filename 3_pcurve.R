@@ -66,7 +66,7 @@ for (i in unique(dat$Outcome)) {
                              sensFrame,
                              by = "Study.name")
       write.table(sensFrame, 
-                  file = paste("./pcurve_plotdump/", paste(i, j, k, sep="_"), ".txt", sep = ""),
+                  file = paste0("./sensitivity_analyses/pcurve_", paste(i, j, k, sep="_"), ".txt"),
                   sep = "\t",
                   row.names = F)
     }

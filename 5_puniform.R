@@ -168,7 +168,7 @@ sensitive_punif = function(ri, ni, ...) {
   return(outputFrame)
 }
 
-dir.create("./punif_sensitive/")
+dir.create("./sensitivity_analyses/")
 for (i in unique(dat$Outcome)) {
   for (j in c("Exp", "Nonexp")) { # "Long" haven't been cleaned, prob not enough for PETPEESE
     for (k in 1:2) { # Craig didn't look at not-best separately but rolled them in
@@ -191,7 +191,7 @@ for (i in unique(dat$Outcome)) {
       
       # Export analysis
       write.table(sensFrame, 
-                  file = paste("./punif_sensitive/", paste(i, j, k, sep="_"), ".txt", sep = ""),
+                  file = paste0("./sensitivity_analyses/punif_", paste(i, j, k, sep="_"), ".txt"),
                   sep = "\t",
                   row.names = F)
       

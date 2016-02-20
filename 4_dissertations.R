@@ -68,8 +68,9 @@ dat.aggAff =  dat %>%
 funnel(naive(dat.aggAff), 
        pch = ifelse(dat.aggAff$Diss == "Diss", 4, 16),
        main = "Aggressive Affect",
-       back = NULL, hlines = "grey80",
-       level=c(95, 99), shade = c("white", "grey60"), refline=0)
+       hlines = "grey80",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = "gray90")
 m1 = naive(dat.aggAff)
 m1
 lapply(c(m1$b, m1$ci.lb, m1$ci.ub), FUN = z2rtrans)
@@ -82,8 +83,9 @@ dat.aggBeh =  dat %>%
 funnel(naive(dat.aggBeh), 
        pch = ifelse(dat.aggBeh$Diss == "Diss", 4, 16),
        main = "Aggressive Behavior",
-       back = NULL, hlines = "grey80",
-       level=c(95, 99), shade = c("white", "grey60"), refline=0)
+       hlines = "grey80",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = "gray90")
 m2 = naive(dat.aggBeh)
 m2
 lapply(c(m2$b, m2$ci.lb, m2$ci.ub), FUN = z2rtrans)
@@ -96,8 +98,9 @@ dat.aggCog =  dat %>%
 funnel(naive(dat.aggCog), 
        pch = ifelse(dat.aggCog$Diss == "Diss", 4, 16),
        main = "Aggressive Cognition",
-       back = NULL, hlines = "grey80",
-       level=c(95, 99), shade = c("white", "grey60"), refline=0)
+       hlines = "grey80",
+       level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
+       back = "gray90")
 m3 = naive(dat.aggCog)
 m3
 lapply(c(m3$b, m3$ci.lb, m3$ci.ub), FUN = z2rtrans)

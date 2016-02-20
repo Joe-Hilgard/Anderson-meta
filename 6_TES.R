@@ -53,7 +53,7 @@ sensitive_TES = function(dataset) {
 out = data.frame(NULL)
 
 # Make directory for sensitivity analyses
-dir.create("TES_sensitive")
+dir.create("sensitivity_analyses")
 
 # Triple loop to run all analyses, sensitivity analyses.
 for (i in unique(dat$Outcome)) {
@@ -86,7 +86,7 @@ for (i in unique(dat$Outcome)) {
       
       # Export sensitivity analyses
       write.table(sensFrame, 
-                  file = paste("./TES_sensitive/", paste(i, j, k, sep="_"), ".txt", sep = ""),
+                  file = paste0("./sensitivity_analyses/TES_", paste(i, j, k, sep="_"), ".txt"),
                   sep = "\t",
                   row.names = F)
       
