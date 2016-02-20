@@ -57,7 +57,7 @@ dir.create("TES_sensitive")
 
 # Triple loop to run all analyses, sensitivity analyses.
 for (i in unique(dat$Outcome)) {
-  for (j in c("Exp", "NonExp")) {
+  for (j in c("Exp", "Nonexp")) {
     for (k in 1:2) {
       best = list("y", c("n", "y"))
       set = dat %>% 
@@ -65,9 +65,9 @@ for (i in unique(dat$Outcome)) {
       if (nrow(set) < 10) next
       
       # Conduct TES
-      out_1run = data.frame("Setting" = i,
-                            "Outcome" = j,
-                            "Best" = c("Best", "All")[k],
+      out_1run = data.frame("Outcome" = i,
+                            "Setting" = j,
+                            "Best" = c("Best-only", "All")[k],
                             "TES.pval" = TES(set))
       # Append to previous
       out = rbind(out, out_1run)

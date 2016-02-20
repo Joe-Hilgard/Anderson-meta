@@ -12,9 +12,11 @@ library(dplyr)
 results1 = read.delim("PETPEESE_output.txt")
 results2 = read.delim("pcurve_results.txt")
 results3 = read.delim("puniform_results.txt")
+results4 = read.delim("TES_results.txt")
 
 results = full_join(results2, results1) %>% 
   full_join(results3) %>% 
+  full_join(results4) %>% 
   tbl_df()
 
 write.table(results, file = "full_results.txt", sep="\t", row.names=F)
