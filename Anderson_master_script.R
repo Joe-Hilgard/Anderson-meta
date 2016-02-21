@@ -22,37 +22,48 @@ results = full_join(results2, results1) %>%
 write.table(results, file = "full_results.txt", sep="\t", row.names=F)
 
 # Aggregate sensitivity analyses ----
-sensOut = NULL # holster object
-
-# TODO: Something's wrong here with control flow of loop.
-for (i in c("AggAff", "AggBeh", "AggCog", "PhysArous")) {
-  for (j in c("Exp", "Nonexp")) {
-    for (k in 1:2) {
-      for (l in c("meta", "pcurve", "punif", "TES")) {
-        Best = c("Best-only", "All")[k]
-        
-        # Label which analysis it is
-        sensDat = data.frame("Outcome" = i,
-                             "Setting" = j,
-                             "Best" = Best)
-        # Read in the sensitivity analyses
-        fileName = paste(l, i, j, k, sep = "_") %>% 
-          paste0(".txt")
-        # skip if the file doesn't exist
-        fileExist = list.files(path = "./sensitivity_analyses/", pattern = fileName)
-        if (length(fileExist) == 0) next
-        # Combine the labels & the data
-        sensDat = cbind(sensDat, 
-                        read.delim(paste0("./sensitivity_analyses/", fileName)))
-        
-        # Add the new rows to the exported object
-        sensOut = bind_rows(sensOut, sensDat)
-      }
-    }
-  }
-}
-
-write.table(sensOut, "./sensitivity_analyses/1_master_sensitivity.txt", row.names = F, sep = "\t")
+# Nevermind with this for now, I'm having trouble with it.
+# sensOutMaster = NULL # holster object
+# sensOut = NULL
+# 
+# for (l in c("meta", "pcurve", "punif", "TES")) {
+#   for (i in c("AggAff", "AggBeh", "AggCog", "PhysArous")) {
+#     for (j in c("Exp", "Nonexp")) {
+#       for (k in 1:2) {
+#         
+#         Best = c("Best-only", "All")[k]
+#         
+#         # Label which analysis it is
+#         sensDat = data.frame("Outcome" = i,
+#                              "Setting" = j,
+#                              "Best" = Best)
+#         # Read in the sensitivity analyses
+#         fileName = paste(l, i, j, k, sep = "_") %>% 
+#           paste0(".txt")
+#         # skip if the file doesn't exist
+#         fileExist = list.files(path = "./sensitivity_analyses/", pattern = fileName)
+#         if (length(fileExist) == 0) next
+#         # Combine the labels & the data
+#         sensDat = cbind(sensDat, 
+#                         read.delim(paste0("./sensitivity_analyses/", fileName)))
+#         
+#         # Add the new rows to the exported object
+#         sensOut = bind_rows(sensOut, sensDat)
+#       }
+#     }
+#   }
+#   
+#   # if sensOutMaster doesn't exist yet, make it equal to the export
+#   if (is.null(sensOutMaster)) {
+#     sensOutMaster = sensOut
+#   }
+#   # Otherwise staple it onto what exists already
+#   if (!is.null(sensOutMaster)) {
+#     sensOutMaster = full_join(sensOutMaster, sensOut)
+#   } 
+# }
+# 
+# write.table(sensOut, "./sensitivity_analyses/1_master_sensitivity.txt", row.names = F, sep = "\t")
 
 results %>% 
   select(Outcome:n, RE.I2, PET.I2, PEESE.I2)

@@ -32,7 +32,9 @@ THIS MANUSCRIPT HAS NOT BEEN PEER-REVIEWED. DO NOT CITE WITHOUT THE PERMISSION O
 
 \abstract{Violent video games are theorized to be a significant cause of aggressive thoughts, feelings, and behaviors. A meta-analysis by Anderson and colleagues (2010) is thought by some to condense the research literature into robust and incontrovertible evidence that violent video games affect these outcomes in experimental, cross-sectional, and longitudinal research. In that meta-analysis, the authors argued that there is little publication or analytic bias in the literature, an argument supported by their use of the trim-and-fill procedure. However, there are now more sophisticated methods than trim-and-fill for the detection of, and adjustment for, publication bias.
 In the present manuscript, we re-examine their meta-analysis and apply these new techniques for detecting bias and adjusting effect sizes. 
-Our conclusions differ from those of Anderson and colleagues in three salient ways. First, we detect significant publication bias in experimental research. Second, studies meeting these authors' criteria for methodological quality do not find larger adjusted effects than other studies, but instead represent a subsample of studies in which statistical significance was found. After adjusting for bias, there is often little difference between the two estimates. Finally, after accounting for publication bias, effects of violent games on aggressive behavior in experimental research are estimated as being very small, and estimates of effects on aggressive affect are much reduced. In contrast, the cross-sectional literature appears relatively robust and unbiased.
+Our conclusions differ from those of Anderson and colleagues in three salient ways. First, we detect significant publication bias in experimental research. Second, studies meeting these authors' criteria for methodological quality do not find larger adjusted effects than other studies, but instead represent a subsample of studies in which statistical significance was found. After adjusting for bias, there is often little difference between the two estimates. Finally, after accounting for publication bias, effects of violent games on aggressive behavior in experimental research are estimated as being very small, and estimates of effects on aggressive affect are much reduced. 
+% TODO: The following sentence bothered Reviewer 3. Double-check its veracity.
+In contrast, the cross-sectional literature finds correlations that are relatively robust to adjustments for small-study effects.
 We outline future directions for stronger experimental research.
 The results indicate the need for an open, transparent, and pre-registered research process to test the existence of the basic phenomenon.
 }
@@ -105,14 +107,11 @@ Egger's regression test has been used repeatedly by skeptics to look for publica
 One popular bias-adjustment technique, trim and fill \citep{Duval:Tweedie:2000}, attempts to detect and adjust for bias through inspection of the number of studies with extreme effect size estimates on either side of the meta-analytic mean estimate. If the funnel plot is asymmetrical, the procedure ``trims'' off the most extreme study and imputes a hypothetical censored study reflected around the funnel plot's axis of symmetry (e.g., an imputed study with a much smaller or even negative effect size estimate). Studies are trimmed and filled in this manner until the ranks are roughly equal. 
 
 % TODO: Other citations for criticism of trim-and-fill?
-% TODO: Reviewer 2 comments about me criticizing trim-and-fill on wrong grounds?
 % TODO: COnsider citing Peters, Sutton, Jones, Abrams, & Rushton, 2007
 % TODO: Consider citing Nik Ruzni Nik Idris, 2011, Am Journal of Applied Sciences
 % TODO: Consider adding Terrin et al. 2003 to this
-However intuitive, this is not an especially effective adjustment for bias, as the assumptions of trim-and-fill are unlikely to be met \citep{Simonsohn:etal:2014b}. Studies are not likely to be censored on the basis of the effect size, but rather, on the basis of their statistical significance. Accordingly, it is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias \citep{Simonsohn:etal:2014b}. %Could cite other sources via Lakens blog post
+It is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias \citep{Simonsohn:etal:2014b}. 
 %These are the data colada blog post and lakens' comment blog post
-%(c.f. Duvall \& Tweedie, 2000, who argue that suppression via $p$-value is too simplistic and that there is little difference between the two)
-% I had Peters, 2007 as a potential citation elsewhere in the paper, too. And I could look at Moreno et al. to see how trim-and-fill performed relative to metaregression.
 The imputation of additional effect sizes also must be regarded with caution, as it adds information to the dataset that does not necessarily exist (Higgins \& Green, 2011). Finally, as with most adjustments for bias, trim-and-fill performs best when studies are homogeneous. The presence of heterogeneity may degrade performance \citep{Terrin:etal:2003}. % TODO: Any specific degredation?
 \nocite{Higgins:Green:2011}
 % Cochrane Handbook for Systematic Reviews of Interventions, March 2011, v5.1.0) %url: http://handbook.cochrane.org/chapter_10/10_4_4_2_trim_and_fill.htm
@@ -338,14 +337,12 @@ Rather than accept these adjusted estimates as the true effect sizes, we recomme
 \bibliographystyle{apacite}
 \bibliography{database}
 
-% TODO: Change caption in light of shading
 \begin{figure}
 	\includegraphics[width = \textwidth, keepaspectratio]{funnels-0_AggAff.pdf}
 	\caption{Funnel plot of studies of aggressive affect with shaded contours for $.05 < p < .10$ (light grey) and $.01 < p < .05$ (dark grey). Application of best-practices criteria seems to emphasize statistical significance, and a knot of experiments just reach statistical significance. One best-practices experiment \citep{Ballard:Wiest:1996} finds an implausibly large effect ($z = 1.33$), as does one not-best-practices cross-sectional study \citep[$z = 0.60$]{Urashima:Suzuki:2003}}.
 	\label{funnel-aggaff}
 \end{figure}
 
-% TODO: Change caption in light of shading
 \begin{figure}
 	\includegraphics[width = \textwidth, keepaspectratio]{funnels-0_AggBeh.pdf}
 	\caption{Funnel plot of studies of aggressive behavior with shaded contours for $.05 < p < .10$ (light grey) and $.01 < p < .05$ (dark grey). Application of best-practices criteria seems to emphasize statistical significance, and a knot of experiments just reach statistical significance. Again, application of best-practices criteria favors experiments finding statistical significance.}
@@ -353,14 +350,12 @@ Rather than accept these adjusted estimates as the true effect sizes, we recomme
 \end{figure}
 
 % TODO: Reviewer 3 points out \citep{Sigurdsson:etal:2006} potential outlier at $z$ = 0.49
-% TODO: Change caption in light of shading
 \begin{figure}
 	\includegraphics[width = \textwidth, keepaspectratio]{funnels-0_AggCog.pdf}
 	\caption{Funnel plot of studies of aggressive cognition with shaded contours for $.05 < p < .10$ (light grey) and $.01 < p < .05$ (dark grey). Results appear moderately heterogeneous, but somewhat less contaminated by bias.}
 	\label{funnel-aggcog}
 \end{figure}
 
-% TODO: Change caption in light of shading
 \begin{figure}
 	\includegraphics[scale=0.75]{funnels-0_PhysArous.pdf}
 	\caption{Funnel plot of studies of physiological arousal with shaded contours for $.05 < p < .10$ (light grey) and $.01 < p < .05$ (dark grey). Application of best-practices criteria seems to emphasize statistical significance, and a knot of experiments just reach statistical significance. Results do not appear to be systematically contaminated by bias.}
@@ -455,7 +450,7 @@ Rather than accept these adjusted estimates as the true effect sizes, we recomme
 		&       &       &  \\
 		\multicolumn{4}{c}{\textbf{Conservative coding scheme.}} \\
 		& \multicolumn{3}{c}{Statistical significance} \\
-		Publication format & Yes   & Mixed & No \\
+		Publication format & All outcomes   & Some outcomes & No outcomes \\
 		Unpublished Dissertation & 2     & 2     & 14 \\
 		Other & 72    & 34    & 29 \\
 		&       &       &  \\

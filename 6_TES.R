@@ -32,7 +32,9 @@ TES = function(dataset) {
 
 # Leave-one-out sensitivity analysis for TES
 sensitive_TES = function(dataset) {
-  outputFrame = data.frame(dataset$Fisher.s.Z, dataset$Std.Err, TES.pval = NA)
+  outputFrame = data.frame("Fisher.s.Z" = dataset$Fisher.s.Z, 
+                           "Std.Err" = dataset$Std.Err, 
+                           TES.pval = NA)
   for (i in 1:length(dataset$Fisher.s.Z)) {
     outputFrame[i, c("TES.pval")] = TES(dataset[-i,])
   }
