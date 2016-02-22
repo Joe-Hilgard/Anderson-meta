@@ -62,8 +62,7 @@ Meta-analyses of literatures suffering from publication bias are likely to overe
 
 The critical question is whether there is evidence for publication bias in the violent video-game literature as synthesized by \citet{Anderson:etal:2010}.  Here there is disagreement.  Anderson et al. claim that there is little evidence for publication bias.  Their claim follows from their attempts to account for such bias using both statistical methods and literature review.  
 
-% TODO: Cite other criticisms of trim-and-fill besides Simonsohn et al 2014b. Add citation below!
-With regard to statistics, they used a  trim-and-fill procedure to estimate bias-adjusted effect size estimates. This procedure recommended only a small adjustment, thereby suggesting a minimal degree of publication bias. This claim has two weaknesses. First, although it was state-of-the-art at the time of the Anderson et al. analysis, the trim-and-fill correction is understood today to be somewhat ineffective. It corrects for bias when bias is absent and does not correct enough when bias is strong \citep{Simonsohn:etal:2014b}. It also has difficulty adjusting effect sizes to zero \citep{Moreno:etal:2009}. Other tests for bias have found statistically significant  bias \citep{Ferguson:2007}, although this author's execution of the tests has been criticized \citep[see][]{Anderson:etal:2010}. 
+With regard to statistics, they used a  trim-and-fill procedure to estimate bias-adjusted effect size estimates. This procedure recommended only a small adjustment, thereby suggesting a minimal degree of publication bias. This claim has two weaknesses. First, although it was state-of-the-art at the time of the Anderson et al. analysis, the trim-and-fill correction is understood today to be somewhat ineffective. It corrects for bias when bias is absent and does not correct enough when bias is strong \citep{Simonsohn:etal:2014b}. It also has difficulty adjusting effect sizes to zero when the null is true and there is publication bias \citep{Moreno:etal:2009}. Other tests for bias have found statistically significant  bias \citep{Ferguson:2007}, although this author's execution of the tests has been criticized \citep[see][]{Anderson:etal:2010}. 
 
 With regard to literature review, the authors made an attempt to collect unpublished literature. The authors found 18 dissertations that had gone unpublished, 16 of which failed to find statistical significance on one or more outcomes. Only one unpublished non-dissertation study was found. Despite the authors' efforts, there may be more unpublished non-dissertation studies censored from report. On this basis, more detailed consideration of the possibility of bias in the Anderson et al. meta-analytic dataset is warranted.
 
@@ -95,7 +94,6 @@ Under conditions of heterogeneity, funnel plots may overestimate the degree of a
 
 One of the critical issues in meta-analysis is what may be learned in the presence of bias. The most charitable position is that researchers may assess the degree of bias and provide needed corrections to recover accurate effect size estimates \citep[e.g.,][]{Duval:Tweedie:2000,Simonsohn:etal:2014b}.  We are less sanguine, as much is unknown about their statistical properties---their efficiency and bias in realistically sized samples as well as their robustness to violations of assumptions.  Still, they have some value in analysis. We provide a review of the bias-detection-and-correction methods used in this study, noting the strengths and weaknesses of each. 
 
-% TODO: Check that the citation is correct and I am describing the test accurately
 \subsubsection{Egger's regression test}
 Egger's weighted regression test \citep{Sterne:Egger:2005} is a simple check for bias that inspects the degree and statistical significance of the relationship between sample size and effect size. A significant test statistic suggests that the observed funnel plot would be unusually asymmetrical if the collected literature were unbiased. This test is sometimes helpful in reducing the subjectivity in visually inspecting a funnel plot for asymmetry. 
 
@@ -110,8 +108,7 @@ One popular bias-adjustment technique, trim and fill \citep{Duval:Tweedie:2000},
 % TODO: COnsider citing Peters, Sutton, Jones, Abrams, & Rushton, 2007
 % TODO: Consider citing Nik Ruzni Nik Idris, 2011, Am Journal of Applied Sciences
 % TODO: Consider adding Terrin et al. 2003 to this
-It is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias \citep{Simonsohn:etal:2014b}. 
-%These are the data colada blog post and lakens' comment blog post
+It is argued that trim-and-fill does a poor job of providing an adjusted effect size, adjusting too much when there is no bias and adjusting too little when there is bias \citep{Moreno:etal:2009,Simonsohn:etal:2014b}. 
 The imputation of additional effect sizes also must be regarded with caution, as it adds information to the dataset that does not necessarily exist (Higgins \& Green, 2011). Finally, as with most adjustments for bias, trim-and-fill performs best when studies are homogeneous. The presence of heterogeneity may degrade performance \citep{Terrin:etal:2003}. % TODO: Any specific degredation?
 \nocite{Higgins:Green:2011}
 % Cochrane Handbook for Systematic Reviews of Interventions, March 2011, v5.1.0) %url: http://handbook.cochrane.org/chapter_10/10_4_4_2_trim_and_fill.htm
@@ -238,8 +235,8 @@ Contrary to the conclusions of the original authors' na{\"i}ve estimates, our ad
 
 There are some instances of convergence in our presented estimates. When inspecting effects on aggressive behavior in experiments, $p$-curve, $p$-uniform, and PET estimated that the underlying effects were so small as to be possibly undetectable in typical sample sizes. Notably, these estimates are highly consistent with some recent reports \citep{Engelhardt:etal:2015,Kneer:etal:inpress,Tear:Nielsen:2014,Przybylski:etal:2014}. For effects on aggressive affect and cognitions in experiments, $p$-curve and PEESE yielded similar estimates, suggesting that there may be detectable effects despite overestimation through research bias. 
 % Explain which outcome Ballard & Weist 1996 had
-However, we note that the unusually large effect size estimate and unusually small $p$-value obtained in \citet{Ballard:Wiest:1996} may cause meta-regression to underestimate the effect and $p$-curve to overestimate the effect. Exclusion of this study in our sensitivity analyses brought the PET estimate ($r = .00$), $p$-curve estimate ($r = .19$), and $p$-uniform estimate ($r = .24$) into closer accord.
-
+However, we note that the unusually large effect size estimate and unusually small $p$-value obtained in Ballard and Wiest's (1996) study of aggressive affect may cause meta-regression to underestimate the effect and $p$-curve to overestimate the effect. Exclusion of this study in our sensitivity analyses brought the PET estimate ($r = .00$), $p$-curve estimate ($r = .19$), and $p$-uniform estimate ($r = .24$) into closer accord.
+\nocite{Ballard:Wiest:1996}
 
 %This section still needs work!
 %\subsection{Sensitivity analysis}
