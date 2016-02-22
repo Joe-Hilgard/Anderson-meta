@@ -211,9 +211,8 @@ In total, these results indicate that small-study effects are likely present in 
 \subsection{Adjusted Effect Sizes}
 % TODO: Add $p$-uniform output to this table and this section
 % TODO: Consider separate tables for separate estimators.
-Results of the $p$-curve, $p$-uniform, PET, and PEESE analyses are supplied in Table \ref{table:adjustment} alongside na{\"i}ve fixed-effects and random-effects estimates. We caution the reader that we do not know the small-sample properties of these estimators and so do not valorize one in particular as being likely to provide the most accurate estimate of the underlying effect. Instead, we consider all estimators and look for convergence among adjusted estimates. Like Anderson et al., we will emphasize the results of the analysis of the best-practices subsample in the text.
+Results of the $p$-curve, $p$-uniform, PET, and PEESE analyses are supplied in Table \ref{table:adjustment}. The na{\"i}ve estimates are supplied in Tabe \ref{table:naive}. We caution the reader that we do not know the small-sample properties of the adjusted estimators and so do not valorize one in particular as being likely to provide the most accurate estimate of the underlying effect. Instead, we consider all estimators and look for convergence among adjusted estimates. Like Anderson et al., we will emphasize the results of the analysis of the best-practices subsample in the text.
 
-% TODO: Some softening with regard to high p-curve and p-uniform adjustments
 Among experimental studies, the estimators yield larger adjustments for bias than did Anderson et al.'s trim-and-fill estimators. In general, PET and PEESE suggested substantially lower effect sizes in experimental research, whereas $p$-curve and $p$-uniform based on the distribution of $p$-values suggested smaller adjustments. The notable exception is experiments of aggressive behavior, in which $p$-curve and $p$-uniform adjusted as harshly as did PET.
 
 % When excluding Ballard & Wiest (1999), best-practices: naive FE, r = .27, naive RE r = .27, puniform r = .20, p-curve r = .19, PET r = -.01, PEESE r = .17; full sample: naive FE r = .16, naive RE r = .18, PET r = -.035, PEESE r = .09, puniform r = .21, pcurve r = .19
@@ -223,15 +222,14 @@ In experiments of aggressive behavior, the original report suggested an adjustme
 
 In experiments of aggressive cognition, the original report suggested an adjustment of -.02 to $r$ = .20. Our adjustments are divergent, perhaps due to the heterogeneity among studies of this outcome. $P$-uniform suggested increasing the estimate by .02 to $r$ = .24, $p$-curve suggested an adjustment of -.3 to $r$ = .19, PEESE suggested adjusting by -.04 to $r = .18$, and PET suggested adjusting by -.12 to $r = .10$.
 
-% Physiological Arousal?
+Estimates of the effects on physiological arousal seemed robust to adjustments for small-study effects. Among the best-practices subset of experiments, PEESE, $p$-curve, and $p$-uniform suggested effects as large as, or larger than, the na{\"i}ve estimate. Again, the presence of heterogeneity limits the strength of the conclusions possible given the data.
 
+% Physiological Arousal?
 Although the Egger test suggested that the cross-sectional literature was contaminated by small-study effects, our estimators suggested minimal need for adjustment. PEESE, $p$-curve, and $p$-uniform all estimated effect sizes very close to the na{\"i}ve random-effects estimate. However, the heterogeneity in these subsets may limit the efficacy of these adjustments and may indicate the need for further consideration of differences in study methodology.
 
-Modeling the relationship between sample size and effect size also substantially reduced the heterogeneity in some subsets of the data. Among best-practices experiments of aggressive affect, no heterogeneity remained in the PET and PEESE models. Similar homogeneity was found among experiments of aggressive behavior in both the best-practices and full samples. This suggests that there is little residual variance in study results to explain by study attributes. In the case of best-practices experiments of aggressive behavior, there was so little residual variance that a confidence interval on $I^2$ could not be calculated. The documentation for metafor suggests that this indicates ``highly (or overly) homogenous data.'' \citep[, helpfile for confint.rma.uni]{Veichtbauer:2010}
+Modeling the relationship between sample size and effect size also substantially reduced the heterogeneity in some subsets of the data. Among best-practices experiments of aggressive affect, no heterogeneity remained in the PET and PEESE models. Similar homogeneity was found among experiments of aggressive behavior in both the best-practices and full samples. This suggests that there is little residual variance in study results to explain by study attributes. In the case of best-practices experiments of aggressive behavior, there was so little residual variance that a confidence interval on $I^2$ could not be calculated. The documentation for metafor suggests that this indicates ``highly (or overly) homogenous data.'' \citep[helpfile for confint.rma.uni]{Veichtbauer:2010}
 
 By comparison, modest heterogeneity remained among experiments of aggressive cognition and among the full sample of experiments of aggressive affect. Heterogeneity was also present among nonexperimental work, particularly in studies of aggressive affect. More work will be necessary to distinguish those studies finding larger effects from those finding smaller effects.
-
-% When excluding Sigurdsson et al. from full-sample non-experimental agg cog: naive FE r = .15, naive RE r = .17, PET r = .10, PEESE r = ..15, puniform r = .16, pcurve r = .16
 
 % TODO: Rescue this orphan
 % Exceptions to the rule: PEESE higher for Agg-Aff best-only than all (but that includes crazy outlier)
@@ -362,69 +360,100 @@ Rather than accept these adjusted estimates as the true effect sizes, we recomme
 \end{figure}
 
 
-% Table generated by Excel2LaTeX from sheet 'adjustment_jeffstyle'
-\begin{table}[htbp]
+% Table generated by Excel2LaTeX from sheet 'final_naive'
+\begin{table*}[htbp]
 	\centering
-	\caption{PET, PEESE, and $p$-curve adjusted estimates.}
-	\begin{tabular}{rrrrrrrrrrr}
-		\toprule
-		&       &       &       & \multicolumn{2}{c}{Na{\"i}ve} & \multicolumn{1}{c}{} & \multicolumn{4}{c}{Adjusted} \\
-		\midrule
-		& \textit{k} & \multicolumn{1}{c}{N} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Fixed} & \multicolumn{1}{c}{Random} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{$p$-curve} & \multicolumn{1}{c}{PET} & \multicolumn{1}{c}{\textit{p}} & \multicolumn{1}{c}{PEESE} \\
-		\multicolumn{11}{c}{Aggressive Affect} \\
-		Experiment - Best & 18    & 1318  &       & .289 & .335 &       & .155 & -.120 & .198 & .143 \\
-		Experiment - Full & 34    & 2879  &       & .173 & .217 &       & .164 & -.112 & .055 & .061 \\
-		Cross-Section - Best & -     & -     &       & -     & -     &       & -     & -     & -     & - \\
-		Cross-Section - Full & 14    & 9811  &       & .148 & .164 &       & .164 & .106 & \textbf{< .001} & .137 \\
-		\multicolumn{11}{c}{Aggressive Behavior} \\
-		Experiment - Best & 23    & 2413  &       & .209 & .213 &       & .071 & .072 & .188 & .150 \\
-		Experiment - Full & 39    & 3328  &       & .170 & .171 &       & .052 & .127 & \textbf{.003} & .151 \\
-		Cross-Section - Best & 21    & 11615 &       & .263 & .277 &       & .267 & .227 & \textbf{< .001} & .253 \\
-		Cross-Section - Full & 36    & 28337 &       & .201 & .229 &       & .226 & .152 & \textbf{< .001} & .189 \\
-		\multicolumn{11}{c}{Aggressive Cognition} \\
-		Experiment - Best & 24    & 2887  &       & .217 & .222 &       & .185 & .107 & .086 & .180 \\
-		Experiment - Full & 40    & 4073.5 &       & .210 & .216 &       & .205 & .127 & \textbf{.008} & .164 \\
-		Cross-Section - Best & 16    & 7221  &       & .168 & .184 &       & .172 & .099 & \textbf{.001} & .147 \\
-		Cross-Section - Full & 21    & 12236 &       & .160 & .191 &       & .170 & .063 & \textbf{.005} & .130 \\
-		\multicolumn{11}{c}{Arousal} \\
-		Experiment - Best & 11    & 833   &       & .199 & .210 &       & .262 & .128 & .227 & .183 \\
-		Experiment - Full & 24    & 1770  &       & .139 & .148 &       & .269 & -.005 & .942 & .085 \\
-		\bottomrule
-	\end{tabular}
-	\label{table:adjustment}
-	\caption*{Note: K = {\em number of studies;} N = {\em total N across studies. $p$ is $p$-value for the significance of the PET estimate. When the PET estimate is significant, it is inferred that the underlying effect is nonzero and PEESE should be favored over PET.}}
-\end{table}
+	\caption{Na{\"i}ve effect-size estimates}
+	 \begin{tabular}{ccccccc}
+	 	\toprule
+	 	&       & \textit{k} & \textit{N} & Fixed & Random & I2 \\
+	 	\midrule
+	 	\multicolumn{7}{c}{Aggressive Affect} \\
+	 	Experiment & Best  & 18    & 1318  & .29 [.24, .34] & .34 [.24, .42] & 66 [45, 91] \\
+	 	Experiment & Full  & 34    & 2879  & .17 [.14, .21] & .22 [.15, .29] & 72 [61, 89] \\
+	 	Cross-Section & Best  & 7     & 4348  & .10 [.07, .13] & .10 [.05, .16] & 65 [12, 96] \\
+	 	Cross-Section & Full  & 14    & 9811  & .15 [.13, .17] & .16 [.08, .24] & 93 [87, 98] \\
+	 	\multicolumn{7}{c}{Aggressive Behavior} \\
+	 	Experiment & Best  & 23    & 2413  & .21 [.17, .25] & .21 [.17, .25] &  4 [0, 17] \\
+	 	Experiment & Full  & 39    & 3328  & .17 [.14, .20] & .17 [.14, .20] & 0 [0, 7] \\
+	 	Cross-Section & Best  & 21    & 11615 & .26 [.25, .28] & .28 [.24, .31] & 67 [38, 86] \\
+	 	Cross-Section & Full  & 36    & 28337 & .20 [.19, .21] & .23 [.20, .26] & 82 [70, 90] \\
+	 	\multicolumn{7}{c}{Aggressive Cognition} \\
+	 	Experiment & Best  & 24    & 2887  & .22 [.18, .25] & .22 [.18, .27] & 35 [0, 70] \\
+	 	Experiment & Full  & 40    & 4073.5 & .20 [.17, .23] & .20 [.16, .24] & 27 [0, 67] \\
+	 	Cross-Section & Best  & 16    & 7221  & .17 [.15, .19] & .18 [.14, .22] & 62 [27, 85] \\
+	 	Cross-Section & Full  & 21    & 12236 & .16 [.14, .18] & .19 [.14, .24] & 84 [70, 93] \\
+	 	\multicolumn{7}{c}{Physiological Arousal} \\
+	 	Experiment & Best  & 11    & 833   & .20 [.13, .26] & .21 [.11, .31] & 50 [0, 80] \\
+	 	Experiment & Full  & 24    & 1770  & .14 [.09, .18] & .15 [.09, .21] & 35 [0, 71] \\
+	 	\bottomrule
+	 \end{tabular}%
+	\label{table:naive}%
+	\caption*{Note: K = {\em number of studies;} N = {\em total N across studies. All effect sizes in Pearson $r$.}}
+\end{table*}%
+
+% Table generated by Excel2LaTeX from sheet 'adjustment_jeffstyle'
+\begin{table*}[htbp]
+	\centering
+	\caption{Adjusted effect-size estimates.}
+	    \begin{tabular}{rrrrrrrr}
+	    	\toprule
+	    	&       & PET   & $I^2_{PET}$ & PEESE & $I^2_{PET}$ & $p$-uniform & $p$-curve \\
+	    	\midrule
+	    	\multicolumn{8}{c}{Aggressive Affect} \\
+	    	Experiment & Best  & -.12 [-.29, .06] & 0 [0, 83] & .14 [.06, .23] &  0 [0, 86] & .24 [.08, .36] & .21 \\
+	    	Experiment & Full  & -.10 [-.27, .08] & 58 [44, 85] & .08 [-.02, .18] & 60 [47, 86] & .24 [.11, .35] & .20 \\
+	    	Cross-Section & Best  & -     & -     & -     & -     & -     & - \\
+	    	Cross-Section & Full  &  .16 [-.04, .35] & 94 [88, 98] & .17 [.04, .29] & 94 [88, 98] & .16 [.12, .24] & .16 \\
+	    	\multicolumn{8}{c}{Aggressive Behavior} \\
+	    	Experiment & Best  &  .07 [-.04, .18] &  0 [*] & .15 [.09, .21] &  0 [*] & .02 [-.23, .15] & .09 \\
+	    	Experiment & Full  &  .13 [.04, .21] & 0 [0, 7] & .15 [.10, .20] & 0 [0, 7] & .02 [-.23, .15] & .08 \\
+	    	Cross-Section & Best  &  .22 [.14, .30] & 62 [30, 86] & .26 [.21, .30] & 65 [35, 87] & .27 [.24, .31] & .27 \\
+	    	Cross-Section & Full  &  .17 [.11, .23] & 79 [65, 89] & .21 [.18, .25] & 81 [69, 90] & .22 [.19, .25] & .23 \\
+	    	\multicolumn{8}{c}{Aggressive Cognition} \\
+	    	Experiment & Best  &  .10 [-.05, .24] & 33 [0, 65] & .18 [.11, .24] & 32 [0, 65] & .24 [.15, .31] & .19 \\
+	    	Experiment & Full  &  .11 [.00, .22] & 29 [0, 64] & .16 [.10, .21] & 27 [0, 62] & .24 [.14, .32] & .19 \\
+	    	Cross-Section & Best  &  .13 [.03, .23] & 58 [22, 87] & .17 [.11, .23] & 61 [26, 87] & .18 [.14, .22] & .17 \\
+	    	Cross-Section & Full  &  .13 [.02, .24] & 82 [68, 93] & .18 [.11, .24] & 84 [71, 93] & .16 [.13, .20] & .17 \\
+	    	\multicolumn{8}{c}{Physiological Arousal} \\
+	    	Experiment & Best  &  .19 [-.12, .47] & 53 [0, 83] & .21 [.04, .37] & 54 [0, 84] & .26 [.08, .37] & .28 \\
+	    	Experiment & Full  & -.01 [-.18, .17] & 31 [0, 66] & .09 [.00, .17] & 32 [0, 65] & .26 [.08, .37] & .28 \\
+	    	\bottomrule
+	    \end{tabular}%
+	\label{table:adjustment}%
+	\caption*{Note: K = {\em number of studies;} N = {\em total N across studies. When the CI of the PET estimate excludes zero, it is inferred that the underlying effect is nonzero and PEESE should be favored over PET. All effect sizes in Pearson $r$. *Confidence interval on $I^2$ unavailable due to highly homogeneous data.}}
+\end{table*}%
 
 % Table generated by Excel2LaTeX from sheet 'Egger test'
-\begin{table}[htbp]
+\begin{table*}[htbp]
 	\centering
-	\caption{Egger's regression test.}
-	\begin{tabular}{rrrrrr}
+	\caption{Tests for bias and small-study effects.}
+	\begin{tabular}{cccccccc}
 		\toprule
-		Outcome & Setting & Sample & \textit{b} & SE(b) & \textit{p} \\
+		Outcome & Setting & Best  & $b_{Egger}$ & SE($b_{Egger}$) & $p_{Egger}$ & $p_{p-uniform}$ & $p_{TES}$ \\
 		\midrule
-		Affect & Experiment & Best  & 3.667 & 0.780 & \textbf{< .001} \\
-		Affect & Experiment & Full  & 2.743 & 0.528 & \textbf{< .001} \\
-		Affect & Cross-Section & Best  & -     & -     & \textbf{-} \\
-		Affect & Cross-Section & Full  & 1.264 & 0.640 & \textbf{.048} \\
-		Behavior & Experiment & Best  & 1.537 & 0.549 & \textbf{.005} \\
-		Behavior & Experiment & Full  & 0.451 & 0.390 & .248 \\
-		Behavior & Cross-Section & Best  & 1.117 & 0.483 & \textbf{.021} \\
-		Behavior & Cross-Section & Full  & 1.687 & 0.330 & \textbf{< .001} \\
-		Cognition & Experiment & Best  & 1.291 & 0.674 & .055 \\
-		Cognition & Experiment & Full  & 0.773 & 0.479 & .107 \\
-		Cognition & Cross-Section & Best  & 1.618 & 0.649 & \textbf{.013} \\
-		Cognition & Cross-Section & Full  & 2.593 & 0.539 & \textbf{< .001} \\
-		Arousal & Experiment & Best  & 0.66  & 0.905 & .466 \\
-		Arousal & Experiment & Full  & 1.292 & 0.626 & \textbf{.039} \\
+		Affect & Experiment & Best  & 3.667 & 0.78  & < .001 & 0.201 & 0.079 \\
+		Affect & Experiment & Full  & 2.635 & 0.737 & < .001 & 0.861 & 0.022 \\
+		Affect & Cross-Section & Best  & -     & -     & -     & -     & - \\
+		Affect & Cross-Section & Full  & 0.123 & 1.883 & 0.948 & 0.661 & 0.211 \\
+		Behavior & Experiment & Best  & 1.537 & 0.549 & 0.005 & 0.002 & 0.015 \\
+		Behavior & Experiment & Full  & 0.451 & 0.39  & 0.248 & 0.009 & 0.02 \\
+		Behavior & Cross-Section & Best  & 1.163 & 0.789 & 0.14  & 0.752 & 0.931 \\
+		Behavior & Cross-Section & Full  & 1.326 & 0.589 & 0.024 & 0.9   & 0.199 \\
+		Cognition & Experiment & Best  & 1.372 & 0.761 & 0.071 & 0.684 & 0.309 \\
+		Cognition & Experiment & Full  & 0.883 & 0.544 & 0.104 & 0.814 & 0.339 \\
+		Cognition & Cross-Section & Best  & 1.061 & 0.941 & 0.259 & 0.628 & 0.354 \\
+		Cognition & Cross-Section & Full  & 1.241 & 1.064 & 0.243 & 0.544 & 0.234 \\
+		Arousal & Experiment & Best  & 0.137 & 1.22  & 0.911 & 0.797 & 0.636 \\
+		Arousal & Experiment & Full  & 1.295 & 0.714 & 0.07  & 0.93  & 0.704 \\
 		\bottomrule
 	\end{tabular}%
 	\label{table:Egger}%
 	\caption*{Note: {\em One may also consider $\alpha = .008$ as the threshold for significance, based on a combination of Egger's recommendation of $\alpha = .10$ and 13-fold Bonferroni correction.}}
-\end{table}
+\end{table*}%
 
 % Table generated by Excel2LaTeX from sheet 'dissertation_freqtable'
-\begin{table}[htbp]
+\begin{table*}[htbp]
 	\centering
 	\caption{The statistical significance and best-practices coding of unpublished dissertations.}
 	\begin{tabular}{rrrr}
@@ -454,6 +483,6 @@ Rather than accept these adjusted estimates as the true effect sizes, we recomme
 		\bottomrule
 	\end{tabular}%
 	\label{table:dissertations}%
-\end{table}
+\end{table*}
 
 \end{document}

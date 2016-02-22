@@ -23,7 +23,9 @@ results = results %>%
   mutate("pcurve.rhat" = round(rhat_pcurve, 3)) %>% 
   select(-(dhat_pcurve:rhat_pcurve))
 
-write.table(results, file = "full_results.txt", sep="\t", row.names=F)
+dir.create("./results/")
+
+write.table(results, file = "./results/full_results.txt", sep="\t", row.names=F)
 
 # Aggregate sensitivity analyses ----
 # Nevermind with this for now, I'm having trouble with it.
@@ -72,48 +74,41 @@ write.table(results, file = "full_results.txt", sep="\t", row.names=F)
 # results %>% 
 #   select(Outcome:Best, )
 
+Round = function(x, digits = 2) format(round(x, digits), nsmall = digits)
+confint_pretty = function(point, ll, ul, digits = 2) {
+  paste0(Round(point, digits), " [", Round(ll, digits), ", ", Round(ul, digits), "]") %>% 
+    return
+}
+
 # Table 1
 results %>% 
   select(Outcome, Setting, Best,
          PET.b1, PET.b1.se, PET.b1.p, mod.pval.pb, TES.pval) %>% 
-  write.table("bias_tests.txt", sep = "\t", row.names = F)
+  rename(Egger.coef = PET.b1,
+         SE.Egger.coef = PET.b1.se,
+         Egger.p = PET.b1.p,
+         p.uniform = mod.pval.pb) %>% 
+  write.table("./results/bias_tests.txt", sep = "\t", row.names = F)
 
 # Table 2
 results %>% 
-  select(Outcome, Setting, Best, 
-         naive.FE.r, naive.RE.r, RE.I2, RE.I2.lb, RE.I2.ub,
-         PET.r, PET.r.LL, PET.r.UL, PET.I2, PET.I2.lb, PET.I2.ub,
-         PEESE.r, PEESE.r.LL, PEESE.r.UL, PEESE.I2, PEESE.I2.lb, PEESE.I2.ub,
-         mod.est, mod.ci.lb, mod.ci.ub,
+  mutate("Naive.FE" = confint_pretty(naive.FE.r, naive.FE.r.lb, naive.FE.r.ub),
+         "Naive.RE" = confint_pretty(naive.RE.r, naive.RE.r.lb, naive.RE.r.ub),
+         "Naive.I2" = confint_pretty(RE.I2, RE.I2.lb, RE.I2.ub, digits = 0),
+         "PET" = confint_pretty(PET.r, PET.r.LL, PET.r.UL),
+         "PET.I2" = confint_pretty(PET.I2, PET.I2.lb, PET.I2.ub, digits = 0),
+         "PEESE"    = confint_pretty(PEESE.r, PEESE.r.LL, PEESE.r.UL),
+         "PEESE.I2" = confint_pretty(PEESE.I2, PEESE.I2.lb, PEESE.I2.ub, digits = 0),
+         "p.uniform" = confint_pretty(mod.est, mod.ci.lb, mod.ci.ub),
+         "pcurve.rhat" = round2(pcurve.rhat)
+         ) %>% 
+  select(Outcome, Setting, Best, k, n,
+         Naive.FE, Naive.RE, Naive.I2,
+         PET, PET.I2,
+         PEESE, PEESE.I2,
+         p.uniform,
          pcurve.rhat) %>% 
-  write.table("estimates.txt", sep = "\t", row.names = F)
-
-results %>% 
-  select(Outcome, Setting, Best,
-         PET.b1.p, mod.pval.pb, TES.pval) %>% 
-  filter(Setting == "Exp")
-
-results %>% 
-  select(Outcome:n, RE.I2, PET.I2, PEESE.I2)
-
-# To do: CIs for naive estimators
-results %>% 
-  select(Outcome, Setting, Best, 
-         naive.FE.r, naive.RE.r, 
-         PET.r, PET.r.LL, PET.r.UL,
-         PEESE.r, PEESE.r.LL, PEESE.r.UL,
-         mod.est, mod.ci.lb, mod.ci.ub,
-         pcurve.rhat) %>% 
-  filter(Setting == "Exp")
-
-results %>% 
-  select(Outcome, Setting, Best, 
-         naive.FE.r, naive.RE.r, 
-         PET.r, PET.r.LL, PET.r.UL,
-         PEESE.r, PEESE.r.LL, PEESE.r.UL,
-         mod.est, mod.ci.lb, mod.ci.ub,
-         pcurve.rhat) %>%
-  filter(Setting == "Nonexp")
+  write.table("./results/estimates.txt", sep = "\t", row.names = F)
 
 # make demonstration funnels
 # source("funnel_demos.R")
