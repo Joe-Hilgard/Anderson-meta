@@ -72,17 +72,47 @@ write.table(results, file = "full_results.txt", sep="\t", row.names=F)
 # results %>% 
 #   select(Outcome:Best, )
 
+# Table 1
+results %>% 
+  select(Outcome, Setting, Best,
+         PET.b1, PET.b1.se, PET.b1.p, mod.pval.pb, TES.pval) %>% 
+  write.table("bias_tests.txt", sep = "\t", row.names = F)
+
+# Table 2
+results %>% 
+  select(Outcome, Setting, Best, 
+         naive.FE.r, naive.RE.r, RE.I2, RE.I2.lb, RE.I2.ub,
+         PET.r, PET.r.LL, PET.r.UL, PET.I2, PET.I2.lb, PET.I2.ub,
+         PEESE.r, PEESE.r.LL, PEESE.r.UL, PEESE.I2, PEESE.I2.lb, PEESE.I2.ub,
+         mod.est, mod.ci.lb, mod.ci.ub,
+         pcurve.rhat) %>% 
+  write.table("estimates.txt", sep = "\t", row.names = F)
+
+results %>% 
+  select(Outcome, Setting, Best,
+         PET.b1.p, mod.pval.pb, TES.pval) %>% 
+  filter(Setting == "Exp")
+
 results %>% 
   select(Outcome:n, RE.I2, PET.I2, PEESE.I2)
 
+# To do: CIs for naive estimators
 results %>% 
   select(Outcome, Setting, Best, 
-         naive.FE.r, naive.RE.r, PET.r, PEESE.r, mod.est, pcurve.rhat) %>% 
+         naive.FE.r, naive.RE.r, 
+         PET.r, PET.r.LL, PET.r.UL,
+         PEESE.r, PEESE.r.LL, PEESE.r.UL,
+         mod.est, mod.ci.lb, mod.ci.ub,
+         pcurve.rhat) %>% 
   filter(Setting == "Exp")
 
 results %>% 
   select(Outcome, Setting, Best, 
-         naive.FE.r, naive.RE.r, PET.r, PEESE.r, mod.est, pcurve.rhat) %>% 
+         naive.FE.r, naive.RE.r, 
+         PET.r, PET.r.LL, PET.r.UL,
+         PEESE.r, PEESE.r.LL, PEESE.r.UL,
+         mod.est, mod.ci.lb, mod.ci.ub,
+         pcurve.rhat) %>%
   filter(Setting == "Nonexp")
 
 # make demonstration funnels

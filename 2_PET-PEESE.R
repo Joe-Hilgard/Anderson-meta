@@ -42,7 +42,7 @@ for (i in unique(dat$Outcome)) {
       modelNaiveFE = rma(yi = Fisher.s.Z, sei=Std.Err, method="FE", data=dat[filter,])
       # Had to increase tolerance on threshold b/c aggbeh/exp/best wasn't converging.
       modelNaiveRE = rma(yi = Fisher.s.Z, sei=Std.Err, method="REML", data=dat[filter,],
-                         control=list(threshold=5e-4))
+                         control = list(stepadj = .5))
       # Output data frame
       output = data.frame(
         # ID data
@@ -50,7 +50,11 @@ for (i in unique(dat$Outcome)) {
         "Setting" = j,
         "Best" = ifelse(k==1, "Best-only", "All"),
         "naive-FE.r" = tanh(modelNaiveFE$b[1]),
+        "naive-FE.r.lb" = tanh(modelNaiveFE$ci.lb[1]),
+        "naive-FE.r.ub" = tanh(modelNaiveFE$ci.ub[1]),
         "naive-RE.r" = tanh(modelNaiveRE$b[1]),
+        "naive-RE.r.lb" = tanh(modelNaiveRE$ci.lb[1]),
+        "naive-RE.r.ub" = tanh(modelNaiveRE$ci.ub[1]),
         "RE.Q" = modelNaiveRE$QE,
         "RE.Q.p" = modelNaiveRE$QEp,
         "RE.I2" = modelNaiveRE$I2,

@@ -218,12 +218,22 @@ sensitivityPETPEESE = function(dataset, error = "additive") {
                                 # Other ID
                                 "Full.Reference" = NULL)
   for (i in 1:nrow(dataset)) {
+    modelNaiveFE = rma(yi = Fisher.s.Z, sei = Std.Err, method = "FE", data = dataset[-i, ])
+    modelNaiveRE = rma(yi = Fisher.s.Z, sei = Std.Err, method = "REML", data = dataset[-i, ],
+                       control = list(stepadj = .5))
     modelPET = PET(dataset[-i,])
     modelPEESE = PEESE(dataset[-i,])
     if (error == "additive") {
       output = data.frame(
       # ID data
       "Study.name" = dataset$Study.name[i],
+      # Naive stats
+      "naive-FE.r" = tanh(modelNaiveFE$b[1]),
+      "naive-FE.r.lb" = tanh(modelNaiveFE$ci.lb[1]),
+      "naive-FE.r.ub" = tanh(modelNaiveFE$ci.ub[1]),
+      "naive-RE.r" = tanh(modelNaiveRE$b[1]),
+      "naive-RE.r.lb" = tanh(modelNaiveRE$ci.lb[1]),
+      "naive-RE.r.ub" = tanh(modelNaiveRE$ci.ub[1]),
       # PET stats
       "PET.b0" = modelPET$b[1],
       "PET.b0.se" = modelPET$se[1],
@@ -232,6 +242,8 @@ sensitivityPETPEESE = function(dataset, error = "additive") {
       "PET.b1.se" = modelPET$se[2],
       "PET.b1.p" = modelPET$pval[2],
       "PET.r" = tanh(modelPET$b[1]),
+      "PET.r.lb" = tanh(modelPET$ci.lb[1]),
+      "PET.r.ub" = tanh(modelPET$ci.ub[1]),
       # PEESE stats
       "PEESE.b0" = modelPEESE$b[1],
       "PEESE.b0.se" = modelPEESE$se[1],
@@ -240,6 +252,8 @@ sensitivityPETPEESE = function(dataset, error = "additive") {
       "PEESE.b1.se" = modelPEESE$se[2],
       "PEESE.b1.p" = modelPEESE$pval[2],
       "PEESE.r" = tanh(modelPEESE$b[1]),
+      "PEESE.r.lb" = tanh(modelPEESE$ci.lb[1]),
+      "PEESE.r.ub" = tanh(modelPEESE$ci.ub[1]),
       # Other identifiers
       "Full.Reference" = dataset$Full.Reference[i]
     )
