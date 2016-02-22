@@ -19,6 +19,10 @@ results = full_join(results2, results1) %>%
   full_join(results4) %>% 
   tbl_df()
 
+results = results %>% 
+  mutate("pcurve.rhat" = round(rhat_pcurve, 3)) %>% 
+  select(-(dhat_pcurve:rhat_pcurve))
+
 write.table(results, file = "full_results.txt", sep="\t", row.names=F)
 
 # Aggregate sensitivity analyses ----
@@ -65,13 +69,21 @@ write.table(results, file = "full_results.txt", sep="\t", row.names=F)
 # 
 # write.table(sensOut, "./sensitivity_analyses/1_master_sensitivity.txt", row.names = F, sep = "\t")
 
+# results %>% 
+#   select(Outcome:Best, )
+
 results %>% 
   select(Outcome:n, RE.I2, PET.I2, PEESE.I2)
 
 results %>% 
   select(Outcome, Setting, Best, 
-         naive.RE.r, PET.r, PEESE.r, mod.est, rhat_pcurve) %>% 
-  View
+         naive.FE.r, naive.RE.r, PET.r, PEESE.r, mod.est, pcurve.rhat) %>% 
+  filter(Setting == "Exp")
+
+results %>% 
+  select(Outcome, Setting, Best, 
+         naive.FE.r, naive.RE.r, PET.r, PEESE.r, mod.est, pcurve.rhat) %>% 
+  filter(Setting == "Nonexp")
 
 # make demonstration funnels
 # source("funnel_demos.R")

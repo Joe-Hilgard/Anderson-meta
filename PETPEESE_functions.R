@@ -231,6 +231,7 @@ sensitivityPETPEESE = function(dataset, error = "additive") {
       "PET.b1" = modelPET$b[2],
       "PET.b1.se" = modelPET$se[2],
       "PET.b1.p" = modelPET$pval[2],
+      "PET.r" = tanh(modelPET$b[1]),
       # PEESE stats
       "PEESE.b0" = modelPEESE$b[1],
       "PEESE.b0.se" = modelPEESE$se[1],
@@ -238,6 +239,7 @@ sensitivityPETPEESE = function(dataset, error = "additive") {
       "PEESE.b1" = modelPEESE$b[2],
       "PEESE.b1.se" = modelPEESE$se[2],
       "PEESE.b1.p" = modelPEESE$pval[2],
+      "PEESE.r" = tanh(modelPEESE$b[1]),
       # Other identifiers
       "Full.Reference" = dataset$Full.Reference[i]
     )

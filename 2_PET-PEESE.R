@@ -87,12 +87,12 @@ for (i in unique(dat$Outcome)) {
   }
 }
 # Convert beta estimates to Pearson r and make CIs
-outputFrame$PET.r = atanh(outputFrame$PET.b0)
-outputFrame$PET.r.LL = atanh(outputFrame$PET.b0 - 1.96*outputFrame$PET.b0.se)
-outputFrame$PET.r.UL = atanh(outputFrame$PET.b0 + 1.96*outputFrame$PET.b0.se)
-outputFrame$PEESE.r = atanh(outputFrame$PEESE.b0)
-outputFrame$PEESE.r.LL = atanh(outputFrame$PEESE.b0 - 1.96*outputFrame$PEESE.b0.se)
-outputFrame$PEESE.r.UL = atanh(outputFrame$PEESE.b0 + 1.96*outputFrame$PEESE.b0.se)
+outputFrame$PET.r = tanh(outputFrame$PET.b0)
+outputFrame$PET.r.LL = tanh(outputFrame$PET.b0 - 1.96*outputFrame$PET.b0.se)
+outputFrame$PET.r.UL = tanh(outputFrame$PET.b0 + 1.96*outputFrame$PET.b0.se)
+outputFrame$PEESE.r = tanh(outputFrame$PEESE.b0)
+outputFrame$PEESE.r.LL = tanh(outputFrame$PEESE.b0 - 1.96*outputFrame$PEESE.b0.se)
+outputFrame$PEESE.r.UL = tanh(outputFrame$PEESE.b0 + 1.96*outputFrame$PEESE.b0.se)
 #Round to 3 decimals
 outputFrame[,sapply(outputFrame, is.numeric)] = round(outputFrame[,sapply(outputFrame, is.numeric)],3)
 # TODO: fix tiny p-values
