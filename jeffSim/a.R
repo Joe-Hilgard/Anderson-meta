@@ -39,7 +39,7 @@ dev.off()
 # Joe inspects magnitude of difference between formulae given effect size and allocation ratio
 d = c(0, .25, .5)
 ratio = c(.5, .66, .75)
-n = c(40, 80, 120, 160, 200, 240, 280, 320)
+n = c(40, 80, 120, 160, 200)
 # Make data frame
 dat = expand.grid(d, ratio, n)
 names(dat) = c("delta", "ratio", "n")
@@ -47,7 +47,7 @@ names(dat) = c("delta", "ratio", "n")
 dat$n1 = floor(dat$n*dat$ratio)
 dat$n2 = ceiling(dat$n*(1-dat$ratio))
 # estimate r using proper and improper values of w^2 / a
-dat$a = (dat$n1 + dat$n2)^2 / (dat$n1 + dat$n2)
+dat$a = (dat$n1 + dat$n2)^2 / (dat$n1 * dat$n2)
 dat$r.proper = dat$d / sqrt(dat$d^2 + dat$a)
 dat$r.improper = dat$d / sqrt(dat$d^2 + 4)
 # estimate Z
@@ -58,14 +58,45 @@ dat$z.improper = atanh(dat$r.improper)
 term1.proper = (1/(dat$d^2 + dat$a))
 term1.improper = (1/(dat$d^2 + 4))
 term2 = (dat$n1 + dat$n2)/(dat$n1*dat$n2) + dat$d^2/(2*(dat$n1+dat$n2))
-dat$se.z.proper =  term1.proper * term2
-dat$se.z.improper = term1.improper * term2
-dat$se.z.approx = 1/sqrt(dat$n - 3)
+dat$se.z_proper =  sqrt(term1.proper * term2)
+dat$se.z_improper = sqrt(term1.improper * term2)
+dat$se.z_approx = 1/sqrt(dat$n - 3)
 
 # compare estimates
 library(ggplot2)
+library(tidyr)
 
-ggplot(dat, aes(x = se.z.proper, y = se.z.improper, 
-                col = as.factor(ratio), shape = as.factor(delta))) +
+ggplot(dat, aes(x = n, y = se.z_proper, 
+                shape = as.factor(ratio))) +
   geom_point()
+
+ggplot(dat, aes(x = n, y = se.z_improper, 
+                shape = as.factor(ratio))) +
+  geom_point()
+
+output = dat %>% 
+  gather(se.z_proper:se.z_approx, key = "key", value = "SE_Z") %>% 
+  separate(key, into = c("Stat", "Category"), sep = "_") %>% 
+  filter(Category != "improper") 
+
+output$delta.label = factor(output$delta, 
+                         levels=c(0, .25, .5), 
+                         labels = c("delta = 0", "delta = 0.25", "delta = 0.5"))
+output$Estimator = factor(output$Category,
+                               levels = c("approx", "proper"),
+                               labels = c("1/sqrt(N-3)", "Pustej. eq'n 16"))
+output$Allocation.ratio = factor(output$ratio)
+ggplot(output, aes(x = n, y = SE_Z, col = Category.label, shape = Allocation.ratio)) +
+  geom_point(position = position_jitter(width = 20)) +
+  facet_wrap(~delta.label) +
+  scale_y_continuous("Standard Error of Z") +
+  scale_x_continuous("Total sample size (jitter added for visibility)")
+
+summary(dat$se.z_proper - dat$se.z_approx) # difference does not exceed .009 in SE
+# Even in that most extreme case, the difference is about the same as N = 17 vs. N = 18.
+1/sqrt(18-3) - 1/sqrt(18-2) 
+
+ggsave("SE_Z_comparison.png")
+
+
 
