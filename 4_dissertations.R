@@ -65,46 +65,46 @@ par(mfrow = c(1, 3))
 
 dat.aggAff =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggAff", Best. %in% c("y", "n"))
-funnel(naive(dat.aggAff), 
+funnel(naiveRE(dat.aggAff), 
        pch = ifelse(dat.aggAff$Diss == "Diss", 4, 16),
        main = "Aggressive Affect",
        hlines = "grey80",
        level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
        back = "gray90")
-m1 = naive(dat.aggAff)
+m1 = naiveRE(dat.aggAff)
 m1
 lapply(c(m1$b, m1$ci.lb, m1$ci.ub), FUN = z2rtrans)
-m1.diss = naive(dat.aggAff, subset = dat.aggAff$Diss == "Diss")
+m1.diss = naiveRE(dat.aggAff, subset = dat.aggAff$Diss == "Diss")
 m1.diss
 lapply(c(m1.diss$b, m1.diss$ci.lb, m1.diss$ci.ub), FUN = z2rtrans)
 
 dat.aggBeh =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggBeh", Best. %in% c("y", "n"))
-funnel(naive(dat.aggBeh), 
+funnel(naiveRE(dat.aggBeh), 
        pch = ifelse(dat.aggBeh$Diss == "Diss", 4, 16),
        main = "Aggressive Behavior",
        hlines = "grey80",
        level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
        back = "gray90")
-m2 = naive(dat.aggBeh)
+m2 = naiveRE(dat.aggBeh)
 m2
 lapply(c(m2$b, m2$ci.lb, m2$ci.ub), FUN = z2rtrans)
-m2.diss = naive(dat.aggBeh, subset = dat.aggBeh$Diss == "Diss")
+m2.diss = naiveRE(dat.aggBeh, subset = dat.aggBeh$Diss == "Diss")
 m2.diss
 lapply(c(m2.diss$b, m2.diss$ci.lb, m2.diss$ci.ub), FUN = z2rtrans)
 
 dat.aggCog =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggCog", Best. %in% c("y", "n"))
-funnel(naive(dat.aggCog), 
+funnel(naiveRE(dat.aggCog), 
        pch = ifelse(dat.aggCog$Diss == "Diss", 4, 16),
        main = "Aggressive Cognition",
        hlines = "grey80",
        level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
        back = "gray90")
-m3 = naive(dat.aggCog)
+m3 = naiveRE(dat.aggCog)
 m3
 lapply(c(m3$b, m3$ci.lb, m3$ci.ub), FUN = z2rtrans)
-m3.diss = naive(dat.aggCog, subset = dat.aggCog$Diss == "Diss")
+m3.diss = naiveRE(dat.aggCog, subset = dat.aggCog$Diss == "Diss")
 m3.diss
 lapply(c(m3.diss$b, m3.diss$ci.lb, m3.diss$ci.ub), FUN = z2rtrans)
 

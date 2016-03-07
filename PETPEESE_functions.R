@@ -30,6 +30,14 @@ naive = function(dataset, ...) {
       ...)
 }
 
+naiveRE = function(dataset, ...) {
+  rma(yi = Fisher.s.Z,
+      sei = Std.Err,
+      data = dataset,
+      method = "REML",
+      ...)
+}
+
 # basic PET ----
 PET=function(dataset, error = "additive", ...) {
   if (error == "additive") {
