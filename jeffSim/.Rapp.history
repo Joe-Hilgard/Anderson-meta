@@ -151,3 +151,56 @@ abline(0,1)
 abline(0,1/2)
 source("/var/folders/zx/6c6zcwhd15g6wtddtb1xg8sr0000gn/T//RtmpA3LPne/filea6fb2323a02c")#
 unlink("/var/folders/zx/6c6zcwhd15g6wtddtb1xg8sr0000gn/T//RtmpA3LPne/filea6fb2323a02c")
+source("/var/folders/zx/6c6zcwhd15g6wtddtb1xg8sr0000gn/T//Rtmp3W1Du6/filea83c1be14869")#
+unlink("/var/folders/zx/6c6zcwhd15g6wtddtb1xg8sr0000gn/T//Rtmp3W1Du6/filea83c1be14869")
+abline(0,sqrt(1/2))
+tform=sqrt(1/(2*myN-3))#
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.3),xlab="")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.3))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.3))#
+abline(0,1)
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+abline(0,1)
+tform=sqrt(1/(2*myN-3))#
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+legend(topleft,legend=c("True ES=0","True ES=.2","True ES=.5"),col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))#
+abline(0,1)
+legend(topleft,legend=c("True ES=0","True ES=.2","True ES=.5"),col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="",ylab="Standard Deviation of z (from simulation)")
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))#
+abline(0,1)
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="Standard Deviation of z from Bornstein Approximation",ylab="Standard Deviation of z (from simulation)")
+tform=sqrt(1/(2*myN-3))#
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="Standard Deviation of z from Borenstein Approximation",ylab="Standard Deviation of z (from simulation)")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))#
+abline(0,1)
+axis(3,at=tform,label=2*myN)
+pdf('sdCheck.pdf')#
+par(par.1pan)#
+tform=sqrt(1/(2*myN-3))#
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="Standard Deviation of z from Borenstein Approximation",ylab="Standard Deviation of z (from simulation)")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))#
+abline(0,1)#
+axis(3,at=tform,label=2*myN)#
+dev.off()
+pdf('sdCheck.pdf')#
+tform=sqrt(1/(2*myN-3))#
+plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="Standard Deviation of z from Borenstein Approximation",ylab="Standard Deviation of z (from simulation)")#
+points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))#
+points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))#
+legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))#
+abline(0,1)#
+axis(3,at=tform,label=2*myN)#
+dev.off()
