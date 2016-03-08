@@ -1,42 +1,8 @@
-# One way of looking at it
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 
-M=1e4
-
-goSim=function(N, es)
-{
-  d=1:M
-  for (m in 1:M)
-  {
-    y1=rnorm(N,0,1)
-    y2=rnorm(N,es,1)
-    s=sqrt((var(y1)+var(y2))/2)
-    d[m]=(mean(y2)-mean(y1))/s
-  }
-  r = d / sqrt(d ^ 2 + 4)
-  z = 0.5 * log((1 + r) / (1 - r))
-  return(c(mean(z),sd(z)))
-}
-
-myN=c(30, 40, 50, 100, 200, 500)
-J=length(myN)
-out=matrix(ncol=2, nrow=J)
-for (j in 1:J) out[j, ] = goSim(myN[j], 0)
-out.2=matrix(ncol=2,nrow = J)
-for (j in 1:J) out.2[j, ] = goSim(myN[j], .2)
-out.5=matrix(ncol=2,nrow = J)
-for (j in 1:J) out.5[j, ] = goSim(myN[j], .5)
-
-png('seCheck1.png')
-tform=sqrt(1/(2*myN-3))
-plot(tform,out[,2],pch=19,col=rgb(1,0,0,.5),xlab="Standard Deviation of z from Borenstein Approximation",ylab="Standard Deviation of z (from simulation)")
-points(tform,out.2[,2],pch=19,col=rgb(0,1,0,.5))
-points(tform,out.5[,2],pch=19,col=rgb(0,0,1,.5))
-legend("topleft",legend=c("True ES=0","True ES=.2","True ES=.5"),pch=19,col=c(rgb(1,0,0,.5),rgb(0,1,0,.5),rgb(0,0,1,.5)))
-abline(0,1)
-axis(3,at=tform,label=2*myN)
-dev.off()
-
-# Joe inspects magnitude of difference between formulae given effect size and allocation ratio
+# Let's inspect the magnitude of difference between formulae given effect size and allocation ratio
 d = c(0, .25, .5)
 ratio = c(.5, .66, .75)
 n = c(40, 80, 120, 160, 200)
@@ -87,10 +53,6 @@ for (i in 1:nrow(dat)) {
 }
 
 # compare estimates
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
 output = dat %>% 
   gather(se.z_proper:se.z_approx, se.z_empirical, key = "key", value = "SE_Z") %>% 
   separate(key, into = c("Stat", "Category"), sep = "_") %>% 
@@ -104,17 +66,17 @@ output$Estimator = factor(output$Category,
                                labels = c("1/sqrt(N-3)", "Pustej. eq'n 16", "Empirical"))
 output$Allocation.ratio = factor(output$ratio)
 ggplot(output, aes(x = as.factor(n), y = SE_Z, col = Estimator, shape = Allocation.ratio)) +
-  geom_point(size = 4, position = position_jitter(width = .40)) +
+  geom_point(size = 2, position = position_jitter(width = .40)) +
   facet_wrap(~delta.label) +
   scale_y_continuous("Standard Error of Z") +
   scale_x_discrete("Total sample size (jitter added for visibility)")
 
 summary(dat$se.z_proper - dat$se.z_approx) # difference does not exceed .009 in SE
-summary(dat$se.z_empirical - dat$se.z_approx) # 
+summary(dat$se.z_empirical - dat$se.z_approx) # difference does not exceed .005
 # Even in that most extreme case, the difference is about the same as N = 17 vs. N = 18.
 1/sqrt(18-3) - 1/sqrt(18-2) 
 
-ggsave("./supplement/SE_Z_comparison.png")
+ggsave("./supplement/SE_Z_comparison.png", width = 5.8, height = 4.5, units = "in")
 
 
 
