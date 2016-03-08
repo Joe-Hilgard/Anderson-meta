@@ -1,8 +1,0 @@
-Fisher's z transform seems to yield more extreme values than I would expect given Z = tanh(r) 
-It looks like it uses .5 * log((1+r)/(1-r)) instead. See:
-
-plot(tanh(dat$Correlation), dat$Fisher.s.Z)
-abline(0,1)
-ztrans = function(r) .5*log((1+r)/(1-r))
-plot(ztrans(dat$Correlation), dat$Fisher.s.Z)
-abline(0, 1)
