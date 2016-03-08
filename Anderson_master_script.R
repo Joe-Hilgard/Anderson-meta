@@ -1,5 +1,9 @@
 # Anderson_2010 master script
 
+# Run these two lines once per machine to install required packages.
+# install.packages(c("plyr", "dplyr", "readxl", "ggplot2", "tidyr", "metafor", "devtools", "magrittr", "pwr"))
+# devtools::install_github("RobbievanAert/puniform")
+
 source("1_cleaning.R")
 source("2_PET-PEESE.R")
 source("3_pcurve.R")
