@@ -122,13 +122,6 @@ paste0("t(", tmp$df, ")=", tmp$t, "\n") %>%
 tmp = dat %>% 
   filter(Outcome == "AggBeh",
          Setting == "Nonexp",
-         Best. %in% c("y"))
-paste0("t(", tmp$df, ")=", tmp$t, "\n") %>% 
-  writeClipboard()
-
-tmp = dat %>% 
-  filter(Outcome == "AggBeh",
-         Setting == "Nonexp",
          Best. %in% c("y", "n"))
 paste0("t(", tmp$df, ")=", tmp$t, "\n") %>% 
   writeClipboard()

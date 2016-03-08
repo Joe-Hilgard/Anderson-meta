@@ -1,0 +1,746 @@
+
+<!-- saved from url=(0039)http://www.p-curve.com/app4/pcurve4.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" type="text/css" href="./AggAff_Exp_Full_files/style2.css">
+<title>Results p-curve App 4.00</title>
+</head>
+<body><font face="calibri">
+
+	
+	<div style="width:1200" ;="" align="center">
+	<font size="6" face="calibri">
+	<b><i>P</i>-CURVE RESULTS - App 4.00<br>
+	<font size="2" color="grey">App's Last Update: 2015 11 20</font></b><br>
+</font></div><font size="6" face="calibri">
+<p><a href="./AggAff_Exp_Full_files/1457473931.png"><img src="./AggAff_Exp_Full_files/1457473931.png" width="900" border="0"></a></p><div style="width:1200" ;="" align="justify">
+		<font size="6"><hr><p><b>Interpretation:</b><br><font size="5"><i>P</i>-Curve analysis combines the half and full p-curve to make inferences about evidential value. In particular, if the half p-curve test is right-skewed with <i>p</i>&lt;.05 <u>or both</u> the half and full test are right-skewed with <i>p</i>&lt;.1, then <i>p</i>-curve analysis indicates the presence of evidential value. This combination test, introduced in Simonsohn, Simmons and Nelson (2015 <a href="http://p-curve.com/paper/Better%20p-curves%202015%2011%2026.pdf">.pdf</a>) 
+				'Better P-Curves' paper  is much more robust to ambitious <i>p</i>-hacking than the simple full <i>p</i>-curve test is.<br><br>Here both conditions are met, indicating evidential value.<br><br> Similarly, <i>p</i>-curve analysis indicates that evidential value is inadequate or absent, if the 33% power test is <i>p</i>&lt;.05 for the full <i>p</i>-curve  <u>or both</u> the half <i>p</i>-curve and binomial 33% power test are <i>p</i>&lt;.1. Here neither condition is met; so <i>p</i>-curve does not indicate evidential value is inadequate nor absent.<br><br>As with all <i>p</i>-values, these cutoffs are just benchmarks, the lower the <i>p</i>-values are, the less consistent the data are with the respective null hypotheses. A <i>p</i>=.049 is essentially the same as a <i>p</i>=.051, while a <i>p</i>=.0001 is much more compelling than either.<br><br>To appreciate the advantage of these combination tests in relation to the previously used full <i>p</i>-curve tests, see <a href="http://www.p-curve.com/images/Fig%202.png">Figure 2</a> and pages 1149-1151 in the 'Better P-Curves' paper (<a href="http://p-curve.com/paper/Better%20p-curves%202015%2011%2026.pdf">.pdf</a>) and check out its Supplement 2 (<a href="https://osf.io/5yhqv/">.pdf</a>) 	
+	</font>
+	<br><br></p><hr>
+	<font size="6">
+	</font></font><p><font size="6"><font size="6"><b>Brief Explanations of Main Results:</b></font><br>
+	</font>
+	<font size="5">
+	1) <b>Binomial tests</b> compare the observed proportion of significant results that are p&lt;.025 (in this case: 72%) to the expected proportions 
+		  when there is no effect (50%), and when studies have 1/3 power (76%). This latter number varies (by a few %s) 
+		  as a function of the degrees of freedom of the tests submitted to <i>p</i>-curve.<br><br>
+	
+	2) <b>Continuous tests</b> are obtained by computing <i>pp</i>-values for each test (probability of at least as extreme a p-value conditional on p&lt;.05), and converting them to Z scores(N(0,1)) 
+	      The sum of these Z scores (34
+ in this case), divided by the square-root of the number of tests included (again: 34
+ in this case) 
+		  is the reported Z score in that column (and corresponding p-value).   This approach is known as Stouffer's Method (read <font color="gray">gray</font> text below for more information).<br> 
+		  <br>
+		  Note that the binomial and continuous tests are by definition one-sided (e.g., <i>more</i> right skewed than flat). We use negative Z values to indicate 
+		  deviation in the direction of the alternative hypothesis of interest;  for example a negative Z value for the Right-Skew test is evidence against the flat null, and thus in 
+		  favor of Right-Skew.<br><br>
+		  
+	3) <b>Statistical power</b> is obtained by comparing the expected <i>p</i>-curve for each possible value of power between 5% and 99% to the observed <i>p</i>-curve, and selecting
+	   the level of power that leads to the expected <i>p</i>-curve that most closely resembles the observed <i>p</i>-curve. (We quantify the similarity 
+	   with the overall p-value arising from aggregating the resulting pp-values, pp-values which depend on the assumed level of power). The best fit possible is <i>p</i>=.5.
+	   
+	
+	</font></p><font size="5">
+	</font></div><font size="5">
+
+	
+	</font>
+	
+	
+		
+	
+	
+<br><br><hr>
+<div style="width:1200" ;="" align="justify">
+	<!-- CUMULATIVE P-CURVES -->
+	<p><b><font size="6" face="calibri">Dropping Highest/Lowest <i>p</i>-values</font><br></b><font size="3" color="gray"><i>(Cumulative meta-analysis)</i></font><br>
+	<font size="5">
+	In order to assess the extent to which <i>p</i>-curve's overall results hinge on a few studies, the figure below reports them
+	excluding a progressively larger number of the most extreme <i>p</i>-values originally included in <i>p</i>-curve. <br><br>
+	The first column of charts, reports results that first exclude the smallest <i>p</i>-value in <i>p</i>-curve, then the second smallest, and so on.<br>
+	For example, if <i>p</i>-curve contained the following four <i>p</i>-values: <i>p</i>=.001, <i>p</i>=.004, <i>p</i>=.01 and <i>p</i>=.045, the 1st marker would report results with all four <i>p</i>-values, 
+	the next marker when one excludes <i>p</i>=.001, then excluding both <i>p</i>=.001 and <i>p</i>=.004, and so on.<br><br>
+	In the second column one proceeds in opposite order. First excluding <i>p</i>=.045, then <i>p</i>=.045 and <i>p</i>=.01, and so on.<br><br>
+	The graph plots what happens until there is only half the <i>p</i>-value left, but in most situations one is only interested on what happens as the 
+	single or handful of most extreme <i>p</i>-values are excluded.<br> We should place more confidence in sets of studies whose overall evidential value survives the
+	exclusion of the most extreme few results.<br>
+
+	</font></p><p><font size="5"><img src="./AggAff_Exp_Full_files/1457473931_cumulative.png" height="700" width="700" border="1"></font></p><hr><font size="5">	
+</font><div id="individual-vals"><font size="5">
+</font><p><font size="5"><b><align="left"><font size="6">Calculations for each test entered into <i>p</i>-curve:</font></align="left"></b></font>
+
+	<br><table style="border:1px solid black;border-collapse:collapse;">
+	<thead>
+		<tr>
+			<th rowspan="3">Test entered <br>by user</th>
+			<th rowspan="3" align="center"><i>p</i>-value</th>
+			<th colspan="4" class="center"><i>pp</i>-values</th>	
+			<th colspan="4" class="center">Z Scores</th>
+  	    </tr>
+		<tr>
+			<th colspan="2">Full <i>p</i>-curve</th>
+			<th colspan="2">Half <i>p</i>-curve</th>
+			<th colspan="2">Full <i>p</i>-curve</th>
+			<th colspan="2">Half <i>p</i>-curve</th>
+		</tr>
+		<tr>
+			<th>Righ Skew</th>
+			<th>Power of 33%</th>
+			<th>Righ Skew</th>
+			<th>Power of 33%</th>
+			<th>Righ Skew</th>
+			<th>Power of 33%</th>
+			<th>Righ Skew</th>
+			<th>Power of 33%</th>
+		</tr>
+		
+
+
+	</thead>
+	<tbody>
+		<tr align="center">
+		  <td align="left"> t(58)=0.0913958580090587 </td>
+		  <td> .92749 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(182)=0.611758425639029 </td>
+		  <td> .54146 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(202)=0.227431839595659 </td>
+		  <td> .82032 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(146)=2.62377554194842 </td>
+		  <td> .00962 </td>
+		  <td> .19240 </td>
+		  <td> .57173 </td>
+		  <td> .38481 </td>
+		  <td> .39791 </td>
+		  <td> -0.87 </td>
+		  <td> 0.18 </td>
+		  <td> -0.29 </td>
+		  <td> -0.26 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(208)=1.02656729419182 </td>
+		  <td> .30582 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(85)=2.9281265646819 </td>
+		  <td> .00438 </td>
+		  <td> .08751 </td>
+		  <td> .72977 </td>
+		  <td> .17502 </td>
+		  <td> .61899 </td>
+		  <td> -1.36 </td>
+		  <td> 0.61 </td>
+		  <td> -0.93 </td>
+		  <td> 0.30 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(146)=2.18568653206058 </td>
+		  <td> .03043 </td>
+		  <td> .60865 </td>
+		  <td> .21451 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> 0.28 </td>
+		  <td> -0.79 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(38)=3.86288965640644 </td>
+		  <td> .00042 </td>
+		  <td> .00846 </td>
+		  <td> .94375 </td>
+		  <td> .01693 </td>
+		  <td> .92000 </td>
+		  <td> -2.39 </td>
+		  <td> 1.59 </td>
+		  <td> -2.12 </td>
+		  <td> 1.41 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(88)=1.77977952044143 </td>
+		  <td> .07856 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(38)=1.10214110358814 </td>
+		  <td> .27733 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(98)=1.82190074331056 </td>
+		  <td> .07152 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(86)=2.71529197122958 </td>
+		  <td> .00800 </td>
+		  <td> .16004 </td>
+		  <td> .61700 </td>
+		  <td> .32008 </td>
+		  <td> .46003 </td>
+		  <td> -0.99 </td>
+		  <td> 0.30 </td>
+		  <td> -0.47 </td>
+		  <td> -0.10 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(97)=2.76176257892244 </td>
+		  <td> .00688 </td>
+		  <td> .13754 </td>
+		  <td> .64758 </td>
+		  <td> .27508 </td>
+		  <td> .50353 </td>
+		  <td> -1.09 </td>
+		  <td> 0.38 </td>
+		  <td> -0.60 </td>
+		  <td> 0.01 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(39)=1.69958373457987 </td>
+		  <td> .09717 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(66)=2.10657111814874 </td>
+		  <td> .03896 </td>
+		  <td> .77921 </td>
+		  <td> .11414 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> 0.77 </td>
+		  <td> -1.20 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(95)=2.50587822350359 </td>
+		  <td> .01392 </td>
+		  <td> .27831 </td>
+		  <td> .47888 </td>
+		  <td> .55661 </td>
+		  <td> .26578 </td>
+		  <td> -0.59 </td>
+		  <td> -0.05 </td>
+		  <td> 0.14 </td>
+		  <td> -0.63 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(28)=9.2756208010711 </td>
+		  <td> &lt;.00001 </td>
+		  <td> &lt;.00001 </td>
+		  <td> &gt;.9999 </td>
+		  <td> &lt;.00001 </td>
+		  <td> &gt;.9999 </td>
+		  <td> -5.61 </td>
+		  <td> 4.86 </td>
+		  <td> -5.49 </td>
+		  <td> 4.79 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(121)=1.91487049171247 </td>
+		  <td> .05787 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(48)=2.92814813940526 </td>
+		  <td> .00520 </td>
+		  <td> .10402 </td>
+		  <td> .70807 </td>
+		  <td> .20804 </td>
+		  <td> .58618 </td>
+		  <td> -1.26 </td>
+		  <td> 0.55 </td>
+		  <td> -0.81 </td>
+		  <td> 0.22 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(22)=0.395392337392758 </td>
+		  <td> .69636 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(22)=2.88567002037791 </td>
+		  <td> .00858 </td>
+		  <td> .17166 </td>
+		  <td> .62618 </td>
+		  <td> .34332 </td>
+		  <td> .46227 </td>
+		  <td> -0.95 </td>
+		  <td> 0.32 </td>
+		  <td> -0.40 </td>
+		  <td> -0.09 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(177)=0.960390264214792 </td>
+		  <td> .33817 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(69)=1.94604305482934 </td>
+		  <td> .05572 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(30)=0.0547749945687172 </td>
+		  <td> .95668 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(118)=2.00032555672449 </td>
+		  <td> .04776 </td>
+		  <td> .95523 </td>
+		  <td> .02152 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> 1.70 </td>
+		  <td> -2.02 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(69)=0.124613377737424 </td>
+		  <td> .90119 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(116)=3.14134613749513 </td>
+		  <td> .00213 </td>
+		  <td> .04269 </td>
+		  <td> .82207 </td>
+		  <td> .08537 </td>
+		  <td> .74959 </td>
+		  <td> -1.72 </td>
+		  <td> 0.92 </td>
+		  <td> -1.37 </td>
+		  <td> 0.67 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(40)=3.21992517371599 </td>
+		  <td> .00255 </td>
+		  <td> .05093 </td>
+		  <td> .81418 </td>
+		  <td> .10187 </td>
+		  <td> .73595 </td>
+		  <td> -1.64 </td>
+		  <td> 0.89 </td>
+		  <td> -1.27 </td>
+		  <td> 0.63 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(44)=0.539064527394415 </td>
+		  <td> .59256 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(53)=3.21048053660868 </td>
+		  <td> .00225 </td>
+		  <td> .04505 </td>
+		  <td> .82372 </td>
+		  <td> .09011 </td>
+		  <td> .75040 </td>
+		  <td> -1.69 </td>
+		  <td> 0.93 </td>
+		  <td> -1.34 </td>
+		  <td> 0.68 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(105)=2.04921479938298 </td>
+		  <td> .04293 </td>
+		  <td> .85869 </td>
+		  <td> .07034 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> 1.07 </td>
+		  <td> -1.47 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(38)=0.482293667899415 </td>
+		  <td> .63236 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(11)=2.62701770090758 </td>
+		  <td> .02353 </td>
+		  <td> .47064 </td>
+		  <td> .34749 </td>
+		  <td> .94129 </td>
+		  <td> .03543 </td>
+		  <td> -0.07 </td>
+		  <td> -0.39 </td>
+		  <td> 1.57 </td>
+		  <td> -1.81 </td>
+		</tr>
+		
+	
+	
+	
+	</tbody><tbody>
+		<tr align="center">
+		  <td align="left"> t(28)=2.30184646732675 </td>
+		  <td> .02899 </td>
+		  <td> .57987 </td>
+		  <td> .24321 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		  <td> 0.20 </td>
+		  <td> -0.70 </td>
+		  <td> NA </td>
+		  <td> NA </td>
+		</tr>
+		
+	
+		<tr align="center">
+		<td colspan="6" bgcolor="#CCC"><b>SUM of Z-Scores in column, dividing by sqrt(N of tests)<br> Z Scores reported under p-curve figure above-----&gt;</b></td>
+		<td><b>-3.82</b></td>
+		<td><b>1.15</b></td>
+		<td><b>-3.72</b></td>
+		<td><b>1.61</b></td>
+		
+	</tr>
+						 
+</tbody></table>
+
+
+	</p><div align="justify" style="width:1200" ;="">
+	<font size="6">
+	</font><p><font size="6"><b>Explaining these calculations with an example:</b><br>
+	</font>
+	<font size="5">
+	Take the first significant result entered: <b>t(146)=2.62377554194842</b>. 
+	It is associated with a two-sided <i>p</i>-value of <b>0.00962</b>.
+	<i>pp</i>-values are the probability of at last as extreme a significant p-value. For right skew we compute these under the null 
+	of no effect; because <i>p</i>-values would be distributed uniform between 0 and .05, we simply divide by .05 (multiply by 20) and get the <i>pp</i>-value for right skew,
+	that is 0.00962*20=<b>0.1924</b>. One minus that  gives us the <i>pp</i>-value for left skew (not shown above).<br><br>
+	
+	For the <i>pp</i>-value under the null that the test is powered to 33% things are a bit more complicated. This explanation will not be quite enough, but: 
+	we find the non-centrality parameter for the corresponding distribution and degrees of freedom that gives 33% power. 
+	We then evaluate in that non-central distribution the observed test statistic, t(146)=2.62377554194842, and now divide by 33% rather than 5% 
+	because now 1/3 of tests are expected to be <i>p</i>&lt;.05 rather than only 5% of them. <br><br>More importantly, the interpretation of the <i>pp</i>-value for 33% power is 
+	as follows. If the underlying effect size were big enough to give the sample of the study obtaining t(146)=2.62377554194842 33% power, 
+	then with probability <b>0.57173</b> we would get a <i>p</i>-value of 0.00962 or higher. <br><br>
+	
+	For the half <i>p</i>-curve we proceed similarly. First, for right skew we divide by .025, multiply by 40. When a <i>p</i>-value is &gt;.025 it is not included
+	in half p-curve, we see "NA" in the table above. For 33% power, in turn, we use the same non-centrality parameter but this time we divide by the share of 
+	p-values expected to be p&lt;.025 when power is 33%.<br>
+	
+	<br>The last four columns report the Z-Scores associated with those <i>pp</i>-values. So for the full <i>p</i>-curve right-skew <i>pp</i>-value we had 
+	<b>pp=0.1924</b>, evaluating the standard normal distribution in that percentile gives us the reported <b>Z=-0.87</b>. 
+	
+	
+
+
+<!-- DIAGNOSTIC CHART FOR POWER-->
+	<br><br></font></p><hr><p><font size="5"><font size="6"><b>Diagnostic plot for power estimation</b></font><b><br></b>
+	<font size="5">
+	This figure plots how consistent the observed <i>p</i>-curve is with each possible value of power between 5% and 99%.<br>
+	To create the figure we compute <i>pp</i>-values for the null that all studies are powered with a given level of power and combine those pp-values	
+	using Stouffer's method. The best fitting level of power will lead to an overall Stouffer Z=0, p=.5.<br>
+	This approach is different from the one used with App 3.0 where instead the Kolmogorov-Smirnov test was run on the resulting distribution of pp-values and the uniform.
+	The results with both methods are very similar. The main advantage of the KS test approach is that it reports absolute fit between expected and observed <i>p</i>-curve.
+	The main advantage of the Stouffer method is that it is the approach used to compute the confidence interval and is hence more parsimonious.
+	<br>
+	The table with results at the top of this page reports <b>54%</b> as the estimate of power. This means that if all studies in the set were truly powered to 
+	54%, half the time we would see a flatter p-curve than the one we see, and half the time we would see a more right-skewed one. So 54% is our best guess.
+		</font></font></p><p><font size="5"><font size="5"><img src="./AggAff_Exp_Full_files/1457473931_fit.png" height="750" width="750" border="1">	
+
+	<br><br></font></font></p><hr><p><font size="5"><font size="5"><font size="6"><b>Confidence interval for power</b></font><b><br></b>
+	To build the confidence interval for power we proceed as we do to obtain the estimate of power, 
+	but rather than finding the underlying statistical power that leads to an overall Stouffer test 
+	combining the resulting <i>pp</i>-values of <i>p</i>=.5, we find the level of power that gives <i>p</i>=.05 and <i>p</i>=.95. <br><br>
+	For example, above we saw that the lower end of the confidence interval for power was <b>25%</b>, this means that if we assume that's the level of power
+	we would observe a p-curve this right-skewed, or more righ-skewed, as indexed by the Stouffer combination of the resulting pp-values, only 5% of the time.
+	The other end of the confidence interval (<b>77%</b>), in turn, means that if power were that high, we would see as flat a p-curve, or flatter,
+	95% of the time. Note that this is a 90% confidence interval (for a 95% one, we would look for levels of power leading to overall p-values of 
+	2.5% and 97.5% respectively). We use 90% to make it consistent with the <u>one-sided</u> test against the 33% power null. 
+	If p-curve is significantly flatter than expected with 33% power, then the (90%) confidence interval for power will not include 33% power.
+	<br></font></font></p><hr><font size="5"><font size="5">
+	<p align="center"><font size="3" color="gray">Thank you for using the <i>p</i>-curve app.
+	
+
+
+</font></p></font></font></div></div></div></font></font></body></html>
