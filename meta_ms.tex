@@ -139,10 +139,10 @@ In contrast to the funnel-plot-based tests and estimators, which are derived fro
 
 Heterogeneity can nonetheless influence effect size estimation using $p$-curve. $P$-curve considers only the statistically significant results, and studies with greater underlying effect sizes are more likely to attain statistical significance. This can cause $p$-curve to estimate a larger effect size than does na{\"i}ve meta-analysis, as the na{\"i}ve analysis considers all studies, whereas $p$-curve considers only the statistically-significant ones. 
 
-\subsubsection{$p$-uniform}
+\paragraph{$p$-uniform}
 $P$-uniform is another power-based test and adjustment for bias \citep{vanAssen:etal:2015}. Like $p$-curve, it considers only the statistically-significant results in meta-analysis. It attempts to find an underlying effect size for which the conditional $p$-value distribution would be as close to uniform as possible. That is, it looks for an effect size $\delta_0$ for which the null hypothesis $H_0: \delta = \delta_0$ would generate an approximately uniform distribution of $p$-values. It also provides a test for publication bias by considering whether the adjusted effect size is statistically significantly smaller than the na{\"i}ve meta-analytic estimate. Like $p$-curve, it only considers studies with $p < .05$, and so may lose substantial information. It also assumes a fixed effect size and so may perform poorly under conditions of heterogeneity.   
 
-\subsubsection{Test for Excess Significance}
+\paragraph{Test for Excess Significance}
 Another power-based test for publication bias is the Test for Excess Significance \citep{Ioannidis:Trikalinos:2007}. This test estimates the number of expected studies with statistical significance given some anticipated effect size (usually the na{\"i}ve meta-analytic estimate), then compares that expectation against the number of observed significant results. A significant test suggests censoring of nonsignificant results or the manipulation of results into statistical significance.
 
 This test has a number of weaknesses. It has poor statistical power \citep{Ioannidis:Trikalinos:2007}, and the validity of its $p$-value rests on strong, perhaps unwarranted assumptions about researcher behavior \citep{Morey:2013}. Like other tests for bias, its results may be spurious when there exists genuine between-study heterogeneity. We report the test for completeness, but the reader is urged to interpret the result with considerable caution.
