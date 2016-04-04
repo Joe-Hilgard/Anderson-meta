@@ -5,7 +5,7 @@ library(readxl)
 
 # Read in the data
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
-dat2 = read_excel("CRTT.xlsx")
+dat2 = read_excel("./supplement/CRTT.xlsx")
 dat = left_join(dat, dat2, by = c("Study.name", "Study", "Full.Reference"))
 
 dat.aggBeh = 
@@ -15,7 +15,8 @@ dat.aggBeh =
 model = rma(yi = Fisher.s.Z, sei = Std.Err, data = dat.aggBeh)
 model
 model.best = rma(yi = Fisher.s.Z, sei = Std.Err, data = dat.aggBeh, 
-                 subset = Best. == "y")
+                 subset = Best. == "y",
+                 control=list(stepadj = .5))
 model.best
 
 crtt.best = rma(yi = Fisher.s.Z, sei = Std.Err, data = dat.aggBeh,
