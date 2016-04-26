@@ -4,6 +4,11 @@ dat$sig = ifelse(dat$p.twotail < .05, T, F)
 source("PETPEESE_functions.R")
 library(dplyr)
 library(magrittr)
+library(ggplot2)
+
+# Make Z-scores
+dat$Z = qnorm(dat$p.twotail, lower.tail = F)
+
 
 myFunnel = function(set, ...) {
   funnelPETPEESE(set, printText = F,
@@ -176,6 +181,31 @@ dat %>%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_PhysArous.pdf", type = "pdf")
 dev.off()
+
+# Plot distribution of Z-scores
+dat %>% 
+  filter(Outcome == "AggBeh", Setting == "Exp") %>% 
+  ggplot(aes(x = Z, fill = Best.)) +
+  geom_histogram() +
+  #geom_density(alpha = .3, adjust = .25) +
+  geom_vline(xintercept = 1.96) +
+  geom_rug(aes(col = Best.))
+
+dat %>% 
+  filter(Outcome == "AggAff", Setting == "Exp") %>% 
+  ggplot(aes(x = Z, fill = Best.)) +
+  geom_histogram() +
+  #geom_density(alpha = .3, adjust = .25) +
+  geom_vline(xintercept = 1.96) +
+  geom_rug(aes(col = Best.))
+
+dat %>% 
+  filter(Outcome == "AggCog", Setting == "Exp") %>% 
+  ggplot(aes(x = Z, fill = Best.)) +
+  geom_histogram() +
+  #geom_density(alpha = .3, adjust = .25) +
+  geom_vline(xintercept = 1.96) +
+  geom_rug(aes(col = Best.))
 # 
 # 
 # # Main plot call ----
