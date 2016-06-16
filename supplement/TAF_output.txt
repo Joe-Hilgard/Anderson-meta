@@ -1,0 +1,7 @@
+"Outcome"	"Setting"	"East.West"	"Best"	"K"	"K.imputed"	"Direction"	"naive.r"	"TAF.r"	"change.r"	"TAF.r.lb"	"TAF.r.ub"
+"PhysArous"	"Nonexp"	"East"	"y"	5	0	"right"	0.245	0.245	0	0.108	0.373
+"PhysArous"	"Nonexp"	"West"	"y"	26	8	"left"	0.206	0.175	-0.031	0.138	0.212
+"AggCog"	"Exp"	"West"	"y"	29	5	"left"	0.217	0.199	-0.018	0.164	0.233
+"AggAff"	"Exp"	"West"	"y"	24	6	"left"	0.289	0.238	-0.05	0.189	0.287
+"ProsBeh"	"Exp"	"West"	"y"	6	2	"right"	-0.182	-0.125	0.057	-0.189	-0.06
+"PhysArous"	"Exp"	"West"	"y"	13	2	"left"	0.199	0.16	-0.038	0.098	0.221
