@@ -22,10 +22,8 @@ dat$Full.Reference[dat$Full.Reference == "Austin, L. H. (1987). The effects of p
   "Austin, L. H. (1987). The effects of playing video games with aggressive features.Dissertation: The Fielding Institute,"
 
 
-# Inspect suspicious Matsuzaki et al study
-# View(dat[grep("Matsuzaki", dat$Full.Reference),])
-# I'm going to remove Matsuzaki et al study 1 because it is an outlier in every analysis
-dat = dat[!(dat$Study.name %in% c("MWS04ABb", "MWS04ABn", "MWS04AC")),]
+# Drop Matsuzaki not-best AB for redundancy with Matsuzaki best AB
+dat = dat[!(dat$Study.name %in% c("MWS04ABn")),]
 # Drop Brady & Matthews (06) as it's the same as Brady (06) but divided into more rows
 dat = dat[-grep("Brady, S.S., & Mathews", dat$Full.Reference),]
 # Drop Panee & Ballard (2002) because in-game behavior is not aggressive behavior,
