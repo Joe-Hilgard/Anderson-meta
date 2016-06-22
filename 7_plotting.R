@@ -85,7 +85,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All cross-sectional",
-         xlim = c(-.4, .6), ylim = c(.19, 0)) %$%
+         xlim = c(-.4, .7), ylim = c(.19, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggBeh", 
@@ -105,7 +105,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best cross-sectional",
-         xlim = c(-.4, .6), ylim = c(.19, 0)) %$%
+         xlim = c(-.4, .7), ylim = c(.19, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggBeh.pdf", type = "pdf")
 dev.off()

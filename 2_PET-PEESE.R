@@ -186,24 +186,24 @@ for (i in unique(dat$Outcome)) {
 }
 
 # Unpublished dissertations -------
-table(dat$Pub, dat$Setting, dat$Outcome)
-library(ggplot2)
-dat = 
-  dat %>%
-  mutate("Diss" = ifelse(dat$Pub == "Dissertation (unpub)", "Diss", "Not Diss"))
-# Brady (2006) is already included as a peer-reviewed journal article
-dat$Diss[grep("Brady, S. (2006).", dat$Full.Reference, fixed=T)] = "Not Diss"
-table(dat$Diss)
-
-dat %>%
-  filter(Setting == "Exp") %>%
-  ggplot(aes(x=Fisher.s.Z, y=Std.Err, pch=Diss)) +
-  geom_point(cex=4) +
-  scale_shape_manual(values=c(16, 1)) +
-  scale_y_reverse()
-
-dat$pch = ifelse(dat$Diss == "Diss", 9, 1)
-dissDat = dat %>% filter(Setting == "Exp") 
-dissMod = rma(yi = Fisher.s.Z, sei = Std.Err, data = dissDat)
-funnel(dissMod, pch=1)
-points(x = dissDat$Fisher.s.Z, y = dissDat$Std.Err, pch = dissDat$pch)
+# table(dat$Pub, dat$Setting, dat$Outcome)
+# library(ggplot2)
+# dat = 
+#   dat %>%
+#   mutate("Diss" = ifelse(dat$Pub == "Dissertation (unpub)", "Diss", "Not Diss"))
+# # Brady (2006) is already included as a peer-reviewed journal article
+# dat$Diss[grep("Brady, S. (2006).", dat$Full.Reference, fixed=T)] = "Not Diss"
+# table(dat$Diss)
+# 
+# dat %>%
+#   filter(Setting == "Exp") %>%
+#   ggplot(aes(x=Fisher.s.Z, y=Std.Err, pch=Diss)) +
+#   geom_point(cex=4) +
+#   scale_shape_manual(values=c(16, 1)) +
+#   scale_y_reverse()
+# 
+# dat$pch = ifelse(dat$Diss == "Diss", 9, 1)
+# dissDat = dat %>% filter(Setting == "Exp") 
+# dissMod = rma(yi = Fisher.s.Z, sei = Std.Err, data = dissDat)
+# funnel(dissMod, pch=1)
+# points(x = dissDat$Fisher.s.Z, y = dissDat$Std.Err, pch = dissDat$pch)

@@ -144,14 +144,15 @@ for (i in unique(dat$Outcome)) {
 
 # dump the use of sex as a control for now in dataset  
   # Later to be made separate dat1, maybe
-dat = dat[dat$Setting %in% c("Exp", "Nonexp", "Long") 
+dat = dat %>% 
+  filter(Setting %in% c("Exp", "Nonexp", "Long") 
           # Sometimes studies are entered with S suffix and "MF" when effect
             # was reported only once, including gender covariate
           # in case this is the only way the correlational study was reported:
           | (dat$Setting %in% "NonexpS" & dat$SEX %in% c("M", "F"))  
           # or for longitudinal studies
           | (dat$Setting %in% "LongPs" & dat$SEX %in% c("M", "F")) 
-          ,]
+  )
 # dat$Setting[dat$Setting == "NonexpS"] = "Nonexp" 
   # will need to combine male and female samples
 

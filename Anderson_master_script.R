@@ -10,6 +10,8 @@ source("3_pcurve.R")
 source("4_dissertations.R")
 source("5_puniform.R")
 source("6_TES.R")
+source("7_plotting.R")
+source("8_trimfill.R")
 
 # aggregate results & make tables ----
 library(dplyr)
@@ -28,55 +30,7 @@ results = results %>%
   select(-(dhat_pcurve:rhat_pcurve))
 
 dir.create("./results/")
-
 write.table(results, file = "./results/full_results.txt", sep="\t", row.names=F)
-
-# Aggregate sensitivity analyses ----
-# Nevermind with this for now, I'm having trouble with it.
-# sensOutMaster = NULL # holster object
-# sensOut = NULL
-# 
-# for (l in c("meta", "pcurve", "punif", "TES")) {
-#   for (i in c("AggAff", "AggBeh", "AggCog", "PhysArous")) {
-#     for (j in c("Exp", "Nonexp")) {
-#       for (k in 1:2) {
-#         
-#         Best = c("Best-only", "All")[k]
-#         
-#         # Label which analysis it is
-#         sensDat = data.frame("Outcome" = i,
-#                              "Setting" = j,
-#                              "Best" = Best)
-#         # Read in the sensitivity analyses
-#         fileName = paste(l, i, j, k, sep = "_") %>% 
-#           paste0(".txt")
-#         # skip if the file doesn't exist
-#         fileExist = list.files(path = "./sensitivity_analyses/", pattern = fileName)
-#         if (length(fileExist) == 0) next
-#         # Combine the labels & the data
-#         sensDat = cbind(sensDat, 
-#                         read.delim(paste0("./sensitivity_analyses/", fileName)))
-#         
-#         # Add the new rows to the exported object
-#         sensOut = bind_rows(sensOut, sensDat)
-#       }
-#     }
-#   }
-#   
-#   # if sensOutMaster doesn't exist yet, make it equal to the export
-#   if (is.null(sensOutMaster)) {
-#     sensOutMaster = sensOut
-#   }
-#   # Otherwise staple it onto what exists already
-#   if (!is.null(sensOutMaster)) {
-#     sensOutMaster = full_join(sensOutMaster, sensOut)
-#   } 
-# }
-# 
-# write.table(sensOut, "./sensitivity_analyses/1_master_sensitivity.txt", row.names = F, sep = "\t")
-
-# results %>% 
-#   select(Outcome:Best, )
 
 Round = function(x, digits = 2) format(round(x, digits), nsmall = digits)
 confint_pretty = function(point, ll, ul, digits = 2) {
@@ -104,7 +58,7 @@ results %>%
          "PEESE"    = confint_pretty(PEESE.r, PEESE.r.LL, PEESE.r.UL),
          "PEESE.I2" = confint_pretty(PEESE.I2, PEESE.I2.lb, PEESE.I2.ub, digits = 0),
          "p.uniform" = confint_pretty(mod.est, mod.ci.lb, mod.ci.ub),
-         "pcurve.rhat" = round2(pcurve.rhat)
+         "pcurve.rhat" = Round(pcurve.rhat)
          ) %>% 
   select(Outcome, Setting, Best, k, n,
          Naive.FE, Naive.RE, Naive.I2,
@@ -114,11 +68,5 @@ results %>%
          pcurve.rhat) %>% 
   write.table("./results/estimates.txt", sep = "\t", row.names = F)
 
-# make demonstration funnels
-# source("funnel_demos.R")
-
-
-# export plots in publication-ready format ----
-source("7_plotting.R")
 # Et voila! ----
 cat("And that's a wrap!")
