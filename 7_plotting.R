@@ -62,6 +62,7 @@ dat %>%
          xlim = c(-.2, .6), ylim = c(.1, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggAff.pdf", type = "pdf")
+savePlot(filename="funnels-0_AggAff.png", type = "png")
 dev.off()
 
 # Behavior ----
@@ -108,6 +109,7 @@ dat %>%
          xlim = c(-.4, .7), ylim = c(.19, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggBeh.pdf", type = "pdf")
+savePlot(filename="funnels-0_AggBeh.png", type = "png")
 dev.off()
 
 # Cognition ----
@@ -154,6 +156,7 @@ dat %>%
          xlim = c(-.4, .6), ylim = c(.125, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggCog.pdf", type = "pdf")
+savePlot(filename="funnels-0_AggCog.png", type = "png")
 dev.off()
 
 # Arousal ----
@@ -180,6 +183,7 @@ dat %>%
          xlim = c(-1, 1), ylim = c(.41, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_PhysArous.pdf", type = "pdf")
+savePlot(filename="funnels-0_PhysArous.png", type = "png")
 dev.off()
 
 # Plot distribution of Z-scores
