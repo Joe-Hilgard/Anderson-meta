@@ -1,6 +1,7 @@
 # Test of excess significance
 library(pwr)
 library(dplyr)
+library(metafor)
 
 dat = read.delim("cleaned_data.txt", stringsAsFactors=F)
 dat$sig = ifelse(dat$p.twotail < .05, "significant", "not-significant")
