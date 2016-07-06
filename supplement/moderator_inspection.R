@@ -11,42 +11,45 @@ dat %>%
   filter(Setting == "Exp",
          Outcome == "AggBeh") %>% 
   mutate(best = ifelse(Best. == "y", 1, 0),
-         age = ifelse(AGE == "Adult", 1, 0),
+         age = ifelse(AGE == "Adult", 1, ifelse(AGE == "Child", 0, NA)),
          person = ifelse(PERSON == "First", 1, 0),
          east = ifelse(East.West == "East", 1, 0),
          proceeding = ifelse(Pub == "Conf. Proceedings", 1, 0),
          diss = ifelse(Pub == "Dissertation (unpub)", 1, 0)) %>% 
   select(Sample.size, Fisher.s.Z, best:diss) %>% 
   cor(use = "pairwise") %>% 
-  round(3)
+  round(3) %>% 
+  write.csv(file = "./supplement/AggBeh_moderator_cortable.csv")
 
 # AggAff
 dat %>% 
   filter(Setting == "Exp",
          Outcome == "AggAff") %>% 
   mutate(best = ifelse(Best. == "y", 1, 0),
-         age = ifelse(AGE == "Adult", 1, 0),
+         age = ifelse(AGE == "Adult", 1, ifelse(AGE == "Child", 0, NA)),
          person = ifelse(PERSON == "First", 1, 0),
          east = ifelse(East.West == "East", 1, 0),
          proceeding = ifelse(Pub == "Conf. Proceedings", 1, 0),
          diss = ifelse(Pub == "Dissertation (unpub)", 1, 0)) %>% 
   select(Sample.size, Fisher.s.Z, best:diss) %>% 
   cor(use = "pairwise") %>% 
-  round(3)
+  round(3) %>% 
+  write.csv(file = "./supplement/AggAff_moderator_cortable.csv")
 
 # AggCog
 dat %>% 
   filter(Setting == "Exp",
          Outcome == "AggCog") %>% 
   mutate(best = ifelse(Best. == "y", 1, 0),
-         age = ifelse(AGE == "Adult", 1, 0),
+         age = ifelse(AGE == "Adult", 1, ifelse(AGE == "Child", 0, NA)),
          person = ifelse(PERSON == "First", 1, 0),
          east = ifelse(East.West == "East", 1, 0),
          proceeding = ifelse(Pub == "Conf. Proceedings", 1, 0),
          diss = ifelse(Pub == "Dissertation (unpub)", 1, 0)) %>% 
   select(Sample.size, Fisher.s.Z, best:diss) %>% 
   cor(use = "pairwise") %>% 
-  round(3)
+  round(3) %>% 
+  write.csv(file = "./supplement/AggCog_moderator_cortable.csv")
 
 # Funnel plots ----
 # AggBeh

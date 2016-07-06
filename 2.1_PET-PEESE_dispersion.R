@@ -39,27 +39,17 @@ for (i in unique(dat$Outcome)) {
       if (sum(filter) < 10) next # must have at least ten studies 
       modelPET = PET(dat[filter,], error = "multiplicative")
       modelPEESE = PEESE(dat[filter,], error = "multiplicative")
-      modelNaiveFE = rma(yi = Fisher.s.Z, sei=Std.Err, method="FE", data=dat[filter,])
-      # Had to increase tolerance on threshold b/c aggbeh/exp/best wasn't converging.
-      modelNaiveRE = rma(yi = Fisher.s.Z, sei=Std.Err, method="REML", data=dat[filter,],
-                         control = list(stepadj = .5))
+      modelNaiveDisp = lm(Fisher.s.Z ~ 1, weights = I(1/Std.Err), data=dat[filter,])
+      naiveDispCoef = summary(modelNaiveDisp)$coefficients
       # Output data frame
       output = data.frame(
         # ID data
         "Outcome" = i,
         "Setting" = j,
         "Best" = ifelse(k==1, "Best-only", "All"),
-        "naive-FE.r" = tanh(modelNaiveFE$b[1]),
-        "naive-FE.r.lb" = tanh(modelNaiveFE$ci.lb[1]),
-        "naive-FE.r.ub" = tanh(modelNaiveFE$ci.ub[1]),
-        "naive-RE.r" = tanh(modelNaiveRE$b[1]),
-        "naive-RE.r.lb" = tanh(modelNaiveRE$ci.lb[1]),
-        "naive-RE.r.ub" = tanh(modelNaiveRE$ci.ub[1]),
-        "RE.Q" = modelNaiveRE$QE,
-        "RE.Q.p" = modelNaiveRE$QEp,
-        "RE.I2" = modelNaiveRE$I2,
-        "RE.I2.lb" = confint(modelNaiveRE)$random["I^2(%)", "ci.lb"],
-        "RE.I2.ub" = confint(modelNaiveRE)$random["I^2(%)", "ci.ub"],
+        "naive-Disp.r" = tanh(naiveDispCoef[1]),
+        "naive-Disp.r.lb" = tanh(naiveDispCoef[1] - 1.98*naiveDispCoef[2]),
+        "naive-Disp.r.ub" = tanh(naiveDispCoef[1] + 1.98*naiveDispCoef[2]),
         # PET stats
         "PET.b0" = summary(modelPET)$coefficients["(Intercept)", "Estimate"],
         "PET.b0.se" = summary(modelPET)$coefficients["(Intercept)", "Std. Error"],
@@ -67,12 +57,6 @@ for (i in unique(dat$Outcome)) {
         "PET.b1" = summary(modelPET)$coefficients["Std.Err", "Estimate"],
         "PET.b1.se" = summary(modelPET)$coefficients["Std.Err", "Std. Error"],
         "PET.b1.p" = summary(modelPET)$coefficients["Std.Err", "Pr(>|t|)"],
-        #   #I wonder if adding a PET or PEESE meta-reg removes the heterogeneity?
-        # "PET.Q" = modelPET$QE,
-        # "PET.Q.p" = modelPET$QEp,
-        # "PET.I2" = modelPET$I2,
-        # "PET.I2.lb" = confint(modelPET)$random["I^2(%)", "ci.lb"],
-        # "PET.I2.ub" = confint(modelPET)$random["I^2(%)", "ci.ub"],
             # PEESE stats
         "PEESE.b0" = summary(modelPEESE)$coefficients["(Intercept)", "Estimate"],
         "PEESE.b0.se" = summary(modelPEESE)$coefficients["(Intercept)", "Std. Error"],
@@ -80,11 +64,6 @@ for (i in unique(dat$Outcome)) {
         "PEESE.b1" = summary(modelPEESE)$coefficients["I(Std.Err^2)", "Estimate"],
         "PEESE.b1.se" = summary(modelPEESE)$coefficients["I(Std.Err^2)", "Std. Error"],
         "PEESE.b1.p" = summary(modelPEESE)$coefficients["I(Std.Err^2)", "Pr(>|t|)"]
-        # "PEESE.Q" = modelPEESE$QE,
-        # "PEESE.Q.p" = modelPEESE$QEp,
-        # "PEESE.I2" = modelPEESE$I2,
-        # "PEESE.I2.lb" = confint(modelPEESE)$random["I^2(%)", "ci.lb"],
-        # "PEESE.I2.ub" = confint(modelPEESE)$random["I^2(%)", "ci.ub"]
       )
       outputFrame = rbind(outputFrame, output)
     }
