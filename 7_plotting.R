@@ -39,7 +39,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All cross-sectional",
-         xlim = c(-.2, .6), ylim = c(.1, 0)) %$%
+         xlim = c(-.5, 1.5), ylim = c(.32, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggAff", 
@@ -59,7 +59,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best cross-sectional",
-         xlim = c(-.2, .6), ylim = c(.1, 0)) %$%
+         xlim = c(-.5, 1.5), ylim = c(.32, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggAff.pdf", type = "pdf")
 savePlot(filename="funnels-0_AggAff.png", type = "png")
@@ -76,7 +76,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All experiments",
-         xlim = c(-.6, .6), ylim = c(.30, 0)) %$%
+         xlim = c(-.6, .7), ylim = c(.30, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggBeh", 
@@ -86,7 +86,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All cross-sectional",
-         xlim = c(-.4, .7), ylim = c(.19, 0)) %$%
+         xlim = c(-.6, .7), ylim = c(.30, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggBeh", 
@@ -96,7 +96,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best experiments",
-         xlim = c(-.6, .6), ylim = c(.30, 0)) %$%
+         xlim = c(-.6, .7), ylim = c(.30, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggBeh", 
@@ -106,7 +106,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best cross-sectional",
-         xlim = c(-.4, .7), ylim = c(.19, 0)) %$%
+         xlim = c(-.6, .7), ylim = c(.30, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggBeh.pdf", type = "pdf")
 savePlot(filename="funnels-0_AggBeh.png", type = "png")
@@ -123,7 +123,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All experiments",
-         xlim = c(-.2, .8), ylim = c(.315, 0)) %$%
+         xlim = c(-.4, .8), ylim = c(.315, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggCog", 
@@ -133,7 +133,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "All cross-sectional",
-         xlim = c(-.4, .6), ylim = c(.125, 0)) %$%
+         xlim = c(-.4, .8), ylim = c(.315, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggCog", 
@@ -143,7 +143,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best experiments",
-         xlim = c(-.2, .8), ylim = c(.315, 0)) %$%
+         xlim = c(-.4, .8), ylim = c(.315, 0)) %$%
   abline(v = b, lty = 2)
 dat %>%
   filter(Outcome == "AggCog", 
@@ -153,7 +153,7 @@ dat %>%
   funnel(level=c(90, 95, 99), shade = c("white", "grey75", "grey60"), refline=0,
          back = "gray90",
          main = "Best cross-sectional",
-         xlim = c(-.4, .6), ylim = c(.125, 0)) %$%
+         xlim = c(-.4, .8), ylim = c(.315, 0)) %$%
   abline(v = b, lty = 2)
 savePlot(filename="funnels-0_AggCog.pdf", type = "pdf")
 savePlot(filename="funnels-0_AggCog.png", type = "png")
