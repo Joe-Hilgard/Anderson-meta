@@ -61,11 +61,14 @@ dat %>%
   scale_y_reverse()
 
 pdf("funnel_diss.pdf", width = 8, height = 3)
-par(mfrow = c(1, 3))
+par(mfrow = c(1, 3),
+    oma = c(.3, 0, 0, 0) + .3,
+    mar = c(5, 4, 3, 0.5))
 
 dat.aggAff =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggAff", Best. %in% c("y", "n"))
 funnel(naiveRE(dat.aggAff), 
+       ylim = c(.316, 0),
        pch = ifelse(dat.aggAff$Diss == "Diss", 4, 16),
        main = "Aggressive Affect",
        hlines = "grey80",
@@ -81,6 +84,7 @@ lapply(c(m1.diss$b, m1.diss$ci.lb, m1.diss$ci.ub), FUN = z2rtrans)
 dat.aggBeh =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggBeh", Best. %in% c("y", "n"))
 funnel(naiveRE(dat.aggBeh), 
+       ylim = c(.316, 0),
        pch = ifelse(dat.aggBeh$Diss == "Diss", 4, 16),
        main = "Aggressive Behavior",
        hlines = "grey80",
@@ -96,6 +100,7 @@ lapply(c(m2.diss$b, m2.diss$ci.lb, m2.diss$ci.ub), FUN = z2rtrans)
 dat.aggCog =  dat %>% 
   filter(Setting == "Exp", Outcome == "AggCog", Best. %in% c("y", "n"))
 funnel(naiveRE(dat.aggCog), 
+       ylim = c(.316, 0),
        pch = ifelse(dat.aggCog$Diss == "Diss", 4, 16),
        main = "Aggressive Cognition",
        hlines = "grey80",

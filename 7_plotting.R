@@ -20,7 +20,9 @@ myFunnel = function(set, ...) {
 # Funnel plots centered at 0, significance contours----
 # Affect ----
 windows(width = 8, height = 8)
-par(mfrow = c(2, 2))
+par(mfrow = c(2, 2),
+    oma = c(.3, 0, 0, 0) + .3,
+    mar = c(3.75, 4, 3, 1) + .1) # mar[2] = 4 works
 dat %>%
   filter(Outcome == "AggAff", 
          Setting == "Exp",
@@ -67,7 +69,9 @@ dev.off()
 
 # Behavior ----
 windows(width = 8, height = 8)
-par(mfrow = c(2, 2))
+par(mfrow = c(2, 2),
+    oma = c(.3, 0, 0, 0) + .3,
+    mar = c(3.75, 4, 3, 1) + .1)
 dat %>%
   filter(Outcome == "AggBeh", 
          Setting == "Exp",
@@ -114,7 +118,9 @@ dev.off()
 
 # Cognition ----
 windows(width = 8, height = 8)
-par(mfrow = c(2, 2))
+par(mfrow = c(2, 2),
+    oma = c(.3, 0, 0, 0) + .3,
+    mar = c(3.75, 4, 3, 1) + .1)
 dat %>%
   filter(Outcome == "AggCog", 
          Setting == "Exp",
@@ -160,8 +166,10 @@ savePlot(filename="funnels-0_AggCog.png", type = "png")
 dev.off()
 
 # Arousal ----
-windows(width = 4, height = 8)
-par(mfrow = c(2, 1))
+windows(width = 3.5, height = 6.5)
+par(mfrow = c(2, 1),
+    oma = c(.3, 0, 0, 0) + .3,
+    mar = c(3.75, 4, 3, 1) + .1)
 dat %>%
   filter(Outcome == "PhysArous", 
          Setting == "Exp",
