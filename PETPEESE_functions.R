@@ -1,6 +1,6 @@
 # install.packages(c('metafor', 'magrittr'))
 library(metafor)
-library(magrittr)
+library(tidyverse)
 
 # I'm terrible with functions and global/local environment so
   # these functions simply assume your columns have names like
@@ -97,8 +97,7 @@ funnelPETPEESE = function(dataset,
       paste("Naive meta estimate, r =", .) %>%
       mtext(side=1)
     # add line and text from PET
-    petModel %$% 
-      abline(a = -b[1]/b[2], b = 1/b[2])
+    with(petModel, abline(a = -b[1]/b[2], b = 1/b[2]))
     r = petModel$b[1] %>% tanh %>% round(3)
     p.effect = petModel$pval[1] %>% round(3)
     p.bias = petModel$pval[2] %>% round(3)
@@ -120,7 +119,7 @@ funnelPETPEESE = function(dataset,
       grid$Var = grid$Std.Err^2
       grid$Fisher.s.Z = 
         peeseModel$b[1] + peeseModel$b[2]*grid$Var
-      grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
+      with(grid, lines(x=Fisher.s.Z, y=Std.Err, typ='l'))
       points(x = (peeseModel$b[1]), y=0, cex=1.5, pch=5)
       #abline(v = peeseModel$b[1], lty = 2)
       if (printText == T) { 
@@ -140,8 +139,7 @@ funnelPETPEESE = function(dataset,
       mtext(side=1)
     # add line and text from PET
     b = summary(petModel)$coefficients[,1]
-    petModel %$% 
-      abline(a = -b[1]/b[2], b = 1/b[2])
+    with(petModel, abline(a = -b[1]/b[2], b = 1/b[2]))
     r = b[1] %>% tanh %>% round(3)
     p.effect = summary(petModel)$coefficients[1,4] %>% round(3)
     p.bias = summary(petModel)$coefficients[2,4] %>% round(3)
@@ -163,7 +161,7 @@ funnelPETPEESE = function(dataset,
       b = summary(peeseModel)$coefficients[,1]
       grid$Fisher.s.Z = 
         b[1] + b[2]*grid$Var
-      grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
+      with(grid, lines(x=Fisher.s.Z, y=Std.Err, typ='l'))
       points(x = b[1], y=0, cex=1.5, pch=5)
       #abline(v = b[1], lty = 2)
       if (printText == T) {
@@ -334,8 +332,7 @@ funnelPeters = function(dataset,
     paste("Naive meta estimate, r =", .) %>%
     mtext(side=1)
   # add line and text from PET
-  petModel %$% 
-    abline(a = -b[1]/b[2], b = 1/b[2])
+  with(petModel, abline(a = -b[1]/b[2], b = 1/b[2]))
   r = petModel$b[1] %>% tanh %>% round(3)
   p.effect = petModel$pval[1] %>% round(3)
   p.bias = petModel$pval[2] %>% round(3)
@@ -355,7 +352,7 @@ funnelPeters = function(dataset,
     grid$Var = grid$Std.Err^2
     grid$Fisher.s.Z = 
       peeseModel$b[1] + peeseModel$b[2]*grid$Var
-    grid %$% lines(x=Fisher.s.Z, y=Std.Err, typ='l')
+    with(grid, lines(x=Fisher.s.Z, y=Std.Err, typ='l'))
     points(x = (peeseModel$b[1]), y=0, cex=1.5, pch=5)
     peeseModel$b[1] %>%
       tanh %>%
