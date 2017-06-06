@@ -15,24 +15,26 @@ dat %>% filter(Outcome == "AggAff", Setting == "Exp") %>%
 # significant selection parameter
 
 dat %>% filter(Outcome == "AggAff", Setting == "Exp", Best. == "y") %>% 
-  with(., weightfunct(Fisher.s.Z, vi, steps = c(.025, 1))) #r = .17
+  with(., weightfunct(Fisher.s.Z, vi, steps = c(.025, 1), table = T)) #r = .17
 # no p > .10, had to change steps
-# significant selection parameter
 
 # Exclude outlier from best-practices
 dat %>% 
   filter(Outcome == "AggAff", Setting == "Exp", Best. == "y") %>% 
   filter(Study.name != "BW96AA") %>% 
-  with(., weightfunct(Fisher.s.Z, vi, steps = c(.025, 1))) #r = .19
+  with(., weightfunct(Fisher.s.Z, vi, steps = c(.025, 1), table = T)) #r = .19
+# and a lot of error messages
 
 # Behavior
 dat %>% filter(Outcome == "AggBeh", Setting == "Exp") %>% 
-  with(., weightfunct(Fisher.s.Z, vi, fe = T)) # RFX won't converge # r = .12
+  with(., weightfunct(Fisher.s.Z, vi, fe = T, table = T)) # RFX won't converge # r = .12
 # note significant selection parameter
 
 dat %>% filter(Outcome == "AggBeh", Setting == "Exp", Best. == "y") %>% 
-  with(., weightfunct(Fisher.s.Z, vi, fe = T)) # RFX won't converge # r = .15
+  with(., weightfunct(Fisher.s.Z, vi, fe = T, table = T)) # RFX won't converge # r = .15
 # note significant selection parameter
+# note rarity of p > .05
+# Could it be selection model is misspecified?
 
 # Cognition
 dat %>% filter(Outcome == "AggCog", Setting == "Exp") %>% 
@@ -46,23 +48,24 @@ dat %>% filter(Outcome == "AggCog", Setting == "Exp", Best. == "y") %>%
 # Cross-sections ----
 # Affect
 dat %>% filter(Outcome == "AggAff", Setting == "Nonexp") %>% 
-  with(., weightfunct(Fisher.s.Z, vi))
+  with(., weightfunct(Fisher.s.Z, vi, table = T)) # r = .09
 
 dat %>% filter(Outcome == "AggAff", Setting == "Nonexp", Best. == "y") %>% 
-  with(., weightfunct(Fisher.s.Z, vi)) 
+  with(., weightfunct(Fisher.s.Z, vi, table = T)) # r = .11
 
 # Behavior
 dat %>% filter(Outcome == "AggBeh", Setting == "Nonexp") %>% 
-  with(., weightfunct(Fisher.s.Z, vi)) 
+  with(., weightfunct(Fisher.s.Z, vi, table = T)) # r = .22
 
 dat %>% filter(Outcome == "AggBeh", Setting == "Nonexp", Best. == "y") %>% 
-  with(., weightfunct(Fisher.s.Z, vi)) 
+  with(., weightfunct(Fisher.s.Z, vi, table = T)) # r = .30
 
 # Cognition
 dat %>% filter(Outcome == "AggCog", Setting == "Nonexp") %>% 
-  with(., weightfunct(Fisher.s.Z, vi)) 
+  with(., weightfunct(Fisher.s.Z, vi, table = T)) # r = .12
 # note significant selection parameter
 
 dat %>% filter(Outcome == "AggCog", Setting == "Nonexp", Best. == "y") %>% 
-  with(., weightfunct(Fisher.s.Z, vi, fe = T)) # RFX won't converge
+  with(., weightfunct(Fisher.s.Z, vi, fe = T, table = T)) # r = .21
+# RFX won't converge
 # note significant selection parameter
