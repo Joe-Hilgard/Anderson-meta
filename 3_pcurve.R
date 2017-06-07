@@ -170,3 +170,17 @@ tmp = dat %>%
 paste0("t(", tmp$df, ")=", tmp$t, "\n") %>% 
   writeClipboard()
 
+# extra analysis: prosocial behavior ----
+filter(dat, Outcome == "ProsBeh", Setting == "Exp", Best. == "y") %>% 
+  rma(Fisher.s.Z, sei = Std.Err, data = .)
+
+filter(dat, Outcome == "ProsBeh", Setting == "Exp") %>% 
+  ggplot(aes(x = p.twotail, fill = Best.)) +
+  geom_histogram(binwidth = .01)
+
+filter(dat, Outcome == "ProsBeh", Setting == "Exp", Best. == "y") %>% 
+  with(., plotloss(t, df, dmin=-.5, dmax = 1)) # d = 0.289
+
+filter(dat, Outcome == "ProsBeh", Setting == "Exp") %>% 
+  with(., plotloss(t, df, dmin=-.5, dmax = 1)) # d = 0.289
+  
